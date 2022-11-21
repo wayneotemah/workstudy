@@ -18,3 +18,6 @@ def create_organization(request):
 
 def account(request):
     return render(request,"users-profile.html")
+
+def schedule(request):
+    return render(request,"datepicker.html")
