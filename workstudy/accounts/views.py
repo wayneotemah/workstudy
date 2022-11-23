@@ -2,7 +2,6 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
-
 from accounts.models import CustomUser
 
 
@@ -15,13 +14,12 @@ def sign_in(request):
         password = request.POST['password']
 
         user = authenticate(request, email=email, password=password)
-        print(user)
         if user is not None:
             login(request, user)
-            return redirect(account)
+            return redirect(organization)
         else:
+            # error loging in
             return render(request,"pages-login.html",{'message':"incorrect login"})
-            # Return an 'invalid login' error message.
 
     elif request.method == "GET":        
         return render(request,"pages-login.html") 
@@ -29,8 +27,13 @@ def sign_in(request):
 def sign_up(request):
     if request.method =='POST':
         email = request.POST['email']
-        user = CustomUser.get_user(email)
-        if not user:
+        user = CustomUser.user_exists(email)
+        if not user: 
+
+            """
+            if user does not exist, save detail
+            """
+
             phone_number = request.POST['phone_number']
             password = request.POST['password']
             user = CustomUser(  email = email,
@@ -38,14 +41,23 @@ def sign_up(request):
             user.set_password(password)
             user.save()
             if user is not None:
-                return redirect(sign_in)
+                return redirect(sign_in,{'message':"Please login"})
             else:
+                """
+                if user exist, redirect to login page.
+                """
                 return render(request,"pages-register.html",{'message':"Error creating user, try again or call support"})
         else: 
             return render(request,"pages-login.html",{'message':"Email exists, please login"})
         
     elif request.method == "GET":
         return render(request,"pages-register.html")
+
+
+@login_required
+def createprofile(request):
+    return render(request,"createprofile.html")
+
 
 @login_required
 def organization(request):
