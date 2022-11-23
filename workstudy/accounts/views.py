@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 
+from accounts.models import CustomUser
+
 
 
 # Create your views here.
@@ -10,9 +12,10 @@ from django.contrib.auth import authenticate, login
 def sign_in(request):
     if request.method =='POST':
         email = request.POST['email']
-        password = request.POST['email']
+        password = request.POST['password']
 
         user = authenticate(request, email=email, password=password)
+        print(user)
         if user is not None:
             login(request, user)
             return redirect(account)
@@ -24,7 +27,25 @@ def sign_in(request):
         return render(request,"pages-login.html") 
 
 def sign_up(request):
-    return render(request,"pages-register.html")
+    if request.method =='POST':
+        email = request.POST['email']
+        user = CustomUser.get_user(email)
+        if not user:
+            phone_number = request.POST['phone_number']
+            password = request.POST['password']
+            user = CustomUser(  email = email,
+                                phone_number = phone_number)
+            user.set_password(password)
+            user.save()
+            if user is not None:
+                return redirect(sign_in)
+            else:
+                return render(request,"pages-register.html",{'message':"Error creating user, try again or call support"})
+        else: 
+            return render(request,"pages-login.html",{'message':"Email exists, please login"})
+        
+    elif request.method == "GET":
+        return render(request,"pages-register.html")
 
 @login_required
 def organization(request):

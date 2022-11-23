@@ -35,7 +35,6 @@ class CustomUserManager(BaseUserManager):
         user.is_staff = True
         user.is_superuser = True
         user.save(using=self._db)
-
         return user
 
 
@@ -77,6 +76,13 @@ class CustomUser(AbstractBaseUser,PermissionsMixin):
         "Does the user have permissions to view the app `app_label`?"
         # Simplest possible answer: Yes, always
         return True
+
+    @staticmethod
+    def get_user(x):
+            return CustomUser.objects.filter(email = x)
+        
+
+
 
 
 
