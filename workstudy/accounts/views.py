@@ -2,7 +2,10 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
-from accounts.models import CustomUser
+from accounts.models import Account, CustomUser
+from django.db import IntegrityError
+# from django.shortcuts import render_to_response
+
 
 
 
@@ -27,8 +30,11 @@ def sign_in(request):
 def sign_up(request):
     if request.method =='POST':
         email = request.POST['email']
-        user = CustomUser.user_exists(email)
-        if not user: 
+        # user = CustomUser.user_exists(email)
+        if CustomUser.user_exists(email): 
+            return render(request,"pages-login.html",{'message':"Email exists, please login"})
+            
+        else: 
 
             """
             if user does not exist, save detail
@@ -41,14 +47,13 @@ def sign_up(request):
             user.set_password(password)
             user.save()
             if user is not None:
-                return redirect(sign_in,{'message':"Please login"})
+                return render(request,"pages-login.html",{"message":"Please login"})
             else:
                 """
                 if user exist, redirect to login page.
                 """
                 return render(request,"pages-register.html",{'message':"Error creating user, try again or call support"})
-        else: 
-            return render(request,"pages-login.html",{'message':"Email exists, please login"})
+
         
     elif request.method == "GET":
         return render(request,"pages-register.html")
@@ -56,7 +61,18 @@ def sign_up(request):
 
 @login_required
 def createprofile(request):
-    return render(request,"createprofile.html")
+    if request.method == "POST":
+        user = request.user
+        firstName = request.POST['firstName']
+        lastName = request.POST['lastName']
+        try:
+            newAccount =  Account(last_name = lastName,first_name=firstName,user = user)
+            newAccount.save()
+            return redirect(organization)
+        except IntegrityError:
+            return render(request,"createprofile.html", {"message": "Your account alreadt exists"})
+    elif request.method == "GET":
+        return render(request,"createprofile.html")
 
 
 @login_required

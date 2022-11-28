@@ -31,7 +31,7 @@
                   </div>
                   {% endif %}
 
-                  <form class="row g-3 needs-validation" method ="post" action ="{% url 'sign up' %}" novalidate>
+                  <form class="row g-3 needs-validation" method ="post" action ="{% url 'sign up' %}" validate>
                     {% csrf_token %}
                     {% comment %} <div class="col-12">
                       <label for="yourName" class="form-label">Your Name</label>

@@ -79,11 +79,9 @@ class CustomUser(AbstractBaseUser,PermissionsMixin):
 
     @staticmethod
     def user_exists(x):
-            return CustomUser.objects.filter(email = x)
+            result = CustomUser.objects.filter(email = x)
+            return False if not result else True
         
-
-
-
 
 
 class Account(models.Model):
