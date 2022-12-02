@@ -120,14 +120,18 @@ def schedule(request):
 
 @login_required(login_url=LOGIN_URL)
 def dashboard(request):
-    organization = request.GET['orgSelected']
-    print(organization)
+    organizationName  = Organization.objects.get(organization_uuid = request.GET['orgSelected'])
+
     userAccount = Account.get_account(request.user)
     username = " ".join([userAccount.first_name,userAccount.last_name])  # type: ignore
 
     context = {
-        "username":username
+        "username":username,
+        "organizationName":organizationName
     }
     
     return render(request,"dashboard.html",context = context)
 
+@login_required(login_url=LOGIN_URL)  # type: ignore
+def roles(request):
+    return render(request,"roles.html")
