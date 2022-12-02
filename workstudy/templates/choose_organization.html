@@ -24,18 +24,17 @@
                   <h5 class="card-title text-center pb-0 fs-4">Your Organizations</h5>
                 </div>
 
-                <form class="row g-3 needs-validation" validate>
-
+                <form class="row g-3 needs-validation" method = 'get' action = {% url 'dashboard' %} validate>
+                  {% csrf_token %}
                   <div class="col-12">
                       <label class="col-form-label text-center">Select the organization you want to login to</label>
-                        <select class="form-select" aria-label="Default select example">
+                        <select class="form-select" name = "orgSelected" aria-label="Default select example">
                           <option selected></option>
-                          <option value="1">Organization 1</option>
-                          <option value="2">Organization 2</option>
-                          <option value="3">Organization 3</option>
+                          {% for  organization in context %}
+                          <option value="{{organization.organization_uuid}}">{{organization.name}}</option>
+                          {% endfor %}
                         </select>
                   </div>
-
                   <div class="col-12">
                     <button class="btn btn-primary w-100" type="submit">Open</button>
                   </div>

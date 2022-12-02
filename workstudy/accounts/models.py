@@ -102,3 +102,9 @@ class Account(models.Model):
     def supervisor_status(self):
         return self.is_supervisor
 
+    @staticmethod
+    def get_account(x):
+        account = Account.objects.get(user = x)
+        return account
+    
+    

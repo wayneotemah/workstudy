@@ -18,21 +18,29 @@
             <p class="text-center pt-4" style="color: #4154f1" >Fill in the deatils below to help us set up your organization</p>
           </div>
 
-          <form class="row g-3 needs-validation" validate>
+          {% if message %}
+          <div class="alert alert-danger alert-dismissible fade show" style ="margin:20px 0px;" role="alert">
+            {{message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          {% endif %}
+
+          <form class="row g-3 needs-validation" action = "{% url 'create organization' %}" method = "post" validate>
+            {% csrf_token %}
             <div class="col-12 pb-2">
               <label class="col-form-label text-center">Select the kind organization you wish to create</label>
-                <select class="form-select" aria-label="Default select example">
+                <select name = "scale" class="form-select" aria-label="Default select example">
                   <option selected></option>
-                  <option value="1">Medium Enterprice</option>
-                  <option value="2">Small Enterprice</option>
-                  <option value="3">Personal Projects</option>
+                  <option value="medium scale">Medium Enterprice (20 - 100 workers)</option>
+                  <option value="Small scale">Small Enterprice (2 - 20 workers)</option>
+                  <option value="personal venture">Personal (Only you)</option>
                 </select>
             </div>
 
             <div class="col-12 pb-2">
               <label for="yourUsername" class="form-label">Organization name</label>
               <div class="input-group has-validation">
-                <input type="text" name="username" class="form-control" id="yourUsername" required>
+                <input type="text" name="organizationname" class="form-control" id="yourUsername" required>
                 <div class="invalid-feedback">Please enter the filed.</div>
               </div>
             </div>

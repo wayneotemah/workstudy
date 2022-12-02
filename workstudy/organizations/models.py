@@ -21,6 +21,6 @@ class Organization(models.Model):
     def get_owner_details(self):
         return Account.objects.get(account_uuid = self.supervisor)
     
-    @property
+    @staticmethod
     def get_organizations(x):
         return Organization.objects.filter(supervisor = x)

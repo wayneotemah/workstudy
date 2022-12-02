@@ -4,10 +4,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from accounts.models import Account, CustomUser
 from django.db import IntegrityError
+from django.core.exceptions import ObjectDoesNotExist
+
+from organizations.models import Organization
 # from django.shortcuts import render_to_response
 
 
-
+LOGIN_URL = 'sign-in'
 
 # Create your views here.
 
@@ -59,7 +62,7 @@ def sign_up(request):
         return render(request,"pages-register.html")
 
 
-@login_required
+@login_required(login_url=LOGIN_URL)  # type: ignore
 def createprofile(request):
     if request.method == "POST":
         user = request.user
@@ -75,19 +78,56 @@ def createprofile(request):
         return render(request,"createprofile.html")
 
 
-@login_required
+@login_required(login_url=LOGIN_URL)  # type: ignore
 def organization(request):
-    return render(request,"choose_organization.html")
+    try:
+        user = Account.get_account(request.user)
+        ogranizatioin_list = Organization.get_organizations(user)
+        suggestion_list = ogranizatioin_list
+        print(suggestion_list)
+        return render(request,"choose_organization.html", {"context":suggestion_list})
+    except ObjectDoesNotExist as e:
+            return render(request,"createprofile.html",{"message": "you do not have a profile, please creat one" })
 
-@login_required
+
+@login_required(login_url=LOGIN_URL)  # type: ignore
 def create_organization(request):
-    return render(request,"create_organization.html")
+    if request.method == "POST":
+        
+        organizationName = request.POST['organizationname']
+        scale = request.POST['scale']
+        try:
+            user = request.user
+            user = Account.get_account(request.user)
+            newOrganization =  Organization(name = organizationName,scale=scale,supervisor = user)
+            newOrganization.save()
+            return redirect(organization)
+        except ObjectDoesNotExist as e:
+            return render(request,"createprofile.html",{"message": "you do not have a profile, please creat one" })        
+        except IntegrityError as e:
+            return render(request,"create_organization.html", {"message": e })
+    elif request.method == "GET":
+        return render(request,"create_organization.html")
 
 
-@login_required
+@login_required(login_url=LOGIN_URL)  # type: ignore
 def account(request):
     return render(request,"users-profile.html")
 
-@login_required
+@login_required(login_url=LOGIN_URL)  # type: ignore
 def schedule(request):
     return render(request,"datepicker.html")
+
+@login_required(login_url=LOGIN_URL)
+def dashboard(request):
+    organization = request.GET['orgSelected']
+    print(organization)
+    userAccount = Account.get_account(request.user)
+    username = " ".join([userAccount.first_name,userAccount.last_name])  # type: ignore
+
+    context = {
+        "username":username
+    }
+    
+    return render(request,"dashboard.html",context = context)
+
