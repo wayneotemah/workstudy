@@ -4,7 +4,7 @@ from accounts.models import Account
 from django.contrib.auth.decorators import login_required
 from organizations.models import Organization
 from workstudy.globalsettings import LOGIN_URL
-from organizations.helper import UserDetailsHelper
+from organizations.helper import UserDetailsHelper,RolesHelper
 
 # Create your views here.
 
@@ -28,7 +28,7 @@ def dashboard(request,uuid):
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
 def roles(request,uuid):
-    data = UserDetailsHelper(user = request.user,uuid = uuid )
+    data = RolesHelper(user = request.user,uuid = uuid )
     context = data.get_nav_details()
     return render(request,"roles.html",context = context)
     

@@ -6,7 +6,7 @@ class UserDetailsHelper():
         self.user = user
         self.companyUUID = uuid
 
-    def get_nav_details(self):
+    def get_nav_details(self)-> dict:
         organizationName  = Organization.objects.get(organization_uuid = self.companyUUID )
 
         userAccount = Account.get_account(self.user)
@@ -21,6 +21,8 @@ class UserDetailsHelper():
 
     
 class RolesHelper(UserDetailsHelper):
+    def __init__(self,user,uuid):
+        super().__init__(user,uuid)
     pass
 
 class TeamsHelper(UserDetailsHelper):
