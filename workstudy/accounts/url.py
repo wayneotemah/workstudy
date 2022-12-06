@@ -10,6 +10,5 @@ urlpatterns = [
     path('organization/', views.organization, name='choose organization'),
     path('create_organization/', views.create_organization, name='create organization'),  # type: ignore
     path('schedule/', views.schedule, name='pick my schedule'),
-    path('myorg/' ,views.dashboard, name='dashboard'),
     path('roles/' ,views.roles, name='organization roles')
 ]

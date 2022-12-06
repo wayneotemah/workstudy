@@ -7,10 +7,11 @@ from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 
 from organizations.models import Organization
+from workstudy.globalsettings import LOGIN_URL
 # from django.shortcuts import render_to_response
 
 
-LOGIN_URL = 'sign-in'
+
 
 # Create your views here.
 
@@ -117,20 +118,6 @@ def account(request):
 @login_required(login_url=LOGIN_URL)  # type: ignore
 def schedule(request):
     return render(request,"datepicker.html")
-
-@login_required(login_url=LOGIN_URL)
-def dashboard(request):
-    organizationName  = Organization.objects.get(organization_uuid = request.GET['orgSelected'])
-
-    userAccount = Account.get_account(request.user)
-    username = " ".join([userAccount.first_name,userAccount.last_name])  # type: ignore
-
-    context = {
-        "username":username,
-        "organizationName":organizationName
-    }
-    
-    return render(request,"dashboard.html",context = context)
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
 def roles(request):
