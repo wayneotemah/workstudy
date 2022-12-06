@@ -4,6 +4,7 @@ from accounts.models import Account
 from django.contrib.auth.decorators import login_required
 from organizations.models import Organization
 from workstudy.globalsettings import LOGIN_URL
+from organizations.helper import UserDetailsHelper
 
 # Create your views here.
 
@@ -19,19 +20,34 @@ def dashboard_redirect(request):
 
 @login_required(login_url=LOGIN_URL)
 def dashboard(request,uuid):
-    organizationName  = Organization.objects.get(organization_uuid = uuid )
-
-
-    userAccount = Account.get_account(request.user)
-    username = " ".join([userAccount.first_name,userAccount.last_name])  # type: ignore
-
-    context = {
-        "username":username,
-        "organizationName":organizationName
-    }
-    
+    data = UserDetailsHelper(user = request.user,uuid = uuid )
+    context = data.get_nav_details()
     return render(request,"dashboard.html",context = context)
 
 
-def assets(request):
+
+@login_required(login_url=LOGIN_URL)  # type: ignore
+def roles(request,uuid):
+    data = UserDetailsHelper(user = request.user,uuid = uuid )
+    context = data.get_nav_details()
+    return render(request,"roles.html",context = context)
+    
+
+
+@login_required(login_url=LOGIN_URL)  # type: ignore
+def myteam(request,uuid):
+    pass
+
+
+@login_required(login_url=LOGIN_URL)  # type: ignore
+def reports(request,uuid):
+    pass
+
+
+@login_required(login_url=LOGIN_URL)  # type: ignore
+def profile(request,uuid):
+    pass
+
+@login_required(login_url=LOGIN_URL)  # type: ignore
+def assets(request,uuid):
     return render(request,"assets.html")

@@ -241,7 +241,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link " href="index.html">
+        <a class="nav-link " href="{% url 'dashboard' organizationUUID %}">
           <i class="bi bi-grid"></i>
           <span>My Dashboard</span>
         </a>
@@ -279,42 +279,42 @@
 
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="index.html">
+        <a class="nav-link collapsed" href="{% url 'roles' organizationUUID %}">
           <i class="bi bi-list-task"></i>
           <span>Roles</span>
         </a>
       </li><!-- End Dashboard Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="users-profile.html">
+        <a class="nav-link collapsed" href="{% url 'my_team' organizationUUID %}">
           <i class="bi bi-people"></i>
           <span>My Team</span>
         </a>
       </li><!-- End Profile Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-contact.html">
+        <a class="nav-link collapsed" href="{% url 'reports' organizationUUID %}">
           <i class="bi bi-list-columns-reverse"></i>
           <span>Reports</span>
         </a>
       </li>
         
       <li class="nav-item">
-          <a class="nav-link collapsed" href="pages-contact.html">
+          <a class="nav-link collapsed" href="#">
             <i class="bi bi-gear-fill"></i>
             <span>Issues</span>
           </a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-faq.html">
+        <a class="nav-link collapsed" href="#">
           <i class="bi bi-question-circle"></i>
           <span>F.A.Q</span>
         </a>
       </li><!-- End F.A.Q Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-contact.html">
+        <a class="nav-link collapsed" href="{% url 'profile' organizationUUID %}">
           <i class="bi bi-person"></i>
           <span>My Profile</span>
         </a>
