@@ -10,6 +10,12 @@ class Role(models.Model):
     title = models.CharField(_('Title'),blank = True, null =True,max_length = 100)
     description = models.TextField(_("role description"),blank = True, null =True,max_length = 100)
     organization = models.ForeignKey(Organization, verbose_name=_("Organization"), on_delete=models.CASCADE)
+    task_1 = models.TextField(_("task 1"),blank = True, null =True,max_length = 100)
+    task_2 = models.TextField(_("task 2"),blank = True, null =True,max_length = 100)
+    task_3 = models.TextField(_("task 3"),blank = True, null =True,max_length = 100)
+    task_4 = models.TextField(_("task 4"),blank = True, null =True,max_length = 100)
+    task_5 = models.TextField(_("task 5"),blank = True, null =True,max_length = 100)
+    task_6 = models.TextField(_("task 6"),blank = True, null =True,max_length = 100)
 
     class Meta:
         verbose_name = _("Role")
@@ -17,6 +23,10 @@ class Role(models.Model):
 
     def __str__(self):
         return self.title
+
+    @staticmethod
+    def getOrganizationRoles(x):
+        return Role.objects.filter(organization = x)
 
     
 

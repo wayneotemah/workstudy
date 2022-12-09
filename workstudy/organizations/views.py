@@ -30,6 +30,8 @@ def dashboard(request,uuid):
 def roles(request,uuid):
     data = RolesHelper(user = request.user,uuid = uuid )
     context = data.get_nav_details()
+    context['roles'] = data.get_roles()
+    print(context)
     return render(request,"roles.html",context = context)
     
 

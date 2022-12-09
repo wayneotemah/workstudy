@@ -1,5 +1,6 @@
 from organizations.models import Organization
 from accounts.models import Account
+from roles.models import Role
 
 class UserDetailsHelper():
     def __init__(self,user,uuid) -> None:
@@ -23,7 +24,10 @@ class UserDetailsHelper():
 class RolesHelper(UserDetailsHelper):
     def __init__(self,user,uuid):
         super().__init__(user,uuid)
-    pass
+
+    def get_roles(self):
+        data = Role.getOrganizationRoles(self.companyUUID)
+        return data
 
 class TeamsHelper(UserDetailsHelper):
     pass
