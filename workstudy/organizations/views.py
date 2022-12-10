@@ -39,8 +39,10 @@ def roles(request,uuid):
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
 def myteam(request,uuid):
+    # print(request.user.user_role)
     helper = TeamsHelper(user = request.user,uuid = uuid )
     context = helper.get_nav_details()
+    context['team'] = helper.get_members()
     return render(request,"team.html",context = context)
 
 

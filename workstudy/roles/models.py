@@ -43,8 +43,12 @@ class UserRole(models.Model):
 
     @staticmethod
     def getUserOrganizationRoles(x):
-        return UserRole.objects.filter(assigned_to = x)
+        return UserRole.objects.get(assigned_to = x)
     
+    @staticmethod
+    def getTeam(x):
+        return UserRole.objects.filter(role = x)
+
     @staticmethod
     def getOrganization(x):
         role = UserRole.objects.get(assigned_to = x)
