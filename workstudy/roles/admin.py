@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from roles.models import Role, Task
+from roles.models import Role, Task ,UserRole
 
 # Register your models here.
 
@@ -13,6 +13,11 @@ class TaskAdmin(admin.ModelAdmin):
     # TODO Set up  django site 
     pass
 
+class UserRoleAdmin(admin.ModelAdmin):
+    # TODO Set up  django site 
+    pass
+
+admin.site.register(UserRole,UserRoleAdmin)
 
 admin.site.register(Role, RoleAdmin)
 

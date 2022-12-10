@@ -8,6 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 from organizations.models import Organization
 from workstudy.globalsettings import LOGIN_URL
+from roles.models import UserRole
 # from django.shortcuts import render_to_response
 
 
@@ -83,9 +84,10 @@ def createprofile(request):
 def organization(request):
     try:
         user = Account.get_account(request.user)
-        ogranizatioin_list = Organization.get_organizations(user)
-        suggestion_list = ogranizatioin_list
-        print(suggestion_list)
+        organization_list = Organization.get_organizations(user)
+        if not organization_list:
+            organization_list = UserRole.getOrganization(user)
+        suggestion_list = organization_list
         return render(request,"choose_organization.html", {"context":suggestion_list})
     except ObjectDoesNotExist as e:
             return render(request,"createprofile.html",{"message": "you do not have a profile, please creat one" })
