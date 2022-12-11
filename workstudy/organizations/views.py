@@ -6,6 +6,7 @@ from organizations.models import Organization
 from accounts.views import organization
 from workstudy.globalsettings import LOGIN_URL
 from organizations.helper import TeamsHelper, UserDetailsHelper,RolesHelper
+from roles.models import UserRole
 
 # Create your views here.
 
@@ -13,8 +14,12 @@ from organizations.helper import TeamsHelper, UserDetailsHelper,RolesHelper
 @login_required(login_url=LOGIN_URL)  # type: ignore
 def dashboard_redirect(request):
     orgSelectedUUID = request.GET['orgSelected']
-    if orgSelectedUUID:
+    user = Account.get_account(request.user)
+    role = UserRole.check_user_schedule(user)
+    if orgSelectedUUID and role:
         return redirect('dashboard',uuid = orgSelectedUUID)
+    if orgSelectedUUID and not role:
+        return redirect ('pick my schedule')
     else:
         return redirect(organization)
 
@@ -39,7 +44,6 @@ def roles(request,uuid):
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
 def myteam(request,uuid):
-    # print(request.user.user_role)
     helper = TeamsHelper(user = request.user,uuid = uuid )
     context = helper.get_nav_details()
     context['team'] = helper.get_members()
@@ -58,3 +62,5 @@ def profile(request,uuid):
 @login_required(login_url=LOGIN_URL)  # type: ignore
 def assets(request,uuid):
     return render(request,"assets.html")
+
+    

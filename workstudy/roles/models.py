@@ -1,7 +1,10 @@
 from django.db import models
+from django.core.validators import MaxValueValidator
 from django.utils.translation import gettext_lazy  as _
 from organizations.models import Organization
 from accounts.models import Account
+from django.core.exceptions import ObjectDoesNotExist
+
 
 # Create your models here.
 
@@ -31,20 +34,50 @@ class Role(models.Model):
 
 
 class UserRole(models.Model):
+    days_option = {
+        ('monday', 'Monday'),
+        ('tuesday', 'Tuesday'),
+        ('wednesday', 'Wednesday'),
+        ('thurday', 'Thursday'),
+        ('friday', 'Friday'),
+        ('saturday', 'Saturday'),
+    }
     role = models.ForeignKey(Role, verbose_name=_("role"), on_delete=models.CASCADE)
     assigned_to = models.ForeignKey(Account, verbose_name=_("assigned_to"), on_delete=models.DO_NOTHING,blank = True, null =True)
+    
+    day1 = models.CharField(max_length=15,choices=days_option,blank = True, null =True)
+    day1_start_time = models.TimeField(blank = True, null =True)
+    day1_end_time = models.TimeField(blank = True, null =True)
+    day2 = models.CharField(max_length=15,choices=days_option,blank = True, null =True)
+    day2_start_time = models.TimeField(blank = True, null =True)
+    day2_end_time = models.TimeField(blank = True, null =True)
+    day3 = models.CharField(max_length=15,choices=days_option,blank = True, null =True)
+    day3_start_time = models.TimeField(blank = True, null =True)
+    day3_end_time = models.TimeField(blank = True, null =True)
+    day4 = models.CharField(max_length=15,choices=days_option,blank = True, null =True)
+    day4_start_time = models.TimeField(blank = True, null =True)
+    day4_end_time = models.TimeField(blank = True, null =True)
+    day5 = models.CharField(max_length=15,choices=days_option,blank = True, null =True)
+    day5_start_time = models.TimeField(blank = True, null =True)
+    day5_end_time = models.TimeField(blank = True, null =True)
+    day6 = models.CharField(max_length=15,choices=days_option,blank = True, null =True)
+    day6_start_time = models.TimeField(blank = True, null =True)
+    day6_end_time = models.TimeField(blank = True, null =True)
 
     class Meta:
         verbose_name = _("User's role")
         verbose_name_plural = _("User's  roles")
 
     def __str__(self):
-        return self.role.title
+        return f'{self.assigned_to.first_name} {self.assigned_to.last_name}' # type: ignore
 
     @staticmethod
     def getUserOrganizationRoles(x):
-        return UserRole.objects.get(assigned_to = x)
-    
+        try:
+            return UserRole.objects.get(assigned_to = x)
+        except ObjectDoesNotExist as e:
+            return None 
+
     @staticmethod
     def getTeam(x):
         return UserRole.objects.filter(role = x)
@@ -53,6 +86,21 @@ class UserRole(models.Model):
     def getOrganization(x):
         role = UserRole.objects.get(assigned_to = x)
         return Organization.objects.filter(organization_uuid = role.role.organization.organization_uuid)
+    
+    @staticmethod
+    def check_user_schedule(x):
+        role = UserRole.getUserOrganizationRoles(x)
+        if role:
+            if not role.day1 and not role.day2 and not role.day3 and not role.day4 and not role.day5 and not role.day6 :
+                return None
+            else:
+
+                return True
+        elif role == None:
+            print('check 4')
+
+            return False
+
 
 
 

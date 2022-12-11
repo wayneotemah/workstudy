@@ -86,7 +86,20 @@ def organization(request):
         user = Account.get_account(request.user)
         organization_list = Organization.get_organizations(user)
         if not organization_list:
-            organization_list = UserRole.getOrganization(user)
+            # check if user has a role
+
+            role = UserRole.getUserOrganizationRoles(user)
+            if role:
+            # use the user to get the organization
+
+                organization_list = UserRole.getOrganization(user)
+            else:
+                context={
+                    "errorTitle":"No organization",
+                    "message":"You have not been assigned to any organisation. Please contact you supervisor to add you to his/her organization"
+                }
+                return render(request,"errorpage.html",context=context)
+            
         suggestion_list = organization_list
         return render(request,"choose_organization.html", {"context":suggestion_list})
     except ObjectDoesNotExist as e:
