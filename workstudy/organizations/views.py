@@ -1,5 +1,4 @@
 from django.shortcuts import redirect, render
-
 from accounts.models import Account
 from django.contrib.auth.decorators import login_required
 from organizations.models import Organization

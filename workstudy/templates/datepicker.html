@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+
 <main id="main" class="main">
 
     <div class="pagetitle">
@@ -20,18 +21,19 @@
               <h5 class="card-title">Form</h5>
 
               <!-- General Form Elements -->
-              <form>
+              <form action = {% url 'pick my schedule' %} method ="post" >
+                {% csrf_token %}
                 <div class="row mb-3">
                     <label class="col-sm-2 col-form-label">Day</label>
                     <div class="col-sm-10">
-                      <select class="form-select" aria-label="Default select example">
+                      <select name ="day" class="form-select" aria-label="Default select example">
                         <option selected>select a day of you convinience</option>
-                        <option value="1">Monday</option>
-                        <option value="2">Tuesday</option>
-                        <option value="3">Wednesday</option>
-                        <option value="4">Thurday</option>
-                        <option value="5">Friday</option>
-                        <option value="6">Saturday</option>
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thurday">Thurday</option>
+                        <option value="Friday">Friday</option>
+                        <option value="Saturday">Saturday</option>
                       </select>
                     </div>
                   </div>
@@ -39,20 +41,20 @@
                 <div class="row mb-3">
                   <label for="inputTime" class="col-sm-2 col-form-label">Time in</label>
                   <div class="col-sm-10">
-                    <input type="time" class="form-control">
+                    <input type="time" name ="start_time" class="form-control">
                   </div>
                 </div>
 
                 <div class="row mb-3">
                     <label for="inputTime" class="col-sm-2 col-form-label">Time out</label>
                     <div class="col-sm-10">
-                      <input type="time" class="form-control">
+                      <input type="time" name ="end_time" class="form-control">
                     </div>
                   </div>
 
                 <div class="row mb-3">
                   <div class="col-sm-10">
-                    <button class="btn btn-secondary">Add day and time</button>
+                    <button class="btn btn-secondary" onclick = "sendSchedule()"  >Add day and time</button>
                   </div>
                 </div>
 
@@ -66,32 +68,28 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Your Time schedule</h5>
-  
-              <!-- List group with Advanced Contents -->
+              <div id ="schedule" >
+              </div>  
+              
+              {% comment %} <!-- List group with Advanced Contents -->
               <div class="list-group">
                 <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
                   <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">Monday 3pm -10pm</h5>
                     <small>7 hours</small>
                   </div>
-                  {% comment %} <p class="mb-1">Some placeholder content in a paragraph.</p>
-                  <small>And some small print.</small> {% endcomment %}
                 </a>
                 <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
                   <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">Monday 3pm -10pm</h5>
                     <small>7 hours</small>
                   </div>
-                  {% comment %} <p class="mb-1">Some placeholder content in a paragraph.</p>
-                  <small>And some small print.</small> {% endcomment %}
                 </a>
                 <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
                   <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">Monday 3pm -10pm</h5>
                     <small>7 hours</small>
                   </div>
-                  {% comment %} <p class="mb-1">Some placeholder content in a paragraph.</p>
-                  <small>And some small print.</small> {% endcomment %}
                 </a>
 
                 <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
@@ -99,16 +97,12 @@
                     <h5 class="mb-1">Monday 3pm -10pm</h5>
                     <small>7 hours</small>
                   </div>
-                  {% comment %} <p class="mb-1">Some placeholder content in a paragraph.</p>
-                  <small>And some small print.</small> {% endcomment %}
                 </a>
-              </div><!-- End List group Advanced Content -->
-              <div style="margin: 20px 0px;" >
-                <a href ="#">
-                  <button class="btn btn-primary">Save and continue</button>
-                </a>
-              </div>
-  
+              </div><!-- End List group Advanced Content --> {% endcomment %}
+
+              <div id="continueButton">
+                
+              </div>  
             </div>
           </div>
         </div
@@ -120,4 +114,41 @@
   </main><!-- End #main -->
 
 
+  <script>
+    const schedule = document.querySelector('#schedule');
+    const saveContinue = document.querySelector('#continueButton');
+
+    function addSaveButton(){
+      saveContinue.innerHTML =`
+      <div style="margin: 20px 0px;" >
+        <a href ="#">
+          <button class="btn btn-primary" >Save and continue</button>
+        </a>
+      </div>
+      ` 
+    }  
+    function sendSchedule(){
+      var start_time = document.getElementsByName("start_time")[0].value;
+      var end_time = document.getElementsByName("end_time")[0].value;
+      var day = document.getElementsByName("day")[0].value;
+      //var checkboxes = document.querySelectorAll("input[type=checkbox]");
+      
+      console.log(end_time);
+      console.log(start_time);
+      var hours = Math.abs(end_time - start_time)
+
+      schedule.innerHTML += `
+      <div class="list-group" style = "padding: 10px 0px;">
+        <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">${day}: ${start_time} - ${end_time}</h5>
+            {% comment %} <small>${hours} Hours</small> {% endcomment %}
+          </div>
+        </a>
+      `;
+      addSaveButton();
+    };
+  
+
+  </script>
 {% endblock content %}

@@ -132,6 +132,11 @@ def account(request):
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
 def schedule(request):
+    if request.method == "POST":
+        print(request.POST["day"])
+        print(request.POST["start_time"])
+        print(request.POST["end_time"])
+        return HttpResponse(status = 204)
     return render(request,"datepicker.html")
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
