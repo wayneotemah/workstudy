@@ -18,7 +18,7 @@ def dashboard_redirect(request):
     if orgSelectedUUID and role:
         return redirect('dashboard',uuid = orgSelectedUUID)
     if orgSelectedUUID and not role:
-        return redirect ('pick my schedule')
+        return redirect ('pick my schedule',uuid = orgSelectedUUID )
     else:
         return redirect(organization)
 

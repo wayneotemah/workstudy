@@ -85,7 +85,7 @@ class UserRole(models.Model):
     @staticmethod
     def getOrganization(x):
         role = UserRole.objects.get(assigned_to = x)
-        return Organization.objects.filter(organization_uuid = role.role.organization.organization_uuid)
+        return Organization.objects.get(organization_uuid = role.role.organization.organization_uuid)
     
     @staticmethod
     def check_user_schedule(x):
@@ -94,11 +94,103 @@ class UserRole(models.Model):
             if not role.day1 and not role.day2 and not role.day3 and not role.day4 and not role.day5 and not role.day6 :
                 return None
             else:
-
                 return True
         elif role == None:
-            print('check 4')
+            return False
+            
+    @staticmethod
+    def getUserSchedule(x):
+        role = UserRole.objects.get(assigned_to = x)
+        data = []
+        if role.day1:
+            data.append({
+                "day":role.day1,
+                "start_time":role.day1_start_time,
+                "end_time":role.day1_end_time, 
+            })
 
+        if role.day2:
+            data.append({
+                "day":role.day2,
+                "start_time":role.day2_start_time,
+                "end_time":role.day2_end_time, 
+            })
+
+        if role.day3:
+            data.append({
+                "day":role.day3,
+                "start_time":role.day3_start_time,
+                "end_time":role.day3_end_time, 
+            })
+
+        if role.day4:
+            data.append({
+                "day":role.day4,
+                "start_time":role.day4_start_time,
+                "end_time":role.day4_end_time, 
+            })
+
+        if role.day5:
+            data.append({
+                "day":role.day5,
+                "start_time":role.day5_start_time,
+                "end_time":role.day5_end_time, 
+            })
+
+        if role.day6:
+            data.append({
+                "day":role.day6,
+                "start_time":role.day6_start_time,
+                "end_time":role.day6_end_time, 
+            })
+        return data
+
+    @staticmethod
+    def addToSchelule(account,day,start_time,end_time):
+        role = UserRole.objects.get(assigned_to = account)
+        if role.day1 == None:
+            role.day1 = day
+            role.day1_start_time = start_time
+            role.day1_end_time = end_time
+            role.save()
+            return True
+
+        elif role.day2 == None:
+            role.day2 = day
+            role.day2_start_time = start_time
+            role.day2_end_time = end_time
+            role.save()
+            return True
+
+        elif role.day3 == None:
+            role.day3 = day
+            role.day3_start_time = start_time
+            role.day3_end_time = end_time
+            role.save()
+            return True
+
+        elif role.day4 == None:
+            role.day4 = day
+            role.day4_start_time = start_time
+            role.day4_end_time = end_time
+            role.save()
+            return True
+
+        elif role.day5 == None:
+            role.day5 = day
+            role.day5_start_time = start_time
+            role.day5_end_time = end_time
+            role.save()
+            return True
+
+        elif role.day6 == None:
+            role.day6 = day
+            role.day6_start_time = start_time
+            role.day6_end_time = end_time
+            role.save()
+            return True
+
+        else:
             return False
 
 

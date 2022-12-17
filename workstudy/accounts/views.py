@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login
 from accounts.models import Account, CustomUser
 from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
-
+from django.contrib.auth import logout
 from organizations.models import Organization
 from workstudy.globalsettings import LOGIN_URL
 from roles.models import UserRole
@@ -131,14 +131,30 @@ def account(request):
     return render(request,"users-profile.html")
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
-def schedule(request):
-    if request.method == "POST":
-        print(request.POST["day"])
-        print(request.POST["start_time"])
-        print(request.POST["end_time"])
-        return HttpResponse(status = 204)
-    return render(request,"datepicker.html")
+def schedule(request,uuid):
+    user = Account.get_account(request.user)
+    context = {}
+    context["orgSelectedUUID"] = uuid
 
-@login_required(login_url=LOGIN_URL)  # type: ignore
-def roles(request):
-    return render(request,"roles.html")
+    if request.method == "POST":
+        day = request.POST["day"]
+        start_time = request.POST["start_time"]
+        end_time = request.POST["end_time"]
+        addSchedule = UserRole.addToSchelule(account = user,start_time=start_time,end_time=end_time,day = day)
+        if addSchedule:
+            # schedule is not full
+            context['schedule'] = UserRole.getUserSchedule(user)
+            return render(request,"datepicker.html", context= context)
+        else:
+            #schedule is full redirect to dashboard
+            uuid = UserRole.getOrganization(user).organization_uuid
+            return redirect('dashboard',uuid = uuid)
+        
+    if request.method == "GET":
+        context['schedule'] = UserRole.getUserSchedule(user)
+        return render(request,"datepicker.html", context= context)
+
+# TODO add logout funtion
+def logout_view(request):
+    logout(request)
+    return redirect('sign in')

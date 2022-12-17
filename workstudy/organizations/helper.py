@@ -35,7 +35,7 @@ class TeamsHelper(UserDetailsHelper):
 
     def get_members(self):
         user = Account.get_account(self.user)
-        data = UserRole.getTeam(UserRole.getUserOrganizationRoles(user).role)
+        data = UserRole.getTeam(UserRole.getUserOrganizationRoles(user).role) # type : ignore 
         print(data)
         return(data)
 

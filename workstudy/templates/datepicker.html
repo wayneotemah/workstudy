@@ -21,19 +21,19 @@
               <h5 class="card-title">Form</h5>
 
               <!-- General Form Elements -->
-              <form action = {% url 'pick my schedule' %} method ="post" >
+              <form action = {% url 'pick my schedule' orgSelectedUUID %} method ="post" >
                 {% csrf_token %}
                 <div class="row mb-3">
                     <label class="col-sm-2 col-form-label">Day</label>
                     <div class="col-sm-10">
                       <select name ="day" class="form-select" aria-label="Default select example">
                         <option selected>select a day of you convinience</option>
-                        <option value="Monday">Monday</option>
-                        <option value="Tuesday">Tuesday</option>
-                        <option value="Wednesday">Wednesday</option>
-                        <option value="Thurday">Thurday</option>
-                        <option value="Friday">Friday</option>
-                        <option value="Saturday">Saturday</option>
+                        <option value="monday">Monday</option>
+                        <option value="tuesday">Tuesday</option>
+                        <option value="wednesday">Wednesday</option>
+                        <option value="thurday">Thurday</option>
+                        <option value="friday">Friday</option>
+                        <option value="saturday">Saturday</option>
                       </select>
                     </div>
                   </div>
@@ -54,7 +54,7 @@
 
                 <div class="row mb-3">
                   <div class="col-sm-10">
-                    <button class="btn btn-secondary" onclick = "sendSchedule()"  >Add day and time</button>
+                    <button class="btn btn-secondary" >Add day and time</button>
                   </div>
                 </div>
 
@@ -69,39 +69,29 @@
             <div class="card-body">
               <h5 class="card-title">Your Time schedule</h5>
               <div id ="schedule" >
-              </div>  
-              
-              {% comment %} <!-- List group with Advanced Contents -->
-              <div class="list-group">
-                <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
-                  <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Monday 3pm -10pm</h5>
-                    <small>7 hours</small>
+                {% if schedule %}
+                  {% for item in schedule %}
+                    <div class="list-group" style = "padding: 10px 0px;">
+                      <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+                        <div class="d-flex w-100 justify-content-between">
+                          <h5 class="mb-1">{{item.day}} {{item.start_time}} - {{item.end_time}}</h5>
+                          <small> Hours</small>
+                        </div>
+                      </a>
+                    </div>
+                  {% endfor %}
+                  <div style="margin: 20px 0px;" >
+                    <a href ="{% url 'dashboard' orgSelectedUUID %}">
+                      <button class="btn btn-primary" >Save and continue</button>
+                    </a>
                   </div>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
-                  <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Monday 3pm -10pm</h5>
-                    <small>7 hours</small>
-                  </div>
-                </a>
-                <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
-                  <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Monday 3pm -10pm</h5>
-                    <small>7 hours</small>
-                  </div>
-                </a>
-
-                <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
-                  <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Monday 3pm -10pm</h5>
-                    <small>7 hours</small>
-                  </div>
-                </a>
-              </div><!-- End List group Advanced Content --> {% endcomment %}
-
+                {% else %}
+                <h2 class="card-title">You do not have a schedule</h2>
+                {% endif %}
+              </div>
+               
               <div id="continueButton">
-                
+                       
               </div>  
             </div>
           </div>
@@ -131,8 +121,7 @@
       var start_time = document.getElementsByName("start_time")[0].value;
       var end_time = document.getElementsByName("end_time")[0].value;
       var day = document.getElementsByName("day")[0].value;
-      //var checkboxes = document.querySelectorAll("input[type=checkbox]");
-      
+
       console.log(end_time);
       console.log(start_time);
       var hours = Math.abs(end_time - start_time)
@@ -145,6 +134,7 @@
             {% comment %} <small>${hours} Hours</small> {% endcomment %}
           </div>
         </a>
+      </div>
       `;
       addSaveButton();
     };
