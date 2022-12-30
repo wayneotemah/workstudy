@@ -1,6 +1,7 @@
 from organizations.models import Organization
 from accounts.models import Account
 from roles.models import Role, UserRole
+from datetime import datetime, timedelta
 
 class UserDetailsHelper():
     def __init__(self,user,uuid) -> None:
@@ -28,10 +29,25 @@ class DashBoardHelper(UserDetailsHelper):
     
     def latestSchdule(self):
         userAccount = Account.get_account(self.user)
-        return  UserRole.getLatestSchedule(userAccount)
+        data = UserRole.getLatestSchedule(userAccount)
 
-    pass
+        # now = datetime.now()
+        # current_time = now.strftime("%H:%M")
+        # event_time = data[0]['end_time']
+        # event_time = datetime.combine(datetime.today(), event_time)
 
+
+        # # Check if the current time is within 30 minutes of the other time
+        # if (now - timedelta(minutes=30) <= event_time <= now + timedelta(minutes=30)):
+        #     print("The current time is within 30 minutes of the other time.")
+        # else:
+        #     print("The current time is not within 30 minutes of the other time.")
+        # print(current_time)
+
+        # print(now) # type: ignore
+        # print(event_time) # type: ignore
+
+        return  data
     
 class RolesHelper(UserDetailsHelper):
     def __init__(self,user,uuid):
@@ -48,8 +64,7 @@ class TeamsHelper(UserDetailsHelper):
     def get_members(self):
         user = Account.get_account(self.user)
         data = UserRole.getTeam(UserRole.getUserOrganizationRoles(user).role) # type : ignore 
-        print(data)
-        return(data)
+        return data
 
 class ReportsHelper(UserDetailsHelper):
     pass
