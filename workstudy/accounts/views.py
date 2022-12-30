@@ -83,27 +83,33 @@ def createprofile(request):
 @login_required(login_url=LOGIN_URL)  # type: ignore
 def organization(request):
     try:
-        user = Account.get_account(request.user)
-        organization_list = Organization.get_organizations(user)
-        if not organization_list:
-            # check if user has a role
-
-            role = UserRole.getUserOrganizationRoles(user)
-            if role:
-            # use the user to get the organization
-
-                organization_list = UserRole.getOrganization(user)
-            else:
-                context={
-                    "errorTitle":"No organization",
-                    "message":"You have not been assigned to any organisation. Please contact you supervisor to add you to his/her organization"
-                }
-                return render(request,"errorpage.html",context=context)
-            
-        suggestion_list = organization_list
-        return render(request,"choose_organization.html", {"context":suggestion_list})
+        user = Account.get_account(request.user) # type: ignore    
     except ObjectDoesNotExist as e:
-            return render(request,"createprofile.html",{"message": "you do not have a profile, please creat one" })
+        return render(request,"createprofile.html",{"message": "you do not have a profile, please creat one" })
+        
+    organization_list = Organization.get_organizations(user)
+    if not organization_list:
+        # check if user has a role
+
+        role = UserRole.getUserOrganizationRoles(user)
+        if role:
+        # use the user to get the organization
+
+            organization_list = UserRole.getOrganization(user)
+        else:
+            context={
+                "errorTitle":"No organization",
+                "message":"You have not been assigned to any organisation. Please contact you supervisor to add you to his/her organization"
+            }
+            return render(request,"errorpage.html",context=context)
+    
+    print(organization_list.name)
+    context = {
+        "organization_name":organization_list.name,
+        "organization_uuid":organization_list.organization_uuid
+    }  
+    return render(request,"choose_organization.html", context=context)
+  
 
 
 @login_required(login_url=LOGIN_URL)  # type: ignore

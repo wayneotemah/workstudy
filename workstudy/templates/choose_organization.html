@@ -21,7 +21,7 @@
               <div class="card-body">
 
                 <div class="pt-4 pb-2">
-                  <h5 class="card-title text-center pb-0 fs-4">Your Organizations</h5>
+                  <h5 class="card-title text-center pb-0 fs-4">Your Organization</h5>
                 </div>
 
                 <form class="row g-3 needs-validation" method = 'GET' action = {% url 'dashboard redirect' %} validate>
@@ -29,9 +29,9 @@
                       <label class="col-form-label text-center">Select the organization you want to login to</label>
                         <select class="form-select" name = "orgSelected" aria-label="Default select example">
                           <option selected></option>
-                          {% for  organization in context %}
-                          <option value="{{organization.organization_uuid}}">{{organization.name}}</option>
-                          {% endfor %}
+                          {% comment %} {% for  organization in organization_list %} {% endcomment %}
+                          <option value="{{organization_uuid}}">{{organization_name}}</option>
+                          {% comment %} {% endfor %} {% endcomment %}
                         </select>
                   </div>
                   <div class="col-12">

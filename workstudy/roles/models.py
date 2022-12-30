@@ -85,6 +85,7 @@ class UserRole(models.Model):
     @staticmethod
     def getOrganization(x):
         role = UserRole.objects.get(assigned_to = x)
+        print(role.role.organization.organization_uuid)
         return Organization.objects.get(organization_uuid = role.role.organization.organization_uuid)
     
     @staticmethod
