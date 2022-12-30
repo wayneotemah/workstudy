@@ -9,10 +9,6 @@ from django.contrib.auth import logout
 from organizations.models import Organization
 from workstudy.globalsettings import LOGIN_URL
 from roles.models import UserRole
-# from django.shortcuts import render_to_response
-
-
-
 
 # Create your views here.
 
@@ -35,7 +31,6 @@ def sign_in(request):
 def sign_up(request):
     if request.method =='POST':
         email = request.POST['email']
-        # user = CustomUser.user_exists(email)
         if CustomUser.user_exists(email): 
             return render(request,"pages-login.html",{'message':"Email exists, please login"})
             
@@ -102,11 +97,9 @@ def organization(request):
                 "message":"You have not been assigned to any organisation. Please contact you supervisor to add you to his/her organization"
             }
             return render(request,"errorpage.html",context=context)
-    
-    print(organization_list.name)
     context = {
-        "organization_name":organization_list.name,
-        "organization_uuid":organization_list.organization_uuid
+    "organization_name":organization_list.name,
+    "organization_uuid":organization_list.organization_uuid
     }  
     return render(request,"choose_organization.html", context=context)
   

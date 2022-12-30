@@ -20,6 +20,18 @@ class UserDetailsHelper():
         }
         return context
 
+
+class DashBoardHelper(UserDetailsHelper):
+    def __init__(self,user,uuid):
+        super().__init__(user,uuid)
+
+    
+    def latestSchdule(self):
+        userAccount = Account.get_account(self.user)
+        return  UserRole.getLatestSchedule(userAccount)
+
+    pass
+
     
 class RolesHelper(UserDetailsHelper):
     def __init__(self,user,uuid):

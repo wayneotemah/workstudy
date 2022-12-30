@@ -90,18 +90,16 @@
               </div>
 
               <div class="card-body">
+                {% for schedule in my_schedule  %}
                 <h5 class="card-title">My schedule <span>| Computer Labs</span></h5>
 
                 <div class="d-flex align-items-center">
-                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                    <i class="bi bi-flag-fill"></i>
-                  </div>
                   <div class="ps-3">
-                    <h6>3pm - 10pm</h6>
-                    <!-- <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span> -->
-
+                    <span class="text-success small pt-1 fw-bold">{{schedule.day}}</span>
+                    <h6>{{schedule.start_time}} - {{schedule.end_time}} </h6>
                   </div>
                 </div>
+                {% endfor %}
               </div>
 
             </div>

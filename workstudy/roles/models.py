@@ -5,6 +5,9 @@ from organizations.models import Organization
 from accounts.models import Account
 from django.core.exceptions import ObjectDoesNotExist
 
+from datetime import date
+import calendar
+
 
 # Create your models here.
 
@@ -35,12 +38,12 @@ class Role(models.Model):
 
 class UserRole(models.Model):
     days_option = {
-        ('monday', 'Monday'),
-        ('tuesday', 'Tuesday'),
-        ('wednesday', 'Wednesday'),
-        ('thurday', 'Thursday'),
-        ('friday', 'Friday'),
-        ('saturday', 'Saturday'),
+        ('Monday', 'Monday'),
+        ('Tuesday', 'Tuesday'),
+        ('Wednesday', 'Wednesday'),
+        ('Thurday', 'Thursday'),
+        ('Friday', 'Friday'),
+        ('Saturday', 'Saturday'),
     }
     role = models.ForeignKey(Role, verbose_name=_("role"), on_delete=models.CASCADE)
     assigned_to = models.ForeignKey(Account, verbose_name=_("assigned_to"), on_delete=models.DO_NOTHING,blank = True, null =True)
@@ -85,7 +88,6 @@ class UserRole(models.Model):
     @staticmethod
     def getOrganization(x):
         role = UserRole.objects.get(assigned_to = x)
-        print(role.role.organization.organization_uuid)
         return Organization.objects.get(organization_uuid = role.role.organization.organization_uuid)
     
     @staticmethod
@@ -194,6 +196,77 @@ class UserRole(models.Model):
         else:
             return False
 
+    @staticmethod
+    def getLatestSchedule(x):
+        """
+        get the next closesed schedule from today for the
+        returns day, start time and end time of the schedule
+        """
+        role = UserRole.objects.get(assigned_to = x)        
+        day = date.today()
+        counter = 0
+        curr_date = day.weekday()
+        while counter <= 6:
+            curr_date += counter # current day + counter 
+            curr_date = curr_date % 6 # mod to get the day of the week
+            day_today = (calendar.day_name[curr_date])
+
+            data = []
+            print(curr_date)
+            print(counter)
+            print(day_today)
+
+            if role.day1 == day_today:
+                data.append({
+                    "day":role.day1,
+                    "start_time":role.day1_start_time,
+                    "end_time":role.day1_end_time, 
+                })
+                return data
+
+            elif role.day2 == day_today:
+                data.append({
+                    "day":role.day2,
+                    "start_time":role.day2_start_time,
+                    "end_time":role.day2_end_time, 
+                })
+                return data
+
+            elif role.day3 == day_today:
+                data.append({
+                    "day":role.day3,
+                    "start_time":role.day3_start_time,
+                    "end_time":role.day3_end_time, 
+                })
+                return data
+                
+            elif role.day4 == day_today:
+                data.append({
+                    "day":role.day4,
+                    "start_time":role.day4_start_time,
+                    "end_time":role.day4_end_time, 
+                })
+                return data
+
+            elif role.day5 == day_today:
+                data.append({
+                    "day":role.day5,
+                    "start_time":role.day5_start_time,
+                    "end_time":role.day5_end_time, 
+                })
+                return data
+
+            elif role.day6 == day_today:
+                data.append({
+                    "day":role.day6,
+                    "start_time":role.day6_start_time,
+                    "end_time":role.day6_end_time, 
+                })
+                return data
+            
+            counter +=1 # increment counter
+
+        
 
 
 

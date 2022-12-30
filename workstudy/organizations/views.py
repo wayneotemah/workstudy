@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from organizations.models import Organization
 from accounts.views import organization
 from workstudy.globalsettings import LOGIN_URL
-from organizations.helper import TeamsHelper, UserDetailsHelper,RolesHelper
+from organizations.helper import DashBoardHelper, TeamsHelper, UserDetailsHelper,RolesHelper
 from roles.models import UserRole
 
 # Create your views here.
@@ -25,8 +25,9 @@ def dashboard_redirect(request):
 
 @login_required(login_url=LOGIN_URL)
 def dashboard(request,uuid):
-    helper = UserDetailsHelper(user = request.user,uuid = uuid )
+    helper = DashBoardHelper(user = request.user,uuid = uuid )
     context = helper.get_nav_details()
+    context["my_schedule"] = helper.latestSchdule()
     return render(request,"dashboard.html",context = context)
 
 
