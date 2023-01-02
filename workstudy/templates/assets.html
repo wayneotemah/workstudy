@@ -81,7 +81,8 @@
                     </div>
                     <!-- General Form Elements -->
                     <div class="col-lg-8" >
-                    <form>
+                    <form  method = "post" {% url 'add asset' organizationUUID %} >
+                      {% csrf_token %}
                       <div class="row mb-3">
                         <label for="inputText" class="col-sm-2 col-form-label">Asset Name</label>
                         <div class="col-sm-10">

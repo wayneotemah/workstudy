@@ -12,3 +12,10 @@ def assets(request,uuid):
     context = helper.get_nav_details()
     context['assets'] = helper.getAssets()
     return render(request,"assets.html",context=context)
+
+
+
+@login_required(login_url=LOGIN_URL)  # type: ignore
+def post_asset(request,uuid):
+    
+    pass
