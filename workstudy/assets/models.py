@@ -45,6 +45,14 @@ class Asset(models.Model):
     def __str__(self):
         return f'{self.name}'
 
+    @staticmethod
+    def getAssets(x):
+        '''
+        get the assets of organization x
+        '''
+
+        return Asset.objects.filter(organization = x)
+
 
 class Borrowd_Asset(models.Model):
     '''

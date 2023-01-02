@@ -8,7 +8,5 @@ urlpatterns = [
     path('myteam/<str:uuid>/' ,views.myteam, name='my_team'),
     path('reports/<str:uuid>/' ,views.reports, name='reports'),
     path('profile/<str:uuid>/' ,views.profile, name='profile'),
-    path('assets/<str:uuid>',views.assets, name ='assets'),
     path('redirect/dashboard',views.dashboard_redirect, name= "dashboard redirect"),
-
 ]

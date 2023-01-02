@@ -1,6 +1,18 @@
 {% extends 'navigation.html' %}
 {% block innercontent %}
 
+{% block orgName %}
+
+{{ organizationName }}
+
+{% endblock orgName %}
+
+{% block username %}
+
+{{ username}}
+
+{% endblock %}
+
   <main id="main" class="main">
 
     <div class="pagetitle">
@@ -24,6 +36,8 @@
               <div class="card top-selling overflow-auto">
                 <div class="card-body pb-0">
                   <h5 class="card-title">Lab assests</h5>
+                  {% if assets %}
+
                   <table class="table table-borderless">
                     <thead>
                       <tr>
@@ -34,43 +48,22 @@
                       </tr>
                     </thead>
                     <tbody>
+                  {% for item in   assets %}
+
                       <tr>
-                        <th scope="row"><a href="#"><img src="assets/img/product-1.jpg" alt=""></a></th>
-                        <td><a href="#" class="text-primary fw-bold">Projector 1</a></td>
-                        <td>Working</td>
-                        <td class="fw-bold">Borrowed</td>
-                        <td>Edit</td>
+                        <th scope="row"><img style = "{max-width:150px;}" src="{{item.pic.url}}" alt=""></th>
+                        <td>{{item.name}}</td>
+                        <td>{{item.condition}}</td>
+                        <td class="fw-bold">{{item.status}}</td>
+                        {% comment %} <td>Edit</td> {% endcomment %}
                       </tr>
-                      <tr>
-                        <th scope="row"><a href="#"><img src="assets/img/product-2.jpg" alt=""></a></th>
-                        <td><a href="#" class="text-primary fw-bold">Projector 2</a></td>
-                        <td>Working</td>
-                        <td class="fw-bold">In house</td>
-                        <td>Edit</td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#"><img src="assets/img/product-3.jpg" alt=""></a></th>
-                        <td><a href="#" class="text-primary fw-bold">VGA </a></td>
-                        <td>Working</td>
-                        <td class="fw-bold">Borrowed</td>
-                        <td>Edit</td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#"><img src="assets/img/product-4.jpg" alt=""></a></th>
-                        <td><a href="#" class="text-primary fw-bold">HDMI</a></td>
-                        <td>Working</td>
-                        <td class="fw-bold">In house</td>
-                        <td>Edit</td>
-                      </tr>
-                      <tr>
-                        <th scope="row"><a href="#"><img src="assets/img/product-5.jpg" alt=""></a></th>
-                        <td><a href="#" class="text-primary fw-bold">Converter</a></td>
-                        <td>Faulty</td>
-                        <td class="fw-bold">In house</td>
-                        <td>Edit</td>
-                      </tr>
+                  {% endfor %}
+                    
+
                     </tbody>
                   </table>
+
+                  {% endif %}
                 </div>
                 
               </div>

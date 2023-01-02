@@ -1,12 +1,11 @@
 from django.shortcuts import redirect, render
 from accounts.models import Account
 from django.contrib.auth.decorators import login_required
-from organizations.models import Organization
 from accounts.views import organization
-from workstudy.globalsettings import LOGIN_URL
-from organizations.helper import DashBoardHelper, TeamsHelper, UserDetailsHelper,RolesHelper
+from organizations.helper import DashBoardHelper, TeamsHelper,RolesHelper
 from roles.models import UserRole
 
+from workstudy.globalsettings import LOGIN_URL
 # Create your views here.
 
 
@@ -59,8 +58,5 @@ def reports(request,uuid):
 def profile(request,uuid):
     pass
 
-@login_required(login_url=LOGIN_URL)  # type: ignore
-def assets(request,uuid):
-    return render(request,"assets.html")
 
     
