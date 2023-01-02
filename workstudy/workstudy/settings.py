@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     #my apps
     'accounts',
     'organizations',
-    'roles'
+    'roles',
+    'assets',
 ]
 
 AUTH_USER_MODEL = "accounts.CustomUser" 
