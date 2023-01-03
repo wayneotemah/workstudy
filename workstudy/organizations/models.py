@@ -24,9 +24,15 @@ class Organization(models.Model):
         return Account.objects.get(account_uuid = self.supervisor)
     
     @staticmethod
-    
     def get_organizations(x):
         try:
             return Organization.objects.get(supervisor = x)
+        except ObjectDoesNotExist as e:
+            return None
+
+    @staticmethod
+    def get_organizations_from_uuid(x):
+        try:
+            return Organization.objects.get(organization_uuid = x)
         except ObjectDoesNotExist as e:
             return None
