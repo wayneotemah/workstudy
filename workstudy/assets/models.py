@@ -54,23 +54,52 @@ class Asset(models.Model):
 
         return Asset.objects.filter(organization = x)
 
+    @staticmethod
+    def getSingleAsset(x):
+        '''
+        get a single  assets 
+        '''
+
+        return Asset.objects.get(pk  = x)
+
+    @staticmethod
+    def getAvailbleAssets(x):
+        '''
+        get the available assets of organization x
+        '''
+        return Asset.objects.filter(organization  = x,status = "Available")
+
 
 class Borrowd_Asset(models.Model):
     '''
     models for the assets dorrowed
     '''
-    name = models.OneToOneField(Asset, verbose_name="borrowed item", on_delete=models.CASCADE)
-    persion = models.CharField(_("borrowers name(one)"), max_length=50,blank=False,null=False)
-    email = models.CharField(_("borrowers contact"), max_length=50,blank=False,null=False)
+    asset = models.ForeignKey(Asset, verbose_name="borrowed item", on_delete=models.CASCADE)
+    organization_id = models.ForeignKey(Organization, verbose_name="lab", on_delete=models.CASCADE)
+    person = models.CharField(_("borrowers name(one)"), max_length=50,blank=False,null=False)
+    contacts = models.CharField(_("borrowers contact"), max_length=50,blank=False,null=False)
     location_of_use = models.CharField(_("Class/Hall"), max_length=50,blank=False,null=False)
-    picked_on = models.DateTimeField(_("date and time picked"), auto_now=True, editable=False)
-    returned_on = models.DateTimeField(_("date and time returned"),blank=True,null=True, editable=False)
+    picked_on = models.DateTimeField(_("date and time picked"),editable=False)
+    returned_on = models.DateTimeField(_("date and time returned"),blank=True,null=True)
     returned  = models.BooleanField()
-  
 
     class Meta:
         verbose_name = _("Borrowd Asset")
         verbose_name_plural = _("Borrowd Assets")
 
     def __str__(self):
-        return f'{self.name}'
+        return f'{self.asset}'
+
+    @staticmethod
+    def getBorrowedAssets(x):
+        '''
+        get the assets of organization x, that are borrowed
+        '''
+        return Borrowd_Asset.objects.filter(organization_id = x)
+
+    @staticmethod
+    def getSingleBorrowedAssets(x):
+        '''
+        get the single borrowed.
+        '''
+        return Borrowd_Asset.objects.get(pk = x)

@@ -1,5 +1,5 @@
 from organizations.helper import UserDetailsHelper
-from assets.models import Asset
+from assets.models import Asset,Borrowd_Asset
 
 
 class AssetsHelper(UserDetailsHelper):
@@ -8,4 +8,10 @@ class AssetsHelper(UserDetailsHelper):
 
     def getAssets(self):
         return Asset.getAssets(self.companyUUID)
+
+    def getBorrowesAssets(self):
+        return Borrowd_Asset.getBorrowedAssets(self.companyUUID)
+
+    def getAvailbleAssets(self):
+        return Asset.getAvailbleAssets(self.companyUUID)
         

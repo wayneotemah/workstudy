@@ -19,7 +19,7 @@
       <h1>Lab assets</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Assets</a></li>
           <li class="breadcrumb-item active">Lab assets</li>
         </ol>
       </nav>
@@ -33,10 +33,12 @@
           <div class="row">
             <!-- Top Selling -->
             <div class="col-12">
+              {% if assets %}
               <div class="card top-selling overflow-auto">
+
                 <div class="card-body pb-0">
                   <h5 class="card-title">Lab assests</h5>
-                  {% if assets %}
+
 
                   <table class="table table-borderless">
                     <thead>
@@ -62,11 +64,13 @@
 
                     </tbody>
                   </table>
-
-                  {% endif %}
                 </div>
                 
               </div>
+              {% else %}
+              <h3>No assets found for {{organizationName}}</h3>
+              {% endif %}
+
               
               <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#fullscreenModal">
                 Add asset
@@ -81,7 +85,7 @@
                     </div>
                     <!-- General Form Elements -->
                     <div class="col-lg-8" >
-                    <form  method = "post" action = "{% url 'add asset' organizationUUID %}" enctype="multipart/form-data" validate >
+                    <form  method = "post" action = "{% url 'add asset' organizationUUID %}" enctype="multipart/form-data"x validate >
                       {% csrf_token %}
                       <div class="row mb-3">
                         <label for="inputText" class="col-sm-2 col-form-label">Asset Name</label>
