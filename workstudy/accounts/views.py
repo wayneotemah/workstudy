@@ -1,5 +1,6 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from accounts.models import Account, CustomUser
@@ -22,8 +23,8 @@ def sign_in(request):
             login(request, user)
             return redirect(organization)
         else:
-            # error loging in
-            return render(request,"pages-login.html",{'message':"incorrect login"})
+            messages.error(request, 'Wrong email and password.')
+            return render(request,"pages-login.html")
 
     elif request.method == "GET":        
         return render(request,"pages-login.html") 
@@ -31,8 +32,9 @@ def sign_in(request):
 def sign_up(request):
     if request.method =='POST':
         email = request.POST['email']
-        if CustomUser.user_exists(email): 
-            return render(request,"pages-login.html",{'message':"Email exists, please login"})
+        if CustomUser.user_exists(email):
+            messages.info(request, 'Your account already exists, please login')
+            return render(request,"pages-login.html")
             
         else: 
 
@@ -47,12 +49,14 @@ def sign_up(request):
             user.set_password(password)
             user.save()
             if user is not None:
-                return render(request,"pages-login.html",{"message":"Please login"})
+                messages.info(request, 'Account created please login')
+                return render(request,"pages-login.html")
             else:
                 """
-                if user exist, redirect to login page.
+                something went wront.
                 """
-                return render(request,"pages-register.html",{'message':"Error creating user, try again or call support"})
+                messages.warning(request, 'Something went wrong while creating you account, Please infrom the admin or devs')
+                return render(request,"pages-register.html")
 
         
     elif request.method == "GET":
@@ -70,7 +74,7 @@ def createprofile(request):
             newAccount.save()
             return redirect(organization)
         except IntegrityError:
-            return render(request,"createprofile.html", {"message": "Your account alreadt exists"})
+            return render(request,"createprofile.html", {"message": "Your account already exists."})
     elif request.method == "GET":
         return render(request,"createprofile.html")
 
@@ -78,9 +82,11 @@ def createprofile(request):
 @login_required(login_url=LOGIN_URL)  # type: ignore
 def organization(request):
     try:
+        #get the users account profile details
         user = Account.get_account(request.user) # type: ignore    
     except ObjectDoesNotExist as e:
-        return render(request,"createprofile.html",{"message": "you do not have a profile, please creat one" })
+        messages.info(request, 'It seems you dont have a profile, lets caputer that.')
+        return render(request,"createprofile.html")
         
     organization_list = Organization.get_organizations(user)
     if not organization_list:
@@ -92,9 +98,10 @@ def organization(request):
 
             organization_list = UserRole.getOrganization(user)
         else:
+            messages.info(request, 'It seems you dont have a workstudy location.')
+
             context={
-                "errorTitle":"No organization",
-                "message":"You have not been assigned to any organisation. Please contact you supervisor to add you to his/her organization"
+                "message":"You have not been assigned to any workstudy location. Please contact you supervisor to add you to his/her location, the refresh the page"
             }
             return render(request,"errorpage.html",context=context)
     context = {
@@ -137,11 +144,15 @@ def schedule(request,uuid):
 
     if request.method == "POST":
         day = request.POST["day"]
+        if not day:
+            messages.warning(request,"The day field can not be emplty")
+            return redirect('dashboard',uuid = uuid)
         start_time = request.POST["start_time"]
         end_time = request.POST["end_time"]
         addSchedule = UserRole.addToSchelule(account = user,start_time=start_time,end_time=end_time,day = day)
         if addSchedule:
             # schedule is not full
+            messages.info(request,"Date and time was added successfully")
             context['schedule'] = UserRole.getUserSchedule(user)
             return render(request,"datepicker.html", context= context)
         else:
@@ -153,7 +164,7 @@ def schedule(request,uuid):
         context['schedule'] = UserRole.getUserSchedule(user)
         return render(request,"datepicker.html", context= context)
 
-# TODO add logout funtion
+
 def logout_view(request):
     logout(request)
     return redirect('sign in')

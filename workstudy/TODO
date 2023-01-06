@@ -1,3 +1,8 @@
 Add RA( residence assistence ) features
     reports and reiviews
     key and room 
+
+
+FIXME fix static tag not working errorpage.html
+TODO add user permission to detemin if to render pages or not. ie create_organization 
+

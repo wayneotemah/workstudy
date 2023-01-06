@@ -93,8 +93,6 @@ class Account(models.Model):
     first_name = models.CharField(_('First name'),blank = True, null =True,max_length = 100)
     last_name = models.CharField(_('Last name'),blank = True, null = True,max_length = 100)
     is_supervisor = models.BooleanField(_('supervisor'),default = False)
-    # TODO add job field
-    # TODO add organization field
     
     def __str__(self):
         return self.first_name

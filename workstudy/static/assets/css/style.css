@@ -1265,3 +1265,67 @@ h6 {
   font-size: 13px;
   color: #012970;
 }
+
+/* flash message css */
+.messages{
+  z-index: 100000;
+  width: 100%;
+  height:40px;
+  position: fixed;
+  top: 0;
+  left: 0px;
+}
+
+.messages .success{
+  background-color: #157b57;
+  width: auto;
+  margin: auto;
+  color: white;
+  padding: 10px 40px
+}
+.messages .error{
+  background-color: #b4191f;
+  width: auto;
+  margin: auto;
+  color: white;
+  padding: 10px 40px
+}
+
+.messages .info{
+  background-color: #0b5ed7;
+  width: auto;
+  margin: auto;
+  color: white;
+  padding: 10px 40px
+}
+
+.messages .warning{
+  background-color: #EED202;
+  width: auto;
+  margin: auto;
+  color: black;
+  padding: 10px 40px
+}
+
+
+
+.cookie{
+z-index: 100000;
+background-color: #1b253b;
+width: 100%;
+height:200px;
+position: fixed;
+bottom: 0px;
+left: 0px;
+padding: 10px;
+align-items: center;
+display: flex;
+flex-direction: column;
+}
+
+.cookie .cookie-message{
+color: white;
+margin: 10px 0px;
+overflow-wrap: break-word;
+font-size: larger;
+}

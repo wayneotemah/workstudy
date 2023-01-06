@@ -318,3 +318,91 @@
   }
 
 })();
+
+
+
+
+// controls how long the flash massage stays up
+// lasts for 10 seconds 
+// then fasesout 
+setTimeout(function() {
+  $('.messages').fadeOut(700);
+}, 10000); // <-- time in milliseconds
+
+
+// modal open  
+$("#open-modal").click(function(){
+$("#exampleModal").modal("show");
+});
+
+
+
+
+// news letter declined and closed  
+$("#close-cookie").click(function(){
+
+//first store cookie info 
+var d = new Date(); //Create an date object
+  d.setTime(d.getTime() + (1000*60*60*24*120)); // store for 7 days
+  var expires = "expires=" + d.toGMTString(); 
+document.cookie = "accept_newsletter = True;path = /;"+expires; 
+
+// if successuly stored, close the cookie question
+if(document.cookie){ 		
+  $('.cookie').fadeOut(400);
+}else{ 										
+  //else show alart
+  alert("Cookies can not be stored from the browser")
+}
+});
+
+// news letter accepted and modal and news letter QA close
+$("#modal-close-cookie").click(function(){
+
+//first store cookie info 
+var d = new Date(); //Create an date object
+  d.setTime(d.getTime() + (1000*60*60*24*120));
+  var expires = "expires=" + d.toGMTString();
+document.cookie = "accept_newsletter = True;path = /;"+expires; // store this answer in cookies for 3 months
+
+// if successuly stored, close the cookie question
+if(document.cookie){ 						
+  $('.cookie').fadeOut(400);
+  $("#exampleModal").modal("hide");
+
+}else{										
+  //else show alart
+  alert("Cookies can not be stored from the browser")
+}
+});
+
+//check if users still cookie exsits when page loads
+function getCookie(name) {
+  // Split cookie string and get all individual name=value pairs in an array
+  var cookieArr = document.cookie.split(";");
+  
+  // Loop through the array elements
+  for(var i = 0; i < cookieArr.length; i++) {
+      var cookiePair = cookieArr[i].split("=");
+      
+      /* Removing whitespace at the beginning of the cookie name
+      and compare it with the given string */
+      if(name == cookiePair[0].trim()) {
+          // Decode the cookie value and return
+          return decodeURIComponent(cookiePair[1]);
+      }
+  }
+  
+  // Return null if not found
+  return null;
+}
+
+if ( getCookie("accept_newsletter") ) {
+// if getCookie return a matching cookie, hide the news letter QA
+$('.cookie').hide();
+}else{
+//else show it
+$('.cookie').removeClass('hide');
+}
+
+
