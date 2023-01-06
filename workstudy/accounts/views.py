@@ -85,7 +85,7 @@ def organization(request):
         #get the users account profile details
         user = Account.get_account(request.user) # type: ignore    
     except ObjectDoesNotExist as e:
-        messages.info(request, 'It seems you dont have a profile, lets caputer that.')
+        messages.info(request, 'It seems you dont have a profile, lets get that.')
         return render(request,"createprofile.html")
         
     organization_list = Organization.get_organizations(user)
@@ -152,7 +152,7 @@ def schedule(request,uuid):
         addSchedule = UserRole.addToSchelule(account = user,start_time=start_time,end_time=end_time,day = day)
         if addSchedule:
             # schedule is not full
-            messages.info(request,"Date and time was added successfully")
+            messages.success(request,"Date and time was added successfully")
             context['schedule'] = UserRole.getUserSchedule(user)
             return render(request,"datepicker.html", context= context)
         else:
