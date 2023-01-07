@@ -9,7 +9,6 @@ from assets.models import Asset, Borrowd_Asset
 from workstudy.globalsettings import LOGIN_URL
 from organizations.models import Organization
 
-# Create your views here.
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
 def assets(request,uuid):
@@ -111,6 +110,6 @@ def return_asset(request,borrowedasset_id,uuid):
         asset = borrowed_item.asset #get the asset instance
         asset.status = "Available" # Turn status to availbe
         asset.save() # save the asset instance
-        messages.success(request,f"{borrowed_item.asset.name} return successfully")
+        messages.info(request,f"{borrowed_item.asset.name} return successfully")
         return redirect('borrowed assets',uuid = uuid) 
     

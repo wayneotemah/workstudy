@@ -1,4 +1,5 @@
 from django.shortcuts import redirect, render
+from django.contrib import messages
 from accounts.models import Account
 from django.contrib.auth.decorators import login_required
 from accounts.views import organization
@@ -19,6 +20,7 @@ def dashboard_redirect(request):
     if orgSelectedUUID and not role:
         return redirect ('pick my schedule',uuid = orgSelectedUUID )
     else:
+        messages.info(request,'You did not select a workstudy location')
         return redirect(organization)
 
 
@@ -49,9 +51,29 @@ def myteam(request,uuid):
     return render(request,"team.html",context = context)
 
 
+
+@login_required(login_url=LOGIN_URL)  # type: ignore
+def issues(request,uuid):
+    helper = DashBoardHelper(user = request.user,uuid = uuid )
+    context = helper.get_nav_details()
+    return render(request,"issues.html",context = context)
+
+
+
+
+
+
+
 @login_required(login_url=LOGIN_URL)  # type: ignore
 def reports(request,uuid):
     pass
+
+
+
+
+
+
+
 
 
 @login_required(login_url=LOGIN_URL)  # type: ignore

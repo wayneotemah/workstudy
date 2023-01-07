@@ -22,11 +22,11 @@
   <!-- Vendor CSS Files -->
   <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css'%}" rel="stylesheet">
   <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css'%}" rel="stylesheet">
-  <link href=" {% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
-  <link href=" {% static 'assets/vendor/quill/quill.snow.css' %}" rel="stylesheet">
-  <link href=" {% static 'assets/vendor/quill/quill.bubble.css' %}" rel="stylesheet">
-  <link href=" {% static 'assets/vendor/quill/quill.bubble.css' %}" rel="stylesheet">
-  <link href=" {% static 'assets/vendor/quill/quill.bubble.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/quill/quill.snow.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/quill/quill.bubble.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/quill/quill.bubble.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/quill/quill.bubble.css' %}" rel="stylesheet">
 
   <!-- Template Main CSS File -->
   <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
@@ -37,22 +37,22 @@
 
 <body>
 
-	{% if messages %}
-	<div class="messages">
-		{% for message in messages %}
+  {% if messages %}
+  <div class="messages">
+    {% for message in messages %}
 
-				<p{% if message.tags %} class="{{ message.tags }}"{% endif %}>
-					{{ message }}
+        <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+          {{ message }}
         </p>
-	
 
-		{% endfor %}
-	</div>
-	{% endif %}
 
-{%block content %}
+    {% endfor %}
+  </div>
+  {% endif %}
 
-{% endblock %}
+  {%block content %}
+
+  {% endblock content%}
    <!-- ======= Footer ======= -->
    {% comment %} <footer id="footer" class="footer">
     <div class="copyright">
