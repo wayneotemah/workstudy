@@ -86,6 +86,7 @@ class Borrowd_Asset(models.Model):
     class Meta:
         verbose_name = _("Borrowd Asset")
         verbose_name_plural = _("Borrowd Assets")
+        ordering = ['returned_on']
 
     def __str__(self):
         return f'{self.asset}'

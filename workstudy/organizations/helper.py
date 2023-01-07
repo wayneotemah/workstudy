@@ -1,4 +1,4 @@
-from organizations.models import Organization
+from organizations.models import Issue, Organization
 from accounts.models import Account
 from roles.models import Role, UserRole
 from datetime import datetime, timedelta
@@ -70,7 +70,13 @@ class ReportsHelper(UserDetailsHelper):
     pass
 
 class AssetsHelper(UserDetailsHelper):
-    pass
+    def __init__(self,user,uuid):
+        super().__init__(user,uuid)
+
+
+    def getAllIssuesList(self):
+        return Issue.getList(self.companyUUID)
+
 
 
 

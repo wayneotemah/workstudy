@@ -3,7 +3,7 @@ from django.contrib import messages
 from accounts.models import Account
 from django.contrib.auth.decorators import login_required
 from accounts.views import organization
-from organizations.helper import DashBoardHelper, TeamsHelper,RolesHelper
+from organizations.helper import AssetsHelper, DashBoardHelper, TeamsHelper,RolesHelper
 from roles.models import UserRole
 
 from workstudy.globalsettings import LOGIN_URL
@@ -54,8 +54,9 @@ def myteam(request,uuid):
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
 def issues(request,uuid):
-    helper = DashBoardHelper(user = request.user,uuid = uuid )
+    helper = AssetsHelper(user = request.user,uuid = uuid )
     context = helper.get_nav_details()
+    context['issues'] = helper.getAllIssuesList()
     return render(request,"issues.html",context = context)
 
 
@@ -67,11 +68,6 @@ def issues(request,uuid):
 @login_required(login_url=LOGIN_URL)  # type: ignore
 def reports(request,uuid):
     pass
-
-
-
-
-
 
 
 

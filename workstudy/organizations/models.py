@@ -14,7 +14,7 @@ class Organization(models.Model):
     }
     organization_uuid = models.UUIDField(_("Organization's ID"),primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(_('Organization name'),blank = True, null =True,max_length = 100)
-    scale = models.CharField(_('Scale of organization'),choices =organisationChoices, max_length = 50 )
+    # scale = models.CharField(_('Scale of organization'),choices =organisationChoices, max_length = 50 )
     supervisor = models.OneToOneField(Account,verbose_name=_("Organization's creater"), on_delete=models.CASCADE)
     
     def __str__(self) -> str:
@@ -36,3 +36,35 @@ class Organization(models.Model):
             return Organization.objects.get(organization_uuid = x)
         except ObjectDoesNotExist as e:
             return None
+
+
+class Issue(models.Model):
+    issueStates = {
+        ('Done','Done'),
+        ('Argent','Argent'),
+        ('Pending','Pending'),
+        
+    }
+    organization = models.ForeignKey(Organization, verbose_name=_("organization/lab"), on_delete=models.CASCADE)
+    details =models.TextField(verbose_name = _("issue details"), max_length=150)
+    reported_on = models.DateTimeField(verbose_name = _("date reported"))
+    status = models.CharField(verbose_name = _("state"), max_length=50, choices=issueStates)
+
+    class Meta:
+        verbose_name = _("Issue")
+        verbose_name_plural = _("Issues")
+        ordering = ['-reported_on']
+
+    def __str__(self):
+        return f"{self.pk}-{self.reported_on}"
+
+    @staticmethod
+    def getList(x):
+        #get all organizations issues
+        return Issue.objects.filter(organization = x)
+        
+    @staticmethod
+    def getListbyStatus(x,y):
+        #get all organizations issues
+        return Issue.objects.filter(organization = x, status = y)
+

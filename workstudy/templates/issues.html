@@ -7,11 +7,6 @@
 
 {% endblock orgName %}
 
-
-
-
-
-
 {% block username %}
 
 {{ username}}
@@ -36,46 +31,46 @@
 
         <!-- Task list report -->
         <div class="col">
-        <div class="card recent-sales overflow-auto">
+        {% if issues %}
+            <div class="card recent-sales overflow-auto">
 
-            <div class="card-body">
-            <h5 class="card-title"></h5>
+                <div class="card-body">
+                <h5 class="card-title"></h5>
 
-            <table class="table table-borderless">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Issues</th>
-                    <th scope="col">Date reported</th>
+                <table class="table table-borderless">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Issues</th>
+                        <th scope="col">Date reported</th>
 
-                    <th scope="col">Status</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <th scope="row"><a href="#">#2457</a></th>
-                    <td>Check internet and power for computer after a class</td>
-                    <td></td>
-                    <td><span class="badge bg-success">Done</span></td>
-                </tr>
-                <tr>
-                    <th scope="row"><a href="#">#2147</a></th>
-                    <td>Ensure borrowed items are returned after use</td>
-                    <td></td>
-                    <td><span class="badge bg-danger">Argent</span></td>
-                </tr>
-                <tr>
-                    <th scope="row"><a href="#">#2049</a></th>
-                    <td>Install windows on computer 12 </td>
-                    <td></td>
-                    <td><span class="badge bg-warning">Pending</span></td>
-                </tr>
-                </tbody>
-            </table>
+                        <th scope="col">Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for issue in   issues %}
+                    <tr>
+                        <th scope="row"><a href="#">#{{issue.pk}}</a></th>
+                        <td>{{issue.details}}</td>
+                        <td>{{issue.reported_on}}</td>
+                        {% if issue.status == 'Done' %}
+                        <td><span class="badge bg-success">{{issue.status}}</span></td>
+                        {% endif %}
+                        {% if issue.status == 'Pending' %}
+                        <td><span class="badge bg-warning">{{issue.status}}</span></td>
+                        {% endif %}
+                        {% if issue.status == 'Argent' %}
+                        <td><span class="badge bg-danger">{{issue.status}}</span></td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+                </div>
 
             </div>
-
-        </div>
+        {% endif %}
         </div><!-- End Borrowed items report -->
 
         </div>
