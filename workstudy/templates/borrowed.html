@@ -13,6 +13,12 @@
 
 {% endblock %}
 
+{% block role %}
+
+{{ role }}
+
+{% endblock role %}
+
   <main id="main" class="main">
 
     <div class="pagetitle">
@@ -24,6 +30,12 @@
         </ol>
       </nav>
     </div><!-- End Page Title -->
+
+    <a href= {% url 'borrowedassetspage' organizationUUID %}>
+      <button type="button" class="btn btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#fullscreenModal">
+        Lend out a item
+      </button>
+    </a>
 
     <section class="section dashboard">
       <div class="row">
@@ -77,74 +89,6 @@
               {% else %}
               <h3>No borrowed assets recorded</h3>
               {% endif %}
-
-              
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#fullscreenModal">
-                Lend
-              </button>
-
-              <div class="modal fade" id="fullscreenModal" tabindex="-1">
-                <div class="modal-dialog modal-fullscreen">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title">Lend out an asset</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <!-- General Form Elements -->
-                    <div class="col-lg-8" >
-                    <form  method = "post" action = "{% url 'borrowed assets' organizationUUID %}" validate >
-                      {% csrf_token %}
-                      <div class="row mb-3">
-                        <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label">Item</label>
-                            <div class="col-sm-10">
-                              <select name= "Item_id" class="form-select" aria-label="Default select example">
-                                {% for item in assets %}
-                                <option value="{{item.pk}}">{{item.name}}</option>
-                                {% endfor %}
-                              </select>
-                            </div>
-                        </div>
-
-                       <div class="row mb-3">
-                        <label for="inputText" class="col-sm-2 col-form-label">Borrowers Name</label>
-                        <div class="col-sm-10">
-                          <input  name ="persons_name"type="text" class="form-control">
-                        </div>
-                      </div>
-
-                      <div class="row mb-3">
-                        <label for="inputText" class="col-sm-2 col-form-label">Their contacts</label>
-                        <div class="col-sm-10">
-                          <input  name ="persons_contacts"type="text" class="form-control">
-                        </div>
-                      </div>
-
-                      <div class="row mb-3">
-                        <label for="inputText" class="col-sm-2 col-form-label">Location of use</label>
-                        <div class="col-sm-10">
-                          <input  name ="location_of_use"type="text" class="form-control">
-                        </div>
-                      </div>
-
-
-                      <div class="row mb-3">
-                      </div>
-
-                      <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Submit Form</button>
-
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                      </div>
-
-                    </form><!-- End General Form Elements -->
-                    </div>
-                  </div>
-                </div>
-              </div><!-- End Full Screen Modal-->
-
-
-
 
             </div><!-- End Top Selling -->
 

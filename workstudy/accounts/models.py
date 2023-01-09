@@ -62,7 +62,7 @@ class CustomUser(AbstractBaseUser,PermissionsMixin):
 
     def get_phone_number(self):
         # The user is identified by their phone address
-        return self.email
+        return self.phone_number
 
     def __str__(self):
         return self.email

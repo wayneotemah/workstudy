@@ -23,7 +23,7 @@ from accounts.views import logout_view
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('logout/',logout_view, name = "log out"),
-    path('myorg/', include('organizations.url')),
+    path('org/', include('organizations.url')),
     path('assets/', include('assets.url')),
     path('', include('accounts.url')),
 

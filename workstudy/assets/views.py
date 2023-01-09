@@ -25,7 +25,6 @@ def borrowed_assets(request,uuid):
         helper = AssetsHelper(user = request.user,uuid = uuid )
         context = helper.get_nav_details()
         context['borrowed_assets'] = helper.getBorrowesAssets()
-        context['assets'] = helper.getAvailbleAssets()
         return render(request,"borrowed.html",context=context)
     if request.method == "POST":
         #posting borrowed item
@@ -58,6 +57,14 @@ def borrowed_assets(request,uuid):
             messages.success(request,f"{asset.name} borrowed successfully")
             return redirect('borrowed assets',uuid = uuid) 
 
+
+@login_required(login_url=LOGIN_URL)# type: ignore
+def borrowed_assets_page(request,uuid):
+    if request.method =="GET":
+        helper = AssetsHelper(user = request.user,uuid = uuid )
+        context = helper.get_nav_details()
+        context['assets'] = helper.getAvailbleAssets()
+        return render(request,"addborrowed.html",context=context)
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
 def post_asset(request,uuid):

@@ -100,7 +100,11 @@ def reports(request,uuid):
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
 def profile(request,uuid):
-    pass
+     if request.method == "GET":
+        helper = UserDetailsHelper(user = request.user,uuid = uuid )
+        context = helper.get_profile()
+        # context["profile"] = help.get_profile()
+        return render(request,"users-profile.html", context=context )
 
 
     
