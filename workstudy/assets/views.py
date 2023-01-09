@@ -68,6 +68,12 @@ def borrowed_assets_page(request,uuid):
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
 def post_asset(request,uuid):
+    #get asset posting page
+    if request.method == "GET":
+        helper = AssetsHelper(user = request.user,uuid = uuid )
+        context = helper.get_nav_details()
+        return render(request,"addasset.html", context = context)
+
     if request.method == "POST":
         #adding asset
         now = datetime.datetime.now()
