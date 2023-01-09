@@ -49,6 +49,7 @@ class Issue(models.Model):
     details =models.TextField(verbose_name = _("issue details"), max_length=150)
     reported_on = models.DateTimeField(verbose_name = _("date reported"))
     status = models.CharField(verbose_name = _("state"), max_length=50, choices=issueStates)
+    reported_by = models.ForeignKey(Account, verbose_name=_("reported_by"), on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _("Issue")

@@ -102,7 +102,7 @@ class Account(models.Model):
 
     @staticmethod
     def get_account(x):
-        account = Account.objects.get(user = x)
+        account = Account.objects.get(user = x) 
         return account
     
     

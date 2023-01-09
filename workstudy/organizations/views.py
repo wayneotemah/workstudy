@@ -1,12 +1,14 @@
+import datetime
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from accounts.models import Account
 from django.contrib.auth.decorators import login_required
 from accounts.views import organization
-from organizations.helper import AssetsHelper, DashBoardHelper, TeamsHelper,RolesHelper
+from organizations.helper import AssetsHelper, DashBoardHelper, TeamsHelper,RolesHelper, UserDetailsHelper
 from roles.models import UserRole
 
 from workstudy.globalsettings import LOGIN_URL
+from organizations.models import Issue, Organization
 # Create your views here.
 
 
@@ -62,13 +64,37 @@ def issues(request,uuid):
 
 
 
-
-
+@login_required(login_url=LOGIN_URL) # type: ignore
+def raiseIssue(request,uuid):
+    # report and issue
+    if request.method == "POST":
+        details = request.POST["details"]
+        status = request.POST["status"]
+        now = datetime.datetime.now()
+        try:
+            reported_by = Account.get_account(request.user)
+            organization = Organization.get_organizations_from_uuid(uuid)
+            issue = Issue(organization = organization,status = status, details = details,reported_on = now,reported_by = reported_by)
+            issue.save()
+        except Exception as e:
+            # unexpected error failing to save issue
+            context={
+                "message":f"Please contact the devs and notify the off the error \nerror is: \n{e}"
+            }
+            messages.warning(request,"Unexpected Exception error has risen")
+            return render(request,"errorpage.html",context=context)
+        else:
+            messages.success(request,f"An issue has be raise by you, {reported_by.first_name}.") 
+            return redirect(issues, uuid = uuid)
+    if request.method == "GET":
+        helper = UserDetailsHelper(user = request.user,uuid = uuid )
+        context = helper.get_nav_details()
+        return render(request,"addissue.html", context=context )
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
 def reports(request,uuid):
+    
     pass
-
 
 
 
