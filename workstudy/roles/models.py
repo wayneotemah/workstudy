@@ -5,7 +5,7 @@ from organizations.models import Organization
 from accounts.models import Account
 from django.core.exceptions import ObjectDoesNotExist
 
-from datetime import date
+from datetime import date, timedelta, datetime
 import calendar
 
 
@@ -212,9 +212,6 @@ class UserRole(models.Model):
             day_today = (calendar.day_name[curr_date])
 
             data = []
-            print(curr_date)
-            print(counter)
-            print(day_today)
 
             if role.day1 == day_today:
                 data.append({
@@ -268,7 +265,23 @@ class UserRole(models.Model):
 
         
 
+# def checksixHrrang(x):
+#     now = datetime.now()
+#     current_time = now.strftime("%H:%M")
+#     event_time = x
+#     event_time = datetime.combine(datetime.today(), event_time)
 
+
+#     # Check if the current time is within 30 minutes of the other time
+#     if (now - timedelta(minutes=30) <= event_time <= now + timedelta(hours=6)):
+#         print("The current time is within 30 minutes of the other time.")
+#     else:
+#         print("The current time is not within 30 minutes of the other time.")
+#     print(current_time)
+
+#     print(now) # type: ignore
+#     print(event_time) # type: ignore
+#     pass
 
 class Task(models.Model):
 

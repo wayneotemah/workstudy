@@ -4,8 +4,9 @@ from django.contrib import messages
 from accounts.models import Account
 from django.contrib.auth.decorators import login_required
 from accounts.views import organization
-from organizations.helper import AssetsHelper, DashBoardHelper, TeamsHelper,RolesHelper, UserDetailsHelper
+from organizations.helper import IssuessHelper, DashBoardHelper, TeamsHelper,RolesHelper, UserDetailsHelper
 from roles.models import UserRole
+from assets.models import Borrowd_Asset
 
 from workstudy.globalsettings import LOGIN_URL
 from organizations.models import Issue, Organization
@@ -31,6 +32,8 @@ def dashboard(request,uuid):
     helper = DashBoardHelper(user = request.user,uuid = uuid )
     context = helper.get_nav_details()
     context["my_schedule"] = helper.latestSchdule()
+    context["issues"] =  Issue.getList(uuid)
+    context["borrowedItems"] = Borrowd_Asset.getBorrowedAssets(uuid)
     return render(request,"dashboard.html",context = context)
 
 
@@ -56,7 +59,7 @@ def myteam(request,uuid):
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
 def issues(request,uuid):
-    helper = AssetsHelper(user = request.user,uuid = uuid )
+    helper = IssuessHelper(user = request.user,uuid = uuid )
     context = helper.get_nav_details()
     context['issues'] = helper.getAllIssuesList()
     return render(request,"issues.html",context = context)

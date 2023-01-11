@@ -298,25 +298,13 @@
       </li><!-- End Profile Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="{% url 'reports' organizationUUID %}">
+        {% comment %} {% url 'reports' organizationUUID %} {% endcomment %}
+        <a class="nav-link collapsed" href="">
           <i class="bi bi-list-columns-reverse"></i>
           <span>Reports</span>
         </a>
       </li>
         
-      {% comment %} <li class="nav-item">
-          <a class="nav-link collapsed" href="#">
-            <i class="bi bi-gear-fill"></i>
-            <span>Issues</span>
-          </a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#">
-          <i class="bi bi-question-circle"></i>
-          <span>F.A.Q</span>
-        </a>
-      </li><!-- End F.A.Q Page Nav --> {% endcomment %}
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="{% url 'profile' organizationUUID %}">

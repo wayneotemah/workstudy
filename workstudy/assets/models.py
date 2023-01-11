@@ -16,7 +16,7 @@ def photo_upload(instance, filename):
         The unique path that the file will be stored in the DB.
     """
 
-    return 'users/{0}.{1}'.format(uuid.uuid4().hex, os.path.splitext(filename))
+    return 'media/assets_imgs/{0}.{1}'.format(uuid.uuid4().hex, os.path.splitext(filename))
 
 class Asset(models.Model):
     '''
@@ -86,7 +86,7 @@ class Borrowd_Asset(models.Model):
     class Meta:
         verbose_name = _("Borrowd Asset")
         verbose_name_plural = _("Borrowd Assets")
-        ordering = ['returned_on']
+        ordering = ['-returned_on']
 
     def __str__(self):
         return f'{self.asset}'

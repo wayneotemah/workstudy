@@ -1,5 +1,6 @@
 from django.urls import path
 
+
 from . import views
 
 urlpatterns = [
@@ -10,5 +11,6 @@ urlpatterns = [
     path('organization/', views.organization, name='choose organization'),
     path('create_organization/', views.create_organization, name='create organization'),  # type: ignore
     path('schedule/<str:uuid>', views.schedule, name='pick my schedule'),
+    path('',views.organization, name= "landing redirect"),
     # path('roles/' ,views.roles, name='organization roles')
 ]

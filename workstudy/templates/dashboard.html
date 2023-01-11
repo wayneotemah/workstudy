@@ -138,32 +138,34 @@
             <div class="card recent-sales overflow-auto">
 
               <div class="card-body">
-                <h5 class="card-title">Todays Tasks</h5>
+                <h5 class="card-title">Issues/Task</h5>
 
                 <table class="table table-borderless">
                   <thead>
                     <tr>
                       <th scope="col">#</th>
                       <th scope="col">Task</th>
+                      <th scope="col">reported by</th>
                       <th scope="col">Status</th>
                     </tr>
                   </thead>
                   <tbody>
+                    {% for issue in  issues %}
                     <tr>
-                      <th scope="row"><a href="#">#2457</a></th>
-                      <td>Check internet and power for computer after a class</td>
-                      <td><span class="badge bg-success">Done</span></td>
+                      <th scope="row"><a href="#">{{issue.pk}}</a></th>
+                      <td>{{issue.details}}</td>
+                      <td>{{issue.reported_by}}</td>
+                      {% if issue.status == 'Done' %}
+                      <td><span class="badge bg-success">{{issue.status}}</span></td>
+                      {% endif %}
+                      {% if issue.status == 'Pending' %}
+                      <td><span class="badge bg-warning">{{issue.status}}</span></td>
+                      {% endif %}
+                      {% if issue.status == 'Argent' %}
+                      <td><span class="badge bg-danger">{{issue.status}}</span></td>
+                      {% endif %}
                     </tr>
-                    <tr>
-                      <th scope="row"><a href="#">#2147</a></th>
-                      <td>Ensure borrowed items are returned after use</td>
-                      <td><span class="badge bg-danger">Argent</span></td>
-                    </tr>
-                    <tr>
-                      <th scope="row"><a href="#">#2049</a></th>
-                      <td>Install windows on computer 12 </td>
-                      <td><span class="badge bg-warning">Pending</span></td>
-                    </tr>
+                    {% endfor %}
                   </tbody>
                 </table>
 
@@ -191,27 +193,22 @@
                     </tr>
                   </thead>
                   <tbody>
+                    {% for item in borrowedItems %}
                     <tr>
-                      <th scope="row"><a href="#">ICT13</a></th>
-                      <td>Projector</td>
-                      <td><a href="#" class="text-primary">8am</a></td>
-                      <td>071234567</td>
-                      <td><span class="badge bg-success">Returned</span></td>
+                      <th scope="row"><a href="#">{{item.location_of_use}}</a></th>
+                      <td>{{item.asset.name}}</td>
+                      <td><a href="#" class="text-primary">{{item.picked_on}}</a></td>
+                      <td>{{item.person}}</td>
+                      <td>
+                        {% if not item.returned %}
+                        <span class="badge bg-warning">Borrowed</span>
+                        {% else %}
+                        <span class="badge bg-success">Returned</span>
+                        {% endif %}
+                      </td>
+                    
                     </tr>
-                    <tr>
-                      <th scope="row"><a href="#">ICT14</a></th>
-                      <td>VGA</td>
-                      <td><a href="#" class="text-primary">10am</a></td>
-                      <td>0712345678</td>
-                      <td><span class="badge bg-warning">Borrowed</span></td>
-                    </tr>
-                    <tr>
-                      <th scope="row"><a href="#">DITA</a></th>
-                      <td>Projector, HDMI</td>
-                      <td><a href="#" class="text-primary">4pm</a></td>
-                      <td>0112345678</td>
-                      <td><span class="badge bg-warning">Borrowed</span></td>
-                    </tr>
+                    {% endfor %} 
                   </tbody>
                 </table>
 

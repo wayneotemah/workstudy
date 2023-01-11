@@ -60,22 +60,6 @@ class DashBoardHelper(UserDetailsHelper):
         userAccount = Account.get_account(self.user)
         data = UserRole.getLatestSchedule(userAccount)
 
-        # now = datetime.now()
-        # current_time = now.strftime("%H:%M")
-        # event_time = data[0]['end_time']
-        # event_time = datetime.combine(datetime.today(), event_time)
-
-
-        # # Check if the current time is within 30 minutes of the other time
-        # if (now - timedelta(minutes=30) <= event_time <= now + timedelta(minutes=30)):
-        #     print("The current time is within 30 minutes of the other time.")
-        # else:
-        #     print("The current time is not within 30 minutes of the other time.")
-        # print(current_time)
-
-        # print(now) # type: ignore
-        # print(event_time) # type: ignore
-
         return  data
     
 class RolesHelper(UserDetailsHelper):
@@ -98,7 +82,7 @@ class TeamsHelper(UserDetailsHelper):
 class ReportsHelper(UserDetailsHelper):
     pass
 
-class AssetsHelper(UserDetailsHelper):
+class IssuessHelper(UserDetailsHelper):
     def __init__(self,user,uuid):
         super().__init__(user,uuid)
 
@@ -106,14 +90,3 @@ class AssetsHelper(UserDetailsHelper):
     def getAllIssuesList(self):
         return Issue.getList(self.companyUUID)
 
-
-
-
-
-''''
-TODO: create a USERDETAILS superclass with teh get nav details funtionality. Inputes are user,uuid to return 
-
-
-
-TODO: create role,team,reports and profile class that inherites from USERDETAILS
-'''
