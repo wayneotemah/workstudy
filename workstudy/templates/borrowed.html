@@ -97,12 +97,10 @@
                         {% endif %}
 
                         
-                        {% comment %} <li class="page-item"><a class="page-link" href="#">1</a></li> {% endcomment %}
                         <li class="page-item active" aria-current="page">
                           <a class="page-link" href="#">{{ borrowed_assets.number }}</a>
                         </li>
 
-                        {% comment %} <li class="page-item"><a class="page-link" href="#">3</a></li> {% endcomment %}
                         {% if borrowed_assets.has_next %}
                         <li class="page-item">
                           <a class="page-link" href="?page={{ borrowed_assets.next_page_number }}">Next</a>
