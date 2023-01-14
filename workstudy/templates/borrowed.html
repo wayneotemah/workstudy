@@ -31,8 +31,8 @@
       </nav>
     </div><!-- End Page Title -->
 
-    <a href= {% url 'borrowedassetspage' organizationUUID %}>
-      <button type="button" class="btn btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#fullscreenModal">
+    <a href= {% url 'borrowedassetspage' organizationUUID %} >
+      <button style="margin-bottom: 15px;" type="button" class="btn btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#fullscreenModal">
         Lend out a item
       </button>
     </a>
@@ -83,6 +83,36 @@
                   </table>
 
               
+                </div>
+
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Pages</h5>
+                    <nav aria-label="...">
+                      <ul class="pagination">
+                        {% if borrowed_assets.has_previous %}          
+                        <li class="page-item">
+                          <a class="page-link" href="?page={{ borrowed_assets.previous_page_number }}" tabindex="-1" aria="true">Previous</a>
+                        </li>
+                        {% endif %}
+
+                        
+                        {% comment %} <li class="page-item"><a class="page-link" href="#">1</a></li> {% endcomment %}
+                        <li class="page-item active" aria-current="page">
+                          <a class="page-link" href="#">{{ borrowed_assets.number }}</a>
+                        </li>
+
+                        {% comment %} <li class="page-item"><a class="page-link" href="#">3</a></li> {% endcomment %}
+                        {% if borrowed_assets.has_next %}
+                        <li class="page-item">
+                          <a class="page-link" href="?page={{ borrowed_assets.next_page_number }}">Next</a>
+                        </li>
+                        {% endif %}
+
+                      </ul>
+                    </nav><!-- End Disabled and active states -->
+      
+                  </div>
                 </div>
                 
               </div>

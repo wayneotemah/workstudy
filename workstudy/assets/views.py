@@ -4,6 +4,8 @@ from django.contrib import messages
 from django.shortcuts import render,redirect
 from assets.helper import AssetsHelper
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+
 from assets.models import Asset, Borrowd_Asset
 
 from workstudy.globalsettings import LOGIN_URL
@@ -13,23 +15,35 @@ from organizations.models import Organization
 @login_required(login_url=LOGIN_URL)  # type: ignore
 def assets(request,uuid):
     # get all assets for the organisation/lab
+    page_number = 1
+    if request.GET.get('page'):
+        page_number = request.GET.get('page')
+
     helper = AssetsHelper(user = request.user,uuid = uuid )
     context = helper.get_nav_details()
-    context['assets'] = helper.getAssets()
+    assets = helper.getAssets()
+    paginator = Paginator(assets, 5)
+    page_obj = paginator.get_page(page_number)
+    context['assets'] = page_obj
     return render(request,"assets.html",context=context)
 
 @login_required(login_url=LOGIN_URL)# type: ignore
 def borrowed_assets(request,uuid):
     if request.method == "GET":
         #get list of all borrowed item in that organization
+        page_number = 1
+        if request.GET.get('page'):
+            page_number = request.GET.get('page')
         helper = AssetsHelper(user = request.user,uuid = uuid )
         context = helper.get_nav_details()
-        context['borrowed_assets'] = helper.getBorrowesAssets()
+        borrowed_assets = helper.getBorrowesAssets()
+        paginator = Paginator(borrowed_assets, 5)
+        page_obj = paginator.get_page(page_number)
+        context['borrowed_assets'] = page_obj
         return render(request,"borrowed.html",context=context)
     if request.method == "POST":
         #posting borrowed item
         now = datetime.datetime.now()
-
 
         organization = Organization.get_organizations_from_uuid(uuid)#get organization instance from uuil 
         asset = Asset.getSingleAsset(request.POST["Item_id"]) # get asset instance from asset pk
