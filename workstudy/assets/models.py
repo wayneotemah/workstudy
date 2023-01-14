@@ -86,7 +86,7 @@ class Borrowd_Asset(models.Model):
     class Meta:
         verbose_name = _("Borrowd Asset")
         verbose_name_plural = _("Borrowd Assets")
-        ordering = ['-returned_on']
+        ordering = ['returned_on']
 
     def __str__(self):
         return f'{self.asset}'
@@ -101,6 +101,15 @@ class Borrowd_Asset(models.Model):
     @staticmethod
     def getSingleBorrowedAssets(x):
         '''
-        get the single borrowed.
+        get the single borrowed using the records pk
         '''
         return Borrowd_Asset.objects.get(pk = x)
+
+
+    @staticmethod
+    def getAssetByPK(x):
+        '''
+        returns the lates infomation about an asset by it primary key
+        '''
+        # Asset.getSingleAsset(pk = x).id
+        return Borrowd_Asset.objects.filter(asset = x).last()

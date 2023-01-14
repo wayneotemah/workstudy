@@ -147,4 +147,5 @@ def getAssetDetails(request,uuid,asset_pk):
     if request.method =="GET":
         helper = AssetsHelper(user = request.user,uuid = uuid )
         context = helper.get_nav_details()
+        context['borrowed_item'] = Borrowd_Asset.getAssetByPK(asset_pk)
         return render(request,'assetdetails.html',context=context)
