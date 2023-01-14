@@ -69,3 +69,7 @@ class Issue(models.Model):
         #get all organizations issues
         return Issue.objects.filter(organization = x, status = y)
 
+    @staticmethod
+    def getIssueByPk(x):
+        return Issue.objects.get(pk = x)
+

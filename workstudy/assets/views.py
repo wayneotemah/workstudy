@@ -145,7 +145,6 @@ def return_asset(request,borrowedasset_id,uuid):
 @login_required(login_url=LOGIN_URL) # type: ignore
 def getAssetDetails(request,uuid,asset_pk):
     if request.method =="GET":
-        print(asset_pk)
         helper = AssetsHelper(user = request.user,uuid = uuid )
         context = helper.get_nav_details()
         item = Borrowd_Asset.getAssetByPK(asset_pk)

@@ -47,7 +47,6 @@ def roles(request,uuid):
     helper = RolesHelper(user = request.user,uuid = uuid )
     context = helper.get_nav_details()
     context['roles'] = helper.get_roles()
-    print(context)
     return render(request,"roles.html",context = context)
     
 
@@ -109,6 +108,7 @@ def raiseIssue(request,uuid):
 def getIssueDetails(request,uuid,issue_pk):
     helper = IssuessHelper(user = request.user,uuid = uuid )
     context = helper.get_nav_details()
+    context["issue"] = Issue.getIssueByPk(issue_pk)
     return render(request,"issuedetails.html", context=context )
 
 
