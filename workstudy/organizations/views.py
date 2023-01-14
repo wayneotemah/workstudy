@@ -1,5 +1,6 @@
 import datetime
 from django.shortcuts import redirect, render
+from django.core.paginator import Paginator
 from django.contrib import messages
 from accounts.models import Account
 from django.contrib.auth.decorators import login_required
@@ -29,6 +30,9 @@ def dashboard_redirect(request):
 
 @login_required(login_url=LOGIN_URL)
 def dashboard(request,uuid):
+    page_number = 1
+    if request.GET.get('page'):
+        page_number = request.GET.get('page')
     helper = DashBoardHelper(user = request.user,uuid = uuid )
     context = helper.get_nav_details()
     context["my_schedule"] = helper.latestSchdule()
@@ -59,9 +63,15 @@ def myteam(request,uuid):
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
 def issues(request,uuid):
+    page_number = 1
+    if request.GET.get('page'):
+        page_number = request.GET.get('page')
     helper = IssuessHelper(user = request.user,uuid = uuid )
     context = helper.get_nav_details()
-    context['issues'] = helper.getAllIssuesList()
+    issues = helper.getAllIssuesList()
+    paginator = Paginator(issues, 5)
+    page_obj = paginator.get_page(page_number)
+    context['issues'] = page_obj
     return render(request,"issues.html",context = context)
 
 
