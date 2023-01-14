@@ -111,5 +111,6 @@ class Borrowd_Asset(models.Model):
         '''
         returns the lates infomation about an asset by it primary key
         '''
-        # Asset.getSingleAsset(pk = x).id
         return Borrowd_Asset.objects.filter(asset = x).last()
+        
+

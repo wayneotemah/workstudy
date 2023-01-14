@@ -66,8 +66,8 @@
                   {% for item in   assets %}
 
                       <tr>
-                        <th scope="row"><img style = "{max-width:150px;}" src="{{item.pic.url}}" alt=""></th>
-                        <td><a href="{% url 'asset details' organizationUUID item.pk %}">{{item.name}}</a></td>
+                        <td scope="row"><img style = "{max-width:150px;}" src="{{item.pic.url}}" alt=""></td>
+                        <th><a href="{% url 'asset details' organizationUUID item.pk %}">{{item.name}}</a></th>
                         <td>{{item.condition}}</td>
                         <td class="fw-bold">{{item.status}}</td>
                         {% comment %} <td>Edit</td> {% endcomment %}

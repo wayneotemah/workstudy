@@ -104,10 +104,12 @@ def raiseIssue(request,uuid):
         context = helper.get_nav_details()
         return render(request,"addissue.html", context=context )
 
-@login_required(login_url=LOGIN_URL)  # type: ignore
-def reports(request,uuid):
-    
-    pass
+
+@login_required(login_url=LOGIN_URL) # type: ignore
+def getIssueDetails(request,uuid,issue_pk):
+    helper = IssuessHelper(user = request.user,uuid = uuid )
+    context = helper.get_nav_details()
+    return render(request,"issuedetails.html", context=context )
 
 
 
@@ -116,8 +118,12 @@ def profile(request,uuid):
      if request.method == "GET":
         helper = UserDetailsHelper(user = request.user,uuid = uuid )
         context = helper.get_profile()
-        # context["profile"] = help.get_profile()
         return render(request,"users-profile.html", context=context )
 
 
+
+
+@login_required(login_url=LOGIN_URL)  # type: ignore
+def reports(request,uuid):
     
+    pass

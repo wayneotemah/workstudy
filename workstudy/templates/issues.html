@@ -61,7 +61,7 @@
                     {% for issue in   issues %}
                     <tr>
                         <th scope="row"><a href="#">#{{issue.pk}}</a></th>
-                        <td>{{issue.details}}</td>
+                        <th>{{issue.details}}</th>
                         <td>{{issue.reported_on}}</td>
                         {% if issue.status == 'Done' %}
                         <td><span class="badge bg-success">{{issue.status}}</span></td>

@@ -145,7 +145,15 @@ def return_asset(request,borrowedasset_id,uuid):
 @login_required(login_url=LOGIN_URL) # type: ignore
 def getAssetDetails(request,uuid,asset_pk):
     if request.method =="GET":
+        print(asset_pk)
         helper = AssetsHelper(user = request.user,uuid = uuid )
         context = helper.get_nav_details()
-        context['borrowed_item'] = Borrowd_Asset.getAssetByPK(asset_pk)
-        return render(request,'assetdetails.html',context=context)
+        item = Borrowd_Asset.getAssetByPK(asset_pk)
+        if item: #it the item existes in the borrowed table
+            context['borrowed_item'] = Borrowd_Asset.getAssetByPK(asset_pk)
+            return render(request,'borrowed_asset_details.html',context=context)
+        else: # the item does not exist in the borrowed table seach in item talbe
+            item = Asset.getSingleAsset(asset_pk)
+            context['item'] = item
+            return render(request,'item_asset_details.html',context=context)
+
