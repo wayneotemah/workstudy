@@ -31,7 +31,7 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['workstudy-production.up.railway.app','localhost']
 
 
 # Application definition
