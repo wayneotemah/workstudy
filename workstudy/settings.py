@@ -15,7 +15,7 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://workstudy-production.up.railway.app/','workstudy-production.up.railway.app','localhost']
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
