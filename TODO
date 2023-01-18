@@ -5,10 +5,11 @@ Add RA( residence assistence ) features
 
 FIXME fix static tag not working errorpage.html
 TODO  add user permission to detemin if to render pages or not. ie create_organization 
-TODO make an asset info page
-TODO make an issue info page
 TODO make report
 FIXME fix dashboard
+TODO sum up lab assets and faluty and good
+FIXME change Agent to Urgent
+FIXME Lending detail kwa borrowed assets
 
 
 
