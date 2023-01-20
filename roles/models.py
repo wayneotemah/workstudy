@@ -47,7 +47,6 @@ class UserRole(models.Model):
     }
     role = models.ForeignKey(Role, verbose_name=_("role"), on_delete=models.CASCADE)
     assigned_to = models.ForeignKey(Account, verbose_name=_("assigned_to"), on_delete=models.DO_NOTHING,blank = True, null =True)
-    
     day1 = models.CharField(max_length=15,choices=days_option,blank = True, null =True)
     day1_start_time = models.TimeField(blank = True, null =True)
     day1_end_time = models.TimeField(blank = True, null =True)
@@ -66,6 +65,7 @@ class UserRole(models.Model):
     day6 = models.CharField(max_length=15,choices=days_option,blank = True, null =True)
     day6_start_time = models.TimeField(blank = True, null =True)
     day6_end_time = models.TimeField(blank = True, null =True)
+    hours = models.IntegerField( verbose_name= "total hours",blank = True, null =True)
 
     class Meta:
         verbose_name = _("User's role")
