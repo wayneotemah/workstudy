@@ -16,6 +16,7 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 DEBUG = True
 
 ALLOWED_HOSTS = ['workstudy-production.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://workstudy-production.up.railway.app']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
