@@ -41,7 +41,6 @@ def sign_up(request):
             """
             if user does not exist, save detail
             """
-
             phone_number = request.POST['phone_number']
             password = request.POST['password']
             user = CustomUser(  email = email,
