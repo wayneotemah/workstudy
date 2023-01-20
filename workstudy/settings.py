@@ -15,7 +15,7 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['workstudy-production.up.railway.app']
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -66,14 +66,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'workstudy.wsgi.application'
 
 DATABASES = {
-    'default':{
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv("PGDATABASE"),
-        'USER': os.getenv("PGUSER"),
-        'PASSWORD': os.getenv("PGPASSWORD"),
-        'HOST': os.getenv("PGHOST"),
-        'PORT': os.getenv("PGPORT"),
-    }
+    'default':dj_database_url.config(default=DATABASE_URL, conn_max_age=1800)
 }
 
 AUTH_PASSWORD_VALIDATORS = [
