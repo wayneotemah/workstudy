@@ -110,8 +110,6 @@ def organization(request):
     }  
     return render(request,"choose_organization.html", context=context)
   
-
-
 @login_required(login_url=LOGIN_URL)  # type: ignore
 def create_organization(request):
     if request.method == "POST":

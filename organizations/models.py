@@ -7,14 +7,8 @@ from django.core.exceptions import ObjectDoesNotExist
 # Create your models here.
 
 class Organization(models.Model):
-    organisationChoices = {
-        ('personal venture','personal venture'),
-        ('Small scale','Small scale'),
-        ('medium scale','medium scale'),
-    }
     organization_uuid = models.UUIDField(_("Organization's ID"),primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(_('Organization name'),blank = True, null =True,max_length = 100)
-    # scale = models.CharField(_('Scale of organization'),choices =organisationChoices, max_length = 50 )
     supervisor = models.OneToOneField(Account,verbose_name=_("Organization's creater"), on_delete=models.CASCADE)
     
     def __str__(self) -> str:
