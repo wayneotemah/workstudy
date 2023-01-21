@@ -67,7 +67,7 @@ def issues(request,uuid):
         page_number = request.GET.get('page')
     helper = IssuessHelper(user = request.user,uuid = uuid )
     context = helper.get_nav_details()
-    issues = helper.getAllIssuesList()
+    issues = helper.getAllUserIssuesList()
     paginator = Paginator(issues, 5)
     page_obj = paginator.get_page(page_number)
     context['issues'] = page_obj
@@ -96,7 +96,7 @@ def raiseIssue(request,uuid):
             messages.warning(request,"Unexpected Exception error has risen")
             return render(request,"errorpage.html",context=context)
         else:
-            messages.success(request,f"An issue has be raise by you, {reported_by.first_name}.") 
+            messages.success(request,f"An issue has be raised by you, {reported_by.first_name}.") 
             return redirect(issues, uuid = uuid)
     if request.method == "GET":
         helper = UserDetailsHelper(user = request.user,uuid = uuid )
