@@ -212,7 +212,6 @@ class UserRole(models.Model):
             new_date = curr_date + counter # current day + counter 
             new_date = new_date % 6 # mod to get the day of the week
             day_today = (calendar.day_name[new_date])
-            print(day_today,new_date)
             data = []
 
             if role.day1 == day_today:
@@ -261,9 +260,7 @@ class UserRole(models.Model):
                     "start_time":role.day6_start_time,
                     "end_time":role.day6_end_time, 
                 })
-                return data
-            
-            print(f' count  {counter}')
+                return data            
             counter +=1 # increment counter
 
 

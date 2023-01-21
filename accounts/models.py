@@ -102,6 +102,10 @@ class Account(models.Model):
 
     @staticmethod
     def get_account(x):
+        """
+        get account instance
+        x-> custom user instance
+        """
         account = Account.objects.get(user = x) 
         return account
     

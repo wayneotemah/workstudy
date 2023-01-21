@@ -36,7 +36,7 @@ def dashboard(request,uuid):
     helper = DashBoardHelper(user = request.user,uuid = uuid )
     context = helper.get_nav_details()
     context["my_schedule"] = helper.latestSchdule()
-    context["issues"] =  Issue.getList(uuid)
+    context["issues"] =  Issue.getUserList(request.user)
     context["borrowedItems"] = Borrowd_Asset.getBorrowedAssets(uuid)
     return render(request,"dashboard.html",context = context)
 

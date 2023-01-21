@@ -58,6 +58,16 @@ class Issue(models.Model):
         #get all organizations issues
         return Issue.objects.filter(organization = x)
         
+
+    @staticmethod
+    def getUserList(x):
+        """
+        get list of issues made by user
+        x -> account 
+        """
+        reporter = Account.get_account(x)
+        return Issue.objects.filter(reported_by = reporter)
+    
     @staticmethod
     def getListbyStatus(x,y):
         #get all organizations issues
