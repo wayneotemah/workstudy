@@ -11,7 +11,6 @@ from assets.models import Borrowd_Asset
 
 from workstudy.globalsettings import LOGIN_URL
 from organizations.models import Issue, Organization
-# Create your views here.
 
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
