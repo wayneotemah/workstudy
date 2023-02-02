@@ -17,12 +17,17 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Asset',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=50, verbose_name='item name')),
-                ('pic', models.ImageField(upload_to=assets.models.photo_upload, verbose_name=' asset image')),
-                ('status', models.CharField(choices=[('Not available', ' Not available'), ('Available', 'Available'), ('Borrowed', 'Borrowed')], max_length=50, verbose_name='asset status')),
-                ('condition', models.CharField(choices=[('Good', 'Good'), ('Not Woking', 'Not Working'), ('Faulty', 'Faulty')], max_length=50, verbose_name='asset condition')),
-                ('organization', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='organizations.organization', verbose_name='lab / organization')),
+                ('pic', models.ImageField(
+                    upload_to=assets.models.asset_photo_upload, verbose_name=' asset image')),
+                ('status', models.CharField(choices=[('Not available', ' Not available'), (
+                    'Available', 'Available'), ('Borrowed', 'Borrowed')], max_length=50, verbose_name='asset status')),
+                ('condition', models.CharField(choices=[('Good', 'Good'), ('Not Woking', 'Not Working'), (
+                    'Faulty', 'Faulty')], max_length=50, verbose_name='asset condition')),
+                ('organization', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 to='organizations.organization', verbose_name='lab / organization')),
             ],
             options={
                 'verbose_name': 'Asset',
@@ -32,15 +37,23 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Borrowd_Asset',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('person', models.CharField(max_length=50, verbose_name='borrowers name(one)')),
-                ('contacts', models.CharField(max_length=50, verbose_name='borrowers contact')),
-                ('location_of_use', models.CharField(max_length=50, verbose_name='Class/Hall')),
-                ('picked_on', models.DateTimeField(editable=False, verbose_name='date and time picked')),
-                ('returned_on', models.DateTimeField(blank=True, null=True, verbose_name='date and time returned')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
+                ('person', models.CharField(max_length=50,
+                 verbose_name='borrowers name(one)')),
+                ('contacts', models.CharField(
+                    max_length=50, verbose_name='borrowers contact')),
+                ('location_of_use', models.CharField(
+                    max_length=50, verbose_name='Class/Hall')),
+                ('picked_on', models.DateTimeField(
+                    editable=False, verbose_name='date and time picked')),
+                ('returned_on', models.DateTimeField(blank=True,
+                 null=True, verbose_name='date and time returned')),
                 ('returned', models.BooleanField()),
-                ('asset', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='assets.asset', verbose_name='borrowed item')),
-                ('organization_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='organizations.organization', verbose_name='lab')),
+                ('asset', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 to='assets.asset', verbose_name='borrowed item')),
+                ('organization_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 to='organizations.organization', verbose_name='lab')),
             ],
             options={
                 'verbose_name': 'Borrowd Asset',
