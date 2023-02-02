@@ -34,20 +34,42 @@ class AssetCategory(models.Model):
         ('VGA-HDMI Converters', ' VGA-HDMI Converters'),
         ('Others', 'Others')
     }
-    categorty_name = models.TextField(
+    category = models.TextField(
         _("Asset category name"), choices=asset_categories, max_length=50, null=False, blank=False)
-    categoty_pic = models.ImageField(
-        _("Category image"), upload_to=asset_categorty_photo_upload, null=False, blank=False)
-    quantity = models.PositiveIntegerField(_("number of assets available"))
-    woring_quantity = models.PositiveIntegerField(
-        _("number is assets that are working"))
+
+    category_pic = models.ImageField(
+        _("Category image"), upload_to=asset_categorty_photo_upload, null=True, blank=True)
+    quantity = models.PositiveIntegerField(
+        _("number of assets available"), default=0)
+    working_quantity = models.PositiveIntegerField(
+        _("number is assets that are working"), default=0)
+    borrowed_assets = models.PositiveIntegerField(
+        _("number is assets that are borrowedd"), default=0)
+    organization = models.ForeignKey(
+        Organization, verbose_name="lab / organization", on_delete=models.CASCADE, blank=True, null=True)
 
     class Meta:
         verbose_name = _("Asset Category")
         verbose_name_plural = _("Asset Categories")
 
     def __str__(self):
-        return self.categorty_name
+        return f'{self.category}'
+
+    @staticmethod
+    def getCategoryByName(x):
+        '''
+        Use asset category to get instance
+        x -> asset category name ie must be in asset_categories choices
+        '''
+        return AssetCategory.objects.get(category=x)
+
+    @staticmethod
+    def getCategoryListByOrganization(x):
+        '''
+        x -> organization/lab uuid
+        Use lab/org uuid to get list of all categories in that lab
+        '''
+        return AssetCategory.objects.filter(organization=x)
 
 
 class Asset(models.Model):
