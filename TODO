@@ -4,6 +4,7 @@
 
 XXX add user permission to detemin if to render pages or not. ie create_organization
 XXX protect create-org page from non supervisors
+XXX create redirect for supervisors
 
 FIXME fix static tag not working errorpage.html
 FIXME fix dashboard
@@ -12,7 +13,6 @@ FIXME make role accordion default open (Roles page)
 FIXME change Agent to Urgent (asset managment)
 FIXME user cannt change detais ( my profile page)
 
-TODO create redirect for supervisors
 TODO sum up lab assets and faluty and good (Asset managment)
 TODO show only the Issues repotred by user in uer dashboard (dashboard )
 TODO assets Quantity analysis(asset managment)

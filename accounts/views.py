@@ -152,6 +152,7 @@ def create_organization(request):
 
 
 
+
 @login_required(login_url=LOGIN_URL)  # type: ignore
 def account(request):
     return render(request, "users-profile.html")
