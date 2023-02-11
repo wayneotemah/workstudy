@@ -9,6 +9,13 @@ class AssetsHelper(UserDetailsHelper):
     def getAssets(self):
         return Asset.getAssets(self.companyUUID)
 
+    def getAssetDetails(self, x):
+        '''
+        return the one assets details
+        x -> item primary key
+        '''
+        return Asset.getSingleAsset(x)
+
     def getAssetCategoryList(self):
         return AssetCategory.getCategoryListByOrganization(self.companyUUID)
 

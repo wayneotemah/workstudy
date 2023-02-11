@@ -2,7 +2,8 @@ import os
 import uuid
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from organizations.models import Organization
 
 
@@ -56,12 +57,13 @@ class AssetCategory(models.Model):
         return f'{self.category}'
 
     @staticmethod
-    def getCategoryByName(x):
+    def getCategory(x, y):
         '''
         Use asset category to get instance
         x -> asset category name ie must be in asset_categories choices
+        y -> asset organization/lab 
         '''
-        return AssetCategory.objects.get(category=x)
+        return AssetCategory.objects.get(id=x, organization_id=y)
 
     @staticmethod
     def getCategoryListByOrganization(x):
@@ -88,7 +90,7 @@ class Asset(models.Model):
     }
     name = models.CharField(verbose_name="item name", max_length=50)
     category_type = models.ForeignKey(
-        AssetCategory, verbose_name=_(""), on_delete=models.CASCADE, null=True, blank=True)
+        AssetCategory, verbose_name="asset type", on_delete=models.CASCADE, null=True, blank=True)
     organization = models.ForeignKey(
         Organization, verbose_name="lab / organization", on_delete=models.CASCADE)
     pic = models.ImageField(
@@ -110,16 +112,24 @@ class Asset(models.Model):
         '''
         get the assets of organization x
         '''
-
         return Asset.objects.filter(organization=x)
 
     @staticmethod
     def getSingleAsset(x):
         '''
-        get a single  assets 
+        get a single  assets
+        x = item primary key 
         '''
-
         return Asset.objects.get(pk=x)
+
+    @staticmethod
+    def getOrgAssetsByCategory(x, y):
+        """
+        get list of objects by category type and organization ID
+        x-> category item id
+        y -> org id
+        """
+        return Asset.objects.filter(category_type_id=x, organization_id=y)
 
     @staticmethod
     def getAvailbleAssets(x):
@@ -127,6 +137,15 @@ class Asset(models.Model):
         get the available assets of organization x
         '''
         return Asset.objects.filter(organization=x, status="Available")
+
+
+@receiver(post_save, sender=Asset)
+def updateAssentQuantity(sender, instance, **kwargs):
+    Category = AssetCategory.getCategory(
+        instance.category_type.id, instance.organization.organization_uuid)
+    Category.quantity = Category.quantity + 1
+    print(f"post,save function {Category.quantity}")
+    Category.save()
 
 
 class Borrowd_Asset(models.Model):

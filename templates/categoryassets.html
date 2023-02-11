@@ -51,13 +51,13 @@
                     <tr>
                       <td scope="row">
                         <img
-                        style="{ max-width: 50px;}"
+                        style="border-radius: 5px;,max-width: 50px;"
                         src="{{item.category_pic.url}}"
                         alt=""
                         />
                       </td>
                       <td>
-                        <a  href="{% url 'asset details' organizationUUID item.pk %}">
+                        <a  href="{% url 'asset category details' organizationUUID item.pk %}">
                         {{item.category}}
                         </a>
                       </td>

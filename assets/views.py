@@ -149,7 +149,7 @@ def assetCategory(request, uuid):
         pic = request.FILES['asset_category_pic']
         try:
             categoryItem = AssetCategory(
-                
+
                 category=category,
                 category_pic=pic,
                 organization_id=uuid)
@@ -169,6 +169,7 @@ def assetCategory(request, uuid):
             return render(request, "errorpage.html", context=context)
 
 
+@login_required(login_url=LOGIN_URL)
 def postassetCategory(request, uuid):
     '''
     returns page with post asset form
@@ -179,11 +180,21 @@ def postassetCategory(request, uuid):
         return render(request, "addassetcategory.html", context=context)
 
 
-def categoryDetails(request, uuid, cat_id):
-    pass
+@login_required(login_url=LOGIN_URL)
+def assetDetails(request, uuid, item_pk):
+    '''
+    show detils assets
+    '''
+    if request.method == "GET":
+        helper = AssetsHelper(user=request.user, uuid=uuid)
+        context = helper.get_nav_details()
+        context['item'] = helper.getAssetDetails(item_pk)
+        return render(request, 'item_asset_details.html', context=context)
+
+        pass
 
 
-@login_required(login_url=LOGIN_URL)  # type: ignore
+@login_required(login_url=LOGIN_URL)
 def return_asset(request, borrowedasset_id, uuid):
     # returning the assets borrowed
     now = datetime.datetime.now()
@@ -211,16 +222,21 @@ def return_asset(request, borrowedasset_id, uuid):
         return redirect('borrowed assets', uuid=uuid)
 
 
-@login_required(login_url=LOGIN_URL)  # type: ignore
-def getAssetDetails(request, uuid, asset_pk):
+@login_required(login_url=LOGIN_URL)
+def getAssetCategoryDetails(request, uuid, asset_pk):
+    '''
+    show details of asset category and list of assets under the catregory
+    '''
     if request.method == "GET":
         helper = AssetsHelper(user=request.user, uuid=uuid)
         context = helper.get_nav_details()
-        item = Borrowd_Asset.getAssetByPK(asset_pk)
+        item = AssetCategory.getCategory(asset_pk, uuid)
         if item:  # it the item existes in the borrowed table
-            context['borrowed_item'] = Borrowd_Asset.getAssetByPK(asset_pk)
-            return render(request, 'borrowed_asset_details.html', context=context)
-        else:  # the item does not exist in the borrowed table seach in item talbe
-            item = Asset.getSingleAsset(asset_pk)
-            context['item'] = item
-            return render(request, 'item_asset_details.html', context=context)
+            context['item_category'] = item
+            context['items'] = Asset.getOrgAssetsByCategory(asset_pk, uuid)
+
+            return render(request, 'category_asset_details.html', context=context)
+        # else:  # the item does not exist in the borrowed table seach in item talbe
+        #     item = Asset.getSingleAsset(asset_pk)
+        #     context['item'] = item
+        #     return render(request, 'item_asset_details.html', context=context)
