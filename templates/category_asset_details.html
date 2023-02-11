@@ -50,7 +50,7 @@
                             Total:<small class="text-info">{{item_category.quantity}}</small>
                         </h2>
 
-                        <a href="{% url 'add asset' organizationUUID %}">
+                        <a href="{% url 'add asset' organizationUUID item_category.pk %}">
                             <button
                               style="margin-bottom: 15px"
                               type="button"
