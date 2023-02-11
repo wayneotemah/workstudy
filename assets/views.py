@@ -95,36 +95,36 @@ def post_asset(request, uuid,category_pk):
         context = helper.get_nav_details()
         context['category_pk'] = category_pk
         return render(request, "addasset.html", context=context)
-
     if request.method == "POST":
         # adding asset
-        now = datetime.datetime.now()
+            now = datetime.datetime.now()
 
-        name = request.POST["asset_name"]
-        condition = request.POST["condition"]
-        status = request.POST["status"]
-        category_type = request.POST['category_type']
-        pic = request.FILES['asset_pic']
-        try:
-            # try to save
-            category = AssetCategory.getCategoryByName(
-                category_type)  # get the asset instance
-            organization = Organization.get_organizations_from_uuid(
-                uuid)  # get organization instance for saving
-            asset = Asset(category_type=category, name=name, condition=condition,
-                          status=status, pic=pic, organization=organization)
-            asset.save()
-        except Exception as e:
-            # if anything fails, show error page wtth message
-            context = {
-                "message": f"Please contact the devs and notify the off the error \nerror is: \n{e}"
-            }
-            messages.warning(request, "Unexpected Exception error has risen")
-            return render(request, "errorpage.html", context=context)
-        else:
-            # everthing was successful
-            messages.success(request, f"{name} Added successfully")
-            return redirect('assets', uuid=uuid)
+            name = request.POST["asset_name"]
+            condition = request.POST["condition"]
+            status = request.POST["status"]
+            category_type = request.POST['category_type']
+            pic = request.FILES['asset_pic']
+            try:
+                # try to save
+                # category = AssetCategory.getCategoryByName(
+                #     category_type)  # get the asset instance
+                # organization = Organization.get_organizations_from_uuid(
+                #     uuid)  # get organization instance for saving
+                asset = Asset(category_type_id=category_pk, name=name, condition=condition,
+                            status=status, pic=pic, organization_id=uuid)
+                asset.save()
+            except Exception as e:
+                # if anything fails, show error page wtth message
+                context = {
+                    "message": f"Please contact the devs and notify the off the error \nerror is: \n{e}"
+                }
+                messages.warning(request, "Unexpected Exception error has risen")
+                return render(request, "errorpage.html", context=context)
+            else:
+                # everthing was successful
+                messages.success(request, f"{name} Added successfully")
+                return redirect(getAssetCategoryDetails, uuid=uuid,category_pk = category_pk)
+
 
 
 @login_required(login_url=LOGIN_URL)
@@ -224,17 +224,17 @@ def return_asset(request, borrowedasset_id, uuid):
 
 
 @login_required(login_url=LOGIN_URL)
-def getAssetCategoryDetails(request, uuid, asset_pk):
+def getAssetCategoryDetails(request, uuid, category_pk):
     '''
     show details of asset category and list of assets under the catregory
     '''
     if request.method == "GET":
         helper = AssetsHelper(user=request.user, uuid=uuid)
         context = helper.get_nav_details()
-        item = AssetCategory.getCategory(asset_pk, uuid)
+        item = AssetCategory.getCategory(category_pk, uuid)
         if item:  # it the item existes in the borrowed table
             context['item_category'] = item
-            context['items'] = Asset.getOrgAssetsByCategory(asset_pk, uuid)
+            context['items'] = Asset.getOrgAssetsByCategory(category_pk, uuid)
 
             return render(request, 'category_asset_details.html', context=context)
         # else:  # the item does not exist in the borrowed table seach in item talbe

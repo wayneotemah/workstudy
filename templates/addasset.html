@@ -27,7 +27,7 @@
         <h5 class="card-title"> Add an asset</h5>
 
         <!-- Vertical Form -->
-            <form  method = "post" action = "" enctype="multipart/form-data" validate >
+            <form  method = "post" action = "{% url 'add asset' organizationUUID category_pk %}" enctype="multipart/form-data" validate >
               {% csrf_token %}
 
 

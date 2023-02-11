@@ -18,7 +18,7 @@ urlpatterns = [
     #     path('category/<str:uuid>/<int:cat_id>',
     #          views.categoryDetails, name='category'),
 
-    path('category_details/<str:uuid>/<int:asset_pk>',
+    path('category_details/<str:uuid>/<int:category_pk>',
          views.getAssetCategoryDetails, name='asset category details'),
 
     path('return_asset/<str:uuid>/<int:borrowedasset_id>',
