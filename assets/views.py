@@ -14,7 +14,7 @@ from workstudy.globalsettings import LOGIN_URL
 from organizations.models import Organization
 
 
-@login_required(login_url=LOGIN_URL)  # type: ignore
+@login_required(login_url=LOGIN_URL)
 def assets(request, uuid):
     # get all assets for the organisation/lab
     page_number = 1
@@ -30,7 +30,7 @@ def assets(request, uuid):
     return render(request, "assets.html", context=context)
 
 
-@login_required(login_url=LOGIN_URL)  # type: ignore
+@login_required(login_url=LOGIN_URL)
 def borrowed_assets(request, uuid):
     if request.method == "GET":
         # get list of all borrowed item in that organization
@@ -78,7 +78,7 @@ def borrowed_assets(request, uuid):
             return redirect('borrowed assets', uuid=uuid)
 
 
-@login_required(login_url=LOGIN_URL)  # type: ignore
+@login_required(login_url=LOGIN_URL)
 def borrowed_assets_page(request, uuid):
     if request.method == "GET":
         helper = AssetsHelper(user=request.user, uuid=uuid)
@@ -87,7 +87,7 @@ def borrowed_assets_page(request, uuid):
         return render(request, "addborrowed.html", context=context)
 
 
-@login_required(login_url=LOGIN_URL)  # type: ignore
+@login_required(login_url=LOGIN_URL) 
 def post_asset(request, uuid,category_pk):
     # get asset posting page
     if request.method == "GET":

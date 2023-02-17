@@ -2,7 +2,7 @@ import os
 import uuid
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save,post_delete
 from django.dispatch import receiver
 from organizations.models import Organization
 
@@ -138,14 +138,25 @@ class Asset(models.Model):
         '''
         return Asset.objects.filter(organization=x, status="Available")
 
+def asset_count(instance):
+        count = Asset.objects.filter(category_type = instance.category_type,organization = instance.organization)
+        count = len(count)
+
+        Category = AssetCategory.getCategory(
+            instance.category_type.id, instance.organization.organization_uuid)
+        Category.quantity = count
+        Category.save()
 
 @receiver(post_save, sender=Asset)
 def updateAssentQuantity(sender, instance, **kwargs):
-    Category = AssetCategory.getCategory(
-        instance.category_type.id, instance.organization.organization_uuid)
-    Category.quantity = Category.quantity + 1
-    print(f"post,save function {Category.quantity}")
-    Category.save()
+    # count the number of assets with the same category and store in the category_asset quantity
+    asset_count(instance)
+    
+
+
+@receiver(post_delete, sender=Asset)
+def updateAssentQuantity(sender, instance, **kwargs):
+    asset_count(instance)
 
 
 class Borrowd_Asset(models.Model):
