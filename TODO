@@ -1,15 +1,22 @@
-Add RA( residence assistence ) features
+<!-- Add RA( residence assistence ) features
     reports and reiviews
-    key and room 
+    key and room  -->
 
+XXX add user permission to detemin if to render pages or not. ie create_organization
+XXX protect create-org page from non supervisors
+XXX create redirect for supervisors
 
 FIXME fix static tag not working errorpage.html
-TODO  add user permission to detemin if to render pages or not. ie create_organization 
-TODO make report
 FIXME fix dashboard
-TODO sum up lab assets and faluty and good
-FIXME change Agent to Urgent
 FIXME Lending detail kwa borrowed assets
+FIXME make role accordion default open (Roles page)
+FIXME change Agent to Urgent (asset managment)
+FIXME user cannt change detais ( my profile page)
 
-
-
+TODO sum up lab assets and faluty and good (Asset managment)
+TODO show only the Issues repotred by user in uer dashboard (dashboard )
+TODO assets Quantity analysis(asset managment)
+TODO remove all print statments, replace with logs
+TODO calualte hours worked ( dashboard )
+TODO show logs ( dashboard )
+TODO make report

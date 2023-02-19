@@ -1,0 +1,126 @@
+{% extends 'navigation.html' %} 
+{% block innercontent %}
+{% block orgName %}
+{{organizationName }}
+{% endblock orgName %}
+{% block username %} 
+{{ username}}
+{%endblock %} 
+{% block role %} {{ role }} {% endblock role %}
+
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Lab assets</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.html">Assets</a></li>
+        <li class="breadcrumb-item active">Lab assets</li>
+      </ol>
+    </nav>
+  </div>
+  <!-- End Page Title -->
+  <a href="{% url 'add asset category' organizationUUID %}">
+    <button
+      style="margin-bottom: 15px"
+      type="button"
+      class="btn btn-primary rounded-pill"
+      data-bs-toggle="modal"
+      data-bs-target="#fullscreenModal"
+    >
+      Add an asset category
+    </button>
+  </a>
+
+  <section class="section dashboard">
+    <div class="row">
+      <!-- Left side columns -->
+      <div class="col">
+        <div class="row">
+          <!-- Top Selling -->
+          <div class="col-12">
+            {% if assets %}
+            <div class="card top-selling overflow-auto">
+              <div class="card-body pb-0">
+                <h5 class="card-title">Lab assests</h5>
+
+                <table class="table table-borderless">
+                  <thead>
+                    <tr>
+                      <th scope="col">Image</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Borrowed</th>
+                      <th scope="col">Quanity</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for item in assets %}
+                    <tr>
+                      <td scope="row">
+                        <img
+                        style="border-radius: 5px;,max-width: 50px;"
+                        src="{{item.category_pic.url}}"
+                        alt=""
+                        />
+                      </td>
+                      <td>
+                        <a  href="{% url 'asset category details' organizationUUID item.pk %}">
+                        {{item.category}}
+                        </a>
+                      </td>
+                      <td>{{item.borrowed_assets}}</td>
+                      <td class="fw-bold">{{item.quantity}}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Pages</h5>
+                  <nav aria-label="...">
+                    <ul class="pagination">
+                      {% if assets.has_previous %}
+                      <li class="page-item">
+                        <a
+                          class="page-link"
+                          href="?page={{ assets.previous_page_number }}"
+                          tabindex="-1"
+                          aria="true"
+                          >Previous</a
+                        >
+                      </li>
+                      {% endif %}
+
+                      <li class="page-item active" aria-current="page">
+                        <a class="page-link" href="#">{{ assets.number }}</a>
+                      </li>
+
+                      {% if assets.has_next %}
+                      <li class="page-item">
+                        <a
+                          class="page-link"
+                          href="?page={{ assets.next_page_number }}"
+                          >Next</a
+                        >
+                      </li>
+                      {% endif %}
+                    </ul>
+                  </nav>
+                  <!-- End Disabled and active states -->
+                </div>
+              </div>
+            </div>
+            {% else %}
+            <h3>No assets found for {{organizationName}}</h3>
+            {% endif %}
+          </div>
+          <!-- End Top Selling -->
+        </div>
+      </div>
+      <!-- End Left side columns -->
+    </div>
+  </section>
+</main>
+<!-- End #main -->
+
+{% endblock innercontent %}

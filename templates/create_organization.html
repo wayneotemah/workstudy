@@ -27,7 +27,7 @@
 
           <form class="row g-3 needs-validation" action = "{% url 'create organization' %}" method = "post" validate>
             {% csrf_token %}
-            <div class="col-12 pb-2">
+            {% comment %} <div class="col-12 pb-2">
               <label class="col-form-label text-center">Select the kind organization you wish to create</label>
                 <select name = "scale" class="form-select" aria-label="Default select example">
                   <option selected></option>
@@ -35,7 +35,7 @@
                   <option value="Small scale">Small Enterprice (2 - 20 workers)</option>
                   <option value="personal venture">Personal (Only you)</option>
                 </select>
-            </div>
+            </div> {% endcomment %}
 
             <div class="col-12 pb-2">
               <label for="yourUsername" class="form-label">Organization name</label>

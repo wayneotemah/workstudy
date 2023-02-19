@@ -90,3 +90,6 @@ class IssuessHelper(UserDetailsHelper):
     def getAllIssuesList(self):
         return Issue.getList(self.companyUUID)
 
+    def getAllUserIssuesList(self):
+        return Issue.getUserList(self.user)
+

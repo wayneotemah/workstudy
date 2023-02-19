@@ -123,7 +123,6 @@
                     <span class="text-danger small pt-1 fw-bold">Note</span> <span class="text-muted small pt-2 ps-1">
                       Perform tasks to reduce remove it from the list before end of the day.
                     </span>
-
                   </div>
                 </div>
 
@@ -138,7 +137,8 @@
             <div class="card recent-sales overflow-auto">
 
               <div class="card-body">
-                <h5 class="card-title">Issues/Task</h5>
+                <h5 class="card-title">Issues</h5>
+                {% if issues %}
 
                 <table class="table table-borderless">
                   <thead>
@@ -168,6 +168,12 @@
                     {% endfor %}
                   </tbody>
                 </table>
+
+                {% else %}                 
+                  <div class="ps-3">
+                    <span class="text-danger small pt-1 fw-bold">No issue has been repoted by you</span>
+                  </div> 
+                {% endif %}
 
               </div>
 
