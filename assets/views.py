@@ -189,10 +189,16 @@ def assetDetails(request, uuid, item_pk):
     if request.method == "GET":
         helper = AssetsHelper(user=request.user, uuid=uuid)
         context = helper.get_nav_details()
-        context['item'] = helper.getAssetDetails(item_pk)
-        return render(request, 'item_asset_details.html', context=context)
+        item =helper.getAssetDetails(item_pk) 
+        if item.status == 'Borrowed':
 
-        pass
+            item_borrowed_details = Borrowd_Asset.objects.get(asset = item)
+            context['item'] = item
+            context['borrowed_item'] = item_borrowed_details
+        else:
+            context['item'] = item
+
+        return render(request, 'item_asset_details.html', context=context)
 
 
 @login_required(login_url=LOGIN_URL)
@@ -202,7 +208,7 @@ def return_asset(request, borrowedasset_id, uuid):
     try:
         # try geting the item borrowd by it index
         borrowed_item = Borrowd_Asset.getSingleBorrowedAssets(borrowedasset_id)
-        borrowed_item.returned = True  # turn returned to tru
+        borrowed_item.returned = True  # turn returned to true
         borrowed_item.returned_on = now  # set time returned to now
         borrowed_item.save()  # save
     except Exception as e:

@@ -138,27 +138,6 @@ class Asset(models.Model):
         '''
         return Asset.objects.filter(organization=x, status="Available")
 
-def asset_count(instance):
-        count = Asset.objects.filter(category_type = instance.category_type,organization = instance.organization)
-        count = len(count)
-
-        Category = AssetCategory.getCategory(
-            instance.category_type.id, instance.organization.organization_uuid)
-        Category.quantity = count
-        Category.save()
-
-@receiver(post_save, sender=Asset)
-def updateAssentQuantity(sender, instance, **kwargs):
-    # count the number of assets with the same category and store in the category_asset quantity
-    asset_count(instance)
-    
-
-
-@receiver(post_delete, sender=Asset)
-def updateAssentQuantity(sender, instance, **kwargs):
-    asset_count(instance)
-
-
 class Borrowd_Asset(models.Model):
     '''
     models for the assets dorrowed
@@ -206,3 +185,47 @@ class Borrowd_Asset(models.Model):
         returns the lates infomation about an asset by it primary key
         '''
         return Borrowd_Asset.objects.filter(asset=x).last()
+
+# Post save functioins
+# Assets Post save
+def asset_count(instance):
+        count = Asset.objects.filter(category_type = instance.category_type,organization = instance.organization)
+        count = len(count)
+
+        Category = AssetCategory.getCategory(
+            instance.category_type.id, instance.organization.organization_uuid)
+        Category.quantity = count
+        Category.save()
+
+@receiver(post_save, sender=Asset)
+def updateAssentQuantityOnSave(sender, instance, **kwargs):
+    # count the number of assets with the same category and store in the category_asset quantity
+    asset_count(instance)
+    
+
+
+@receiver(post_delete, sender=Asset)
+def updateAssentQuantityOnDelete(sender, instance, **kwargs):
+    asset_count(instance)
+
+
+# borrowd assets post save
+# @receiver(post_save, sender=Borrowd_Asset)
+# def updateAssentBorrowed(sender, instance, **kwargs):
+#     instance_type = instance.asset.category_type
+#     lab = instance.asset.organization
+#     status = instance.asset.status
+#     print(instance_type,lab,status)
+#     count = Asset.objects.filter(category_type = instance_type,organization = lab,status =status)
+#     count = len(count)
+#     Category = AssetCategory.getCategory(
+#         instance.category_type.id, instance.organization.organization_uuid)
+
+#     if instance.asset.status == 'Borrowed':
+#         Category.borrowed_assets = count
+#         Category.save()
+
+
+
+
+

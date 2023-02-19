@@ -94,8 +94,7 @@
                                             <td>{{item.name}}</td>
                                             <td>{{item.status}}</td>
                                             <td>{{item.condition}}</td>
-                                            {% comment %} <td class="fw-bold">{{item.returned}}</td> {% endcomment %}
-                                            {% if not item.returned %}
+                                            {% if item.status == 'Borrowed' %}
                                             <td><a href = {% url 'return assets' organizationUUID item.pk %}>Mark as Returned</a></td>
                                             {% endif %}
                                         </tr>
