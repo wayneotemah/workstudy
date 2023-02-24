@@ -237,9 +237,9 @@ def getAssetCategoryDetails(request, uuid, category_pk):
     if request.method == "GET":
         helper = AssetsHelper(user=request.user, uuid=uuid)
         context = helper.get_nav_details()
-        item = AssetCategory.getCategory(category_pk, uuid)
-        if item:  # it the item existes in the borrowed table
-            context['item_category'] = item
+        category = AssetCategory.getCategory(category_pk, uuid)
+        if category:  
+            context['item_category'] = category
             context['items'] = Asset.getOrgAssetsByCategory(category_pk, uuid)
 
             return render(request, 'category_asset_details.html', context=context)

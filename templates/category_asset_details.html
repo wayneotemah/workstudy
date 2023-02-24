@@ -95,7 +95,7 @@
                                             <td>{{item.status}}</td>
                                             <td>{{item.condition}}</td>
                                             {% if item.status == 'Borrowed' %}
-                                            <td><a href = {% url 'return assets' organizationUUID item.pk %}>Mark as Returned</a></td>
+                                            <td><a href = {% url 'borrowed assets' organizationUUID %}>Returned</a></td>
                                             {% endif %}
                                         </tr>
                                     {% endfor %}

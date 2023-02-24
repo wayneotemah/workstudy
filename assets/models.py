@@ -59,7 +59,7 @@ class AssetCategory(models.Model):
     @staticmethod
     def getCategory(x, y):
         '''
-        Use asset category to get instance
+        get asset category to get instance
         x -> asset category name ie must be in asset_categories choices
         y -> asset organization/lab 
         '''
@@ -197,16 +197,16 @@ def asset_count(instance):
         Category.quantity = count
         Category.save()
 
-@receiver(post_save, sender=Asset)
-def updateAssentQuantityOnSave(sender, instance, **kwargs):
-    # count the number of assets with the same category and store in the category_asset quantity
-    asset_count(instance)
+# @receiver(post_save, sender=Asset)
+# def updateAssentQuantityOnSave(sender, instance, **kwargs):
+#     # count the number of assets with the same category and store in the category_asset quantity
+#     asset_count(instance)
     
 
 
-@receiver(post_delete, sender=Asset)
-def updateAssentQuantityOnDelete(sender, instance, **kwargs):
-    asset_count(instance)
+# @receiver(post_delete, sender=Asset)
+# def updateAssentQuantityOnDelete(sender, instance, **kwargs):
+#     asset_count(instance)
 
 
 # borrowd assets post save
