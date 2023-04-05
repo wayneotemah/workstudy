@@ -1,4 +1,4 @@
-{% extends 'navigation.html' %}
+{% extends 'team/navigation.html' %}
 {% block innercontent %}
 
 {% block orgName %}
@@ -107,7 +107,7 @@
                         
                             </div>
 
-                            <div class="card">
+                            {% comment %} <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Pages</h5>
                                 <nav aria-label="...">
@@ -133,7 +133,7 @@
                                 </nav><!-- End Disabled and active states -->
                 
                             </div>
-                            </div>
+                            </div> {% endcomment %}
                             
                         </div>
                         {% else %}

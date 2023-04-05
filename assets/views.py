@@ -27,7 +27,7 @@ def assets(request, uuid):
     paginator = Paginator(assets, 5)
     page_obj = paginator.get_page(page_number)
     context['assets'] = page_obj
-    return render(request, "assets.html", context=context)
+    return render(request, "team/assets.html", context=context)
 
 
 @login_required(login_url=LOGIN_URL)
@@ -43,7 +43,7 @@ def borrowed_assets(request, uuid):
         paginator = Paginator(borrowed_assets, 5)
         page_obj = paginator.get_page(page_number)
         context['borrowed_assets'] = page_obj
-        return render(request, "borrowed.html", context=context)
+        return render(request, "team/borrowed.html", context=context)
     if request.method == "POST":
         # posting borrowed item
         now = datetime.datetime.now()
@@ -69,7 +69,7 @@ def borrowed_assets(request, uuid):
                 "message": f"Please contact the devs and notify the off the error \nerror is: \n{e}"
             }
             messages.warning(request, "Unexpected Exception error has risen")
-            return render(request, "errorpage.html", context=context)
+            return render(request, "team/errorpage.html", context=context)
         else:
             # successfully added item on
             asset.status = "Borrowed"
@@ -84,7 +84,7 @@ def borrowed_assets_page(request, uuid):
         helper = AssetsHelper(user=request.user, uuid=uuid)
         context = helper.get_nav_details()
         context['assets'] = helper.getAvailbleAssets()
-        return render(request, "addborrowed.html", context=context)
+        return render(request, "team/addborrowed.html", context=context)
 
 
 @login_required(login_url=LOGIN_URL) 
@@ -94,7 +94,7 @@ def post_asset(request, uuid,category_pk):
         helper = AssetsHelper(user=request.user, uuid=uuid)
         context = helper.get_nav_details()
         context['category_pk'] = category_pk
-        return render(request, "addasset.html", context=context)
+        return render(request, "team/addasset.html", context=context)
     if request.method == "POST":
         # adding asset
             now = datetime.datetime.now()
@@ -126,7 +126,6 @@ def post_asset(request, uuid,category_pk):
                 return redirect(getAssetCategoryDetails, uuid=uuid,category_pk = category_pk)
 
 
-
 @login_required(login_url=LOGIN_URL)
 def assetCategory(request, uuid):
     '''
@@ -144,7 +143,7 @@ def assetCategory(request, uuid):
         paginator = Paginator(assets, 5)
         page_obj = paginator.get_page(page_number)
         context['assets'] = page_obj
-        return render(request, "categoryassets.html", context=context)
+        return render(request, "team/categoryassets.html", context=context)
     elif request.method == "POST":
         category = request.POST["category_type"]
         pic = request.FILES['asset_category_pic']
@@ -159,7 +158,7 @@ def assetCategory(request, uuid):
 
         except IntegrityError as e:
             messages.warning(request, e)
-            return render(request, "errorpage.html", context=context)
+            return render(request, "team/errorpage.html", context=context)
 
         except Exception as e:
             # if anything fails, show error page wtth message
@@ -167,7 +166,7 @@ def assetCategory(request, uuid):
                 "message": f"Please contact the devs and notify the off the error \nerror is: \n{e}"
             }
             messages.warning(request, "Unexpected Exception error has risen")
-            return render(request, "errorpage.html", context=context)
+            return render(request, "team/errorpage.html", context=context)
 
 
 @login_required(login_url=LOGIN_URL)
@@ -178,7 +177,7 @@ def postassetCategory(request, uuid):
     if request.method == "GET":
         helper = AssetsHelper(user=request.user, uuid=uuid)
         context = helper.get_nav_details()
-        return render(request, "addassetcategory.html", context=context)
+        return render(request, "team/addassetcategory.html", context=context)
 
 
 @login_required(login_url=LOGIN_URL)
@@ -198,7 +197,7 @@ def assetDetails(request, uuid, item_pk):
         else:
             context['item'] = item
 
-        return render(request, 'item_asset_details.html', context=context)
+        return render(request, 'team/item_asset_details.html', context=context)
 
 
 @login_required(login_url=LOGIN_URL)
@@ -226,7 +225,7 @@ def return_asset(request, borrowedasset_id, uuid):
         asset.save()  # save the asset instance
         messages.info(
             request, f"{borrowed_item.asset.name} return successfully")
-        return redirect('borrowed assets', uuid=uuid)
+        return redirect('team/borrowed assets', uuid=uuid)
 
 
 @login_required(login_url=LOGIN_URL)
@@ -242,7 +241,7 @@ def getAssetCategoryDetails(request, uuid, category_pk):
             context['item_category'] = category
             context['items'] = Asset.getOrgAssetsByCategory(category_pk, uuid)
 
-            return render(request, 'category_asset_details.html', context=context)
+            return render(request, 'team/category_asset_details.html', context=context)
         # else:  # the item does not exist in the borrowed table seach in item talbe
         #     item = Asset.getSingleAsset(asset_pk)
         #     context['item'] = item
