@@ -36,7 +36,7 @@ def dashboard_redirect(request):
         context = {
             "message": "We have noticed you are a lab supervisor, the supervisor dashboard is under development"
         }
-        return render(request, "errorpage.html", context=context)
+        return render(request, "team/errorpage.html", context=context)
 
 
 @login_required(login_url=LOGIN_URL)
@@ -49,7 +49,7 @@ def dashboard(request, uuid):
     context["my_schedule"] = helper.latestSchdule()
     context["issues"] = Issue.getUserList(request.user)
     context["borrowedItems"] = Borrowd_Asset.getBorrowedAssets(uuid)
-    return render(request, "dashboard.html", context=context)
+    return render(request, "team/dashboard.html", context=context)
 
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
@@ -57,7 +57,7 @@ def roles(request, uuid):
     helper = RolesHelper(user=request.user, uuid=uuid)
     context = helper.get_nav_details()
     context['roles'] = helper.get_roles()
-    return render(request, "roles.html", context=context)
+    return render(request, "team/roles.html", context=context)
 
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
@@ -65,7 +65,7 @@ def myteam(request, uuid):
     helper = TeamsHelper(user=request.user, uuid=uuid)
     context = helper.get_nav_details()
     context['team'] = helper.get_members()
-    return render(request, "team.html", context=context)
+    return render(request, "team/team.html", context=context)
 
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
@@ -79,7 +79,7 @@ def issues(request, uuid):
     paginator = Paginator(issues, 5)
     page_obj = paginator.get_page(page_number)
     context['issues'] = page_obj
-    return render(request, "issues.html", context=context)
+    return render(request, "team/issues.html", context=context)
 
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
@@ -109,7 +109,7 @@ def raiseIssue(request, uuid):
     if request.method == "GET":
         helper = UserDetailsHelper(user=request.user, uuid=uuid)
         context = helper.get_nav_details()
-        return render(request, "addissue.html", context=context)
+        return render(request, "team/addissue.html", context=context)
 
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
@@ -117,7 +117,7 @@ def getIssueDetails(request, uuid, issue_pk):
     helper = IssuessHelper(user=request.user, uuid=uuid)
     context = helper.get_nav_details()
     context["issue"] = Issue.getIssueByPk(issue_pk)
-    return render(request, "issuedetails.html", context=context)
+    return render(request, "team/issuedetails.html", context=context)
 
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
@@ -125,7 +125,7 @@ def profile(request, uuid):
     if request.method == "GET":
         helper = UserDetailsHelper(user=request.user, uuid=uuid)
         context = helper.get_profile()
-        return render(request, "users-profile.html", context=context)
+        return render(request, "team/users-profile.html", context=context)
 
 
 @login_required(login_url=LOGIN_URL)  # type: ignore

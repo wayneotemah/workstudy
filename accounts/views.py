@@ -25,10 +25,10 @@ def sign_in(request):
             return redirect(organization)
         else:
             messages.error(request, 'Wrong email and password.')
-            return render(request, "pages-login.html")
+            return render(request, "team/pages-login.html")
 
     elif request.method == "GET":
-        return render(request, "pages-login.html")
+        return render(request, "team/pages-login.html")
 
 
 def sign_up(request):
@@ -36,7 +36,7 @@ def sign_up(request):
         email = request.POST['email']
         if CustomUser.user_exists(email):
             messages.info(request, 'Your account already exists, please login')
-            return render(request, "pages-login.html")
+            return render(request, "team/pages-login.html")
 
         else:
 
@@ -53,21 +53,21 @@ def sign_up(request):
                 user.save()
                 if user is not None:
                     messages.info(request, 'Account created please login')
-                    return render(request, "pages-login.html")
+                    return render(request, "team/pages-login.html")
             except IntegrityError:
                 messages.error(
                     request, 'Phone number already exists.')
-                return render(request, "pages-register.html")
+                return render(request, "team/pages-register.html")
             else:
                 """
                 something went wront.
                 """
                 messages.warning(
                     request, 'Something went wrong while creating you account, Please infrom the admin or devs')
-                return render(request, "pages-register.html")
+                return render(request, "team/pages-register.html")
 
     elif request.method == "GET":
-        return render(request, "pages-register.html")
+        return render(request, "team/pages-register.html")
 
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
@@ -82,10 +82,10 @@ def createprofile(request):
             newAccount.save()
             return redirect(organization)
         except IntegrityError:
-            return render(request, "createprofile.html", {"message": "Your account already exists."})
+            return render(request, "team/createprofile.html", {"message": "Your account already exists."})
 
     elif request.method == "GET":
-        return render(request, "createprofile.html")
+        return render(request, "team/createprofile.html")
 
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
@@ -96,7 +96,7 @@ def organization(request):
     except ObjectDoesNotExist as e:
         messages.info(
             request, 'It seems you dont have a profile, lets get that.')
-        return render(request, "createprofile.html")
+        return render(request, "team/createprofile.html")
 
     organization_list = Organization.get_organizations(user)
     if not organization_list:
@@ -119,7 +119,7 @@ def organization(request):
         "organization_name": organization_list.name,
         "organization_uuid": organization_list.organization_uuid
     }
-    return render(request, "choose_organization.html", context=context)
+    return render(request, "team/choose_organization.html", context=context)
 
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
@@ -135,7 +135,7 @@ def create_organization(request):
         except ObjectDoesNotExist as e:
             return render(request, "createprofile.html", {"message": "You do not have a profile, please create one"})
         except IntegrityError as e:
-            return render(request, "create_organization.html", {"message": e})
+            return render(request, "team/create_organization.html", {"message": e})
     elif request.method == "GET":
         try:
             # get the users account profile details
@@ -148,14 +148,14 @@ def create_organization(request):
         except ObjectDoesNotExist as e:
             messages.info(
                 request, 'It seems you dont have a profile, lets get that.')
-            return render(request, "createprofile.html")
+            return render(request, "team/createprofile.html")
 
 
 
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
 def account(request):
-    return render(request, "users-profile.html")
+    return render(request, "team/users-profile.html")
 
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
@@ -177,7 +177,7 @@ def schedule(request, uuid):
             # schedule is not full
             messages.success(request, "Date and time was added successfully")
             context['schedule'] = UserRole.getUserSchedule(user)
-            return render(request, "datepicker.html", context=context)
+            return render(request, "team/datepicker.html", context=context)
         else:
             # schedule is full redirect to dashboard
             uuid = UserRole.getOrganization(user).organization_uuid
@@ -185,7 +185,7 @@ def schedule(request, uuid):
 
     if request.method == "GET":
         context['schedule'] = UserRole.getUserSchedule(user)
-        return render(request, "datepicker.html", context=context)
+        return render(request, "team/datepicker.html", context=context)
 
 
 def logout_view(request):
