@@ -95,7 +95,7 @@
                                             <td>{{item.status}}</td>
                                             <td>{{item.condition}}</td>
                                             {% if item.status == 'Borrowed' %}
-                                            <td><a href = {% url 'return assets' organizationUUID item.pk %}>Mark as Returned</a></td>
+                                            <td><a href = {% url 'borrowed assets' organizationUUID %}>Returned</a></td>
                                             {% endif %}
                                         </tr>
                                     {% endfor %}
@@ -107,7 +107,7 @@
                         
                             </div>
 
-                            <div class="card">
+                            {% comment %} <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Pages</h5>
                                 <nav aria-label="...">
@@ -133,7 +133,7 @@
                                 </nav><!-- End Disabled and active states -->
                 
                             </div>
-                            </div>
+                            </div> {% endcomment %}
                             
                         </div>
                         {% else %}

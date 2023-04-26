@@ -24,7 +24,7 @@ def sign_in(request):
             login(request, user)
             return redirect(organization)
         else:
-            messages.error(request, 'Wrong email and password.')
+            messages.error(request, 'Wrong email or password.')
             return render(request, "pages-login.html")
 
     elif request.method == "GET":
@@ -39,7 +39,7 @@ def sign_up(request):
             return render(request, "pages-login.html")
 
         else:
-
+            
             """
             if user does not exist, save detail
             """
@@ -81,10 +81,10 @@ def createprofile(request):
             newAccount.save()
             return redirect(organization)
         except IntegrityError:
-            return render(request, "createprofile.html", {"message": "Your account already exists."})
+            return render(request, "team/createprofile.html", {"message": "Your account already exists."})
 
     elif request.method == "GET":
-        return render(request, "createprofile.html")
+        return render(request, "team/createprofile.html")
 
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
@@ -95,7 +95,7 @@ def organization(request):
     except ObjectDoesNotExist as e:
         messages.info(
             request, 'It seems you dont have a profile, lets get that.')
-        return render(request, "createprofile.html")
+        return render(request, "team/createprofile.html")
 
     organization_list = Organization.get_organizations(user)
     if not organization_list:
@@ -108,17 +108,13 @@ def organization(request):
             organization_list = UserRole.getOrganization(user)
         else:
             messages.info(
-                request, 'It seems you dont have a workstudy location.')
+                request, 'It seems you dont have a workstudy location.Please contact you supervisor to add you to his/her location, then refresh the page')
 
             context = {
-                "message": "You have not been assigned to any workstudy location. Please contact you supervisor to add you to his/her location, the refresh the page"
+                # "organization_name": organization_list.name,
+                # "organization_uuid": organization_list.organization_uuid
             }
-            return render(request, "errorpage.html", context=context)
-    context = {
-        "organization_name": organization_list.name,
-        "organization_uuid": organization_list.organization_uuid
-    }
-    return render(request, "choose_organization.html", context=context)
+            return render(request, "choose_organization.html", context=context)
 
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
@@ -147,14 +143,14 @@ def create_organization(request):
         except ObjectDoesNotExist as e:
             messages.info(
                 request, 'It seems you dont have a profile, lets get that.')
-            return render(request, "createprofile.html")
+            return render(request, "team/createprofile.html")
 
 
 
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
 def account(request):
-    return render(request, "users-profile.html")
+    return render(request, "team/users-profile.html")
 
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
@@ -176,7 +172,7 @@ def schedule(request, uuid):
             # schedule is not full
             messages.success(request, "Date and time was added successfully")
             context['schedule'] = UserRole.getUserSchedule(user)
-            return render(request, "datepicker.html", context=context)
+            return render(request, "team/datepicker.html", context=context)
         else:
             # schedule is full redirect to dashboard
             uuid = UserRole.getOrganization(user).organization_uuid
@@ -184,7 +180,7 @@ def schedule(request, uuid):
 
     if request.method == "GET":
         context['schedule'] = UserRole.getUserSchedule(user)
-        return render(request, "datepicker.html", context=context)
+        return render(request, "team/datepicker.html", context=context)
 
 
 def logout_view(request):
