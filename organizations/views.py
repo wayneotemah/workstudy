@@ -31,12 +31,7 @@ def dashboard_redirect(request):
             messages.info(request, 'You did not select a workstudy location')
             return redirect(organization)
     else:
-        messages.info(
-            request, 'You are a supevisor.')
-        context = {
-            "message": "We have noticed you are a lab supervisor, the supervisor dashboard is under development"
-        }
-        return render(request, "errorpage.html", context=context)
+        return redirect('admin_dashboard',uuid=orgSelectedUUID)
 
 
 @login_required(login_url=LOGIN_URL)

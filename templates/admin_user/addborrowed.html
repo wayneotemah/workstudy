@@ -1,0 +1,84 @@
+{% extends 'navigation.html' %}
+{% block innercontent %}
+
+{% block orgName %}
+
+{{ organizationName }}
+
+{% endblock orgName %}
+
+{% block username %}
+
+{{ username}}
+
+{% endblock username %}
+
+
+{% block role %}
+
+{{ role }}
+
+{% endblock role %}
+
+<main id="main" class="main">
+
+    <div class="card">
+        <div class="card-body">
+        <h5 class="card-title"> Lend out an item</h5>
+
+        <form  method = "post" action = "{% url 'borrowed assets' organizationUUID %}" validate >
+            {% csrf_token %}
+            <div class="row mb-3">
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Item</label>
+                <div class="col-sm-10">
+                    <select name= "Item_id" class="form-select" aria-label="Default select example">
+                    {% for item in assets %}
+                    <option value="{{item.pk}}">{{item.name}}</option>
+                    {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+            <label for="inputText" class="col-sm-2 col-form-label">Borrowers Name</label>
+            <div class="col-sm-10">
+                <input  name ="persons_name"type="text" class="form-control">
+            </div>
+            </div>
+
+            <div class="row mb-3">
+            <label for="inputText" class="col-sm-2 col-form-label">Their contacts</label>
+            <div class="col-sm-10">
+                <input  name ="persons_contacts"type="text" class="form-control">
+            </div>
+            </div>
+
+            <div class="row mb-3">
+            <label for="inputText" class="col-sm-2 col-form-label">Location of use</label>
+            <div class="col-sm-10">
+                <input  name ="location_of_use"type="text" class="form-control">
+            </div>
+            </div>
+
+
+            <div class="row mb-3">
+            </div>
+
+            <div class="modal-footer">
+            <button type="submit" class="btn btn-primary rounded-pill">Submit Form</button>
+
+            <a href={% url 'borrowed assets' organizationUUID %}>
+                <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </a>
+
+        </form><!-- End General Form Elements -->
+
+        </div>
+    </div>
+
+</main>
+
+
+{% endblock innercontent %}

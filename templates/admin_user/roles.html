@@ -1,0 +1,59 @@
+{% extends 'navigation.html' %}
+{% block innercontent %}
+
+{% block orgName %}
+
+{{ organizationName }}
+
+{% endblock orgName %}
+
+
+{% block username %}
+
+{{ username}}
+
+{% endblock %}
+
+{% block role %}
+
+{{ role }}
+
+{% endblock role %}
+
+
+<main id="main" class="main">
+    <div class="col-lg">
+
+
+            <h5 class="card-title">Roles in {{ organizationName }} </h5>
+
+            <!-- Accordion without outline borders -->
+              {% for role in roles %}
+              <div class="accordion-item">
+                  
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">{{role.title}}</h5>  
+                    <p class="card-message">{{role.description}}</p>
+                    <h5 class="card-title">{{role.title}} tasks</h5>  
+                    <!-- List group with active and disabled items -->
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item">{{ role.task_1 }}</li>
+                      <li class="list-group-item">{{ role.task_2 }}</li>
+                      <li class="list-group-item">{{ role.task_3 }}</li>
+                      <li class="list-group-item">{{ role.task_4 }}</li>
+                      <li class="list-group-item">{{ role.task_5 }}</li>
+                      <li class="list-group-item">{{ role.task_6 }}</li>
+                    </ul><!-- End Clean list group -->
+      
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div><!-- End Accordion without outline borders -->
+
+      </div>
+</main>
+
+
+{% endblock innercontent %}

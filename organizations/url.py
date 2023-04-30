@@ -1,6 +1,11 @@
 from django.urls import path
 
-from . import views
+from . import views,views_admin
+
+admin_urls = [
+    path('admin_dashboard/<str:uuid>/',views_admin.admin_dashboard, name = "admin_dashboard")
+]
+
 
 urlpatterns = [
     path('dashboard/<str:uuid>/' ,views.dashboard, name='dashboard'),
@@ -12,4 +17,5 @@ urlpatterns = [
     path('issues/details/<str:uuid>/<int:issue_pk>' ,views.getIssueDetails, name='issues details'),
     path('raiseIssue/<str:uuid>/' ,views.raiseIssue, name='raiseIssue'),
     path('redirect/dashboard',views.dashboard_redirect, name= "dashboard redirect"),
-]
+] + admin_urls
+

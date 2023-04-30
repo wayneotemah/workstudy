@@ -11,6 +11,10 @@ from organizations.models import Organization
 from workstudy.globalsettings import LOGIN_URL
 from roles.models import UserRole
 
+import logging
+
+logger = logging.getLogger('django')
+
 # Create your views here.
 
 
@@ -98,7 +102,7 @@ def organization(request):
             request, 'It seems you dont have a profile, lets get that.')
         return render(request, "team/createprofile.html")
 
-    print(user.is_supervisor)
+    logger.info(f"{request.user} is supervisor: {user.is_supervisor}")
     organization = Organization.get_organizations(user) # check if users is a supervisor
     if  not user.is_supervisor:  # user is not supervisor
 

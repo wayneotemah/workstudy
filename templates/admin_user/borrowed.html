@@ -1,0 +1,133 @@
+{% extends 'navigation.html' %}
+{% block innercontent %}
+
+{% block orgName %}
+
+{{ organizationName }}
+
+{% endblock orgName %}
+
+{% block username %}
+
+{{ username}}
+
+{% endblock %}
+
+{% block role %}
+
+{{ role }}
+
+{% endblock role %}
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Borrowed assets</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Assets</li>
+          <li class="breadcrumb-item active">Borrowed Assets</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <a href= {% url 'borrowedassetspage' organizationUUID %} >
+      <button style="margin-bottom: 15px;" type="button" class="btn btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#fullscreenModal">
+        Lend out a item
+      </button>
+    </a>
+
+    <section class="section dashboard">
+      <div class="row">
+
+        <!-- Left side columns -->
+        <div class="col">
+          <div class="row">
+            <!-- Top Selling -->
+            <div class="col-12">
+              {% if borrowed_assets %}
+              <div class="card top-selling overflow-auto">
+                <div class="card-body pb-0">
+                  <h5 class="card-title">Borrowed items</h5>
+
+                  <table class="table table-borderless">
+                    <thead>
+                      <tr>
+                        <th scope="col">Image</th>
+                        <th scope="col">Location of use</th>
+                        <th scope="col">Picked by</th>
+                        <th scope="col">Picked on</th>
+                        <th scope="col">Returned</th>
+                        <th scope="col">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                  {% for item in borrowed_assets %}
+
+                      <tr>
+                        <th scope="row">
+                          <a href="{% url 'asset details' organizationUUID item.asset.pk %}">  
+                            <img style = "max-width:150px;" src="{{item.asset.pic.url}}" alt="asset image">
+                          </a>
+                        </th>
+                        <td>{{item.location_of_use}}</td>
+                        <td>{{item.person}}</td>
+                        <td>{{item.picked_on}}</td>
+                        <td class="fw-bold">{{item.returned}}</td>
+                        {% if not item.returned %}
+                        <td><a href = {% url 'return assets' organizationUUID item.pk %}>Mark as Returned</a></td>
+                        {% endif %}
+                      </tr>
+                  {% endfor %}
+                    
+
+                    </tbody>
+                  </table>
+
+              
+                </div>
+
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Pages</h5>
+                    <nav aria-label="...">
+                      <ul class="pagination">
+                        {% if borrowed_assets.has_previous %}          
+                        <li class="page-item">
+                          <a class="page-link" href="?page={{ borrowed_assets.previous_page_number }}" tabindex="-1" aria="true">Previous</a>
+                        </li>
+                        {% endif %}
+
+                        
+                        <li class="page-item active" aria-current="page">
+                          <a class="page-link" href="#">{{ borrowed_assets.number }}</a>
+                        </li>
+
+                        {% if borrowed_assets.has_next %}
+                        <li class="page-item">
+                          <a class="page-link" href="?page={{ borrowed_assets.next_page_number }}">Next</a>
+                        </li>
+                        {% endif %}
+
+                      </ul>
+                    </nav><!-- End Disabled and active states -->
+      
+                  </div>
+                </div>
+                
+              </div>
+              {% else %}
+              <h3>No borrowed assets recorded</h3>
+              {% endif %}
+
+            </div><!-- End Top Selling -->
+
+          </div>
+        </div><!-- End Left side columns -->
+
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+{% endblock innercontent %}
