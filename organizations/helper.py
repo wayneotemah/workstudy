@@ -76,7 +76,7 @@ class TeamsHelper(UserDetailsHelper):
 
     def get_members(self):
         user = Account.get_account(self.user)
-        data = UserRole.getTeam(UserRole.getUserOrganizationRoles(user).role) # type : ignore 
+        data = UserRole.getTeam(UserRole.getUserOrganizationRoles(user).role)
         return data
 
 class ReportsHelper(UserDetailsHelper):

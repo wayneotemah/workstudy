@@ -3,7 +3,8 @@ from django.urls import path
 from . import views,views_admin
 
 admin_urls = [
-    path('admin_dashboard/<str:uuid>/',views_admin.admin_dashboard, name = "admin_dashboard")
+    path('admin_dashboard/<str:uuid>/',views_admin.admin_dashboard, name = "admin_dashboard"),
+    path('admin_myteam/<str:uuid>/',views_admin.admin_myteam, name = "admin_myTeam")
 ]
 
 

@@ -48,3 +48,10 @@ class UserAdminDetailsHelper():
         }
         return context
    
+
+class TeamAdminHelper(UserAdminDetailsHelper):
+    def __init__(self, user, uuid) -> None:
+        super().__init__(user, uuid)
+
+    def get_members(self):
+        return UserRole.getUsersInOrganization(self.companyUUID)

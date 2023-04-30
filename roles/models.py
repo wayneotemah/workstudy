@@ -46,7 +46,7 @@ class UserRole(models.Model):
         ('Saturday', 'Saturday'),
     }
     role = models.ForeignKey(Role, verbose_name=_("role"), on_delete=models.CASCADE)
-    assigned_to = models.ForeignKey(Account, verbose_name=_("assigned_to"), on_delete=models.DO_NOTHING,blank = True, null =True)
+    assigned_to = models.ForeignKey(Account, verbose_name=_("assigned_to"),related_name="UserRole", on_delete=models.DO_NOTHING,blank = True, null =True)
     
     day1 = models.CharField(max_length=15,choices=days_option,blank = True, null =True)
     day1_start_time = models.TimeField(blank = True, null =True)
@@ -90,6 +90,14 @@ class UserRole(models.Model):
         role = UserRole.objects.get(assigned_to = x)
         return Organization.objects.get(organization_uuid = role.role.organization.organization_uuid)
     
+    @staticmethod
+    def getUsersInOrganization(x):
+        '''
+        gets a listt of all the accounts working in 
+        x -> org uuid
+        '''
+        return UserRole.objects.filter(role__organization__organization_uuid = x)
+
     @staticmethod
     def check_user_schedule(x):
         role = UserRole.getUserOrganizationRoles(x)
