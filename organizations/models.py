@@ -9,16 +9,20 @@ from django.core.exceptions import ObjectDoesNotExist
 class Organization(models.Model):
     organization_uuid = models.UUIDField(_("Organization's ID"),primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(_('Organization name'),blank = True, null =True,max_length = 100)
-    supervisor = models.OneToOneField(Account,verbose_name=_("Organization's creater"), on_delete=models.CASCADE)
+    supervisor = models.OneToOneField(Account,verbose_name=_("Organization's creater"),related_name="organization",on_delete=models.CASCADE)
     
     def __str__(self) -> str:
-        return self.name  # type: ignore
+        return self.name
 
     def get_owner_details(self):
         return Account.objects.get(account_uuid = self.supervisor)
     
     @staticmethod
     def get_organizations(x):
+        '''
+        get the oganizatioin whose supervisor is x
+        x -> customUser instance
+        '''
         try:
             return Organization.objects.get(supervisor = x)
         except ObjectDoesNotExist as e:

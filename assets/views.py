@@ -69,7 +69,7 @@ def borrowed_assets(request, uuid):
                 "message": f"Please contact the devs and notify the off the error \nerror is: \n{e}"
             }
             messages.warning(request, "Unexpected Exception error has risen")
-            return render(request, "team/errorpage.html", context=context)
+            return render(request, "errorpage.html", context=context)
         else:
             # successfully added item on
             asset.status = "Borrowed"
@@ -158,7 +158,7 @@ def assetCategory(request, uuid):
 
         except IntegrityError as e:
             messages.warning(request, e)
-            return render(request, "team/errorpage.html", context=context)
+            return render(request, "errorpage.html", context=context)
 
         except Exception as e:
             # if anything fails, show error page wtth message
@@ -166,7 +166,7 @@ def assetCategory(request, uuid):
                 "message": f"Please contact the devs and notify the off the error \nerror is: \n{e}"
             }
             messages.warning(request, "Unexpected Exception error has risen")
-            return render(request, "team/errorpage.html", context=context)
+            return render(request, "errorpage.html", context=context)
 
 
 @login_required(login_url=LOGIN_URL)

@@ -36,7 +36,7 @@ def dashboard_redirect(request):
         context = {
             "message": "We have noticed you are a lab supervisor, the supervisor dashboard is under development"
         }
-        return render(request, "team/errorpage.html", context=context)
+        return render(request, "errorpage.html", context=context)
 
 
 @login_required(login_url=LOGIN_URL)
