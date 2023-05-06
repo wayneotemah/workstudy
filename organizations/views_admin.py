@@ -31,5 +31,5 @@ def admin_myteam(request, uuid):
     '''
     helper = TeamAdminHelper(user=request.user, uuid=uuid)
     context = helper.get_nav_details()
-    context['team'] = helper.get_members() 
+    context['team'] = helper.get_members()
     return render(request, "admin_user/team.html", context=context)
