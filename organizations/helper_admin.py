@@ -64,3 +64,16 @@ class RolesAdminHelper(UserAdminDetailsHelper):
     def get_roles(self):
         data = Role.getOrganizationRoles(self.companyUUID)
         return data
+    
+
+class IssuessAdminHelper(UserAdminDetailsHelper):
+    def __init__(self,user,uuid):
+        super().__init__(user,uuid)
+
+
+    def getAllIssuesList(self):
+        return Issue.getList(self.companyUUID)
+
+    def getAllUserIssuesList(self):
+        return Issue.getUserList(self.user)
+
