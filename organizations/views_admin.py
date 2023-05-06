@@ -14,22 +14,41 @@ from organizations.models import Issue, Organization
 
 import logging
 
-logger = logging.getLogger('django')
+logger = logging.getLogger("django")
 
 
 @login_required(login_url=LOGIN_URL)
 def admin_dashboard(request, uuid):
-    
     helper = UserAdminDetailsHelper(user=request.user, uuid=uuid)
     context = helper.get_nav_details()
     return render(request, "admin_user/dashboard.html", context=context)
 
+
 @login_required(login_url=LOGIN_URL)  # type: ignore
 def admin_myteam(request, uuid):
-    '''
+    """
     list of user accounts who work in the organization
-    '''
+    """
     helper = TeamAdminHelper(user=request.user, uuid=uuid)
     context = helper.get_nav_details()
-    context['team'] = helper.get_members()
+    context["team"] = helper.get_members()
     return render(request, "admin_user/team.html", context=context)
+
+
+@login_required(login_url=LOGIN_URL)  # type: ignore
+def admin_roles(request, uuid):
+    helper = RolesAdminHelper(user=request.user, uuid=uuid)
+    context = helper.get_nav_details()
+    context["roles"] = helper.get_roles()
+    return render(request, "admin_user/roles.html", context=context)
+
+
+@login_required(login_url=LOGIN_URL)  # type: ignore
+def admin_roles_form(request, uuid):
+    if request.method == "GET":
+        helper = RolesAdminHelper(user=request.user, uuid=uuid)
+        context = helper.get_nav_details()
+        context["roles"] = helper.get_roles()
+        return render(request, "admin_user/roleform.html", context=context)
+    if request.method == "POST":
+        pass

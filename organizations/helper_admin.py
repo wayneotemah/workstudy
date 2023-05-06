@@ -55,3 +55,12 @@ class TeamAdminHelper(UserAdminDetailsHelper):
 
     def get_members(self):
         return UserRole.getUsersInOrganization(self.companyUUID)
+    
+
+class RolesAdminHelper(UserAdminDetailsHelper):
+    def __init__(self,user,uuid):
+        super().__init__(user,uuid)
+
+    def get_roles(self):
+        data = Role.getOrganizationRoles(self.companyUUID)
+        return data

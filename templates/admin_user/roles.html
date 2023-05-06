@@ -13,6 +13,11 @@
 
 
             <h5 class="card-title">Roles in {{ organizationName }} </h5>
+            <a href= {% url 'admin_rolesfrom' organizationUUID %} >
+              <button style="margin-bottom: 15px;" type="button" class="btn btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#fullscreenModal">
+                Add a new role
+              </button>
+            </a>
 
             <!-- Accordion without outline borders -->
               {% for role in roles %}
