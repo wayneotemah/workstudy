@@ -78,7 +78,7 @@ def admin_roles_form(request, uuid):
             return redirect(admin_roles_form, uuid)
         except Exception as e:
             context = {
-                "message": f"Please contact the devs and notify the off the error \nerror is: \n{e}"
+                "message": f"Please contact the devs and notify them of the error \nerror is: \n{e}"
             }
             messages.warning(request, "Unexpected Exception error has risen")
             return render(request, "errorpage.html", context=context)
