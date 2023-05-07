@@ -5,9 +5,10 @@ from . import views,views_admin
 admin_urls = [
     path('admin_dashboard/<str:uuid>/',views_admin.admin_dashboard, name = "admin_dashboard"),
     path('admin_myteam/<str:uuid>/',views_admin.admin_myteam, name = "admin_myTeam"),
+    path('admin_team/profile/<str:uuid>/<str:account_uuid>',views_admin.admin_member_profile, name = "admin_member_profile"),
     path('admin_roles/<str:uuid>/',views_admin.admin_roles, name = "admin_roles"),
     path('admin_rolesform/<str:uuid>/',views_admin.admin_roles_form, name = "admin_rolesfrom"),
-    path('admin_issues/<str:uuid>/',views_admin.admin_issues, name = "admin_issues")
+    path('admin_issues/<str:uuid>/',views_admin.admin_issues, name = "admin_issues"),
 ]
 
 

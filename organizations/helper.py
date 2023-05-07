@@ -47,7 +47,6 @@ class UserDetailsHelper():
             "firstname":firstname
 
         }
-        print(context)
         return context
      
 

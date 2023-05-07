@@ -35,7 +35,30 @@ def admin_myteam(request, uuid):
     return render(request, "admin_user/team.html", context=context)
 
 
-@login_required(login_url=LOGIN_URL)  # type: ignore
+@login_required(login_url=LOGIN_URL)
+def admin_member_profile(request, uuid, account_uuid):
+    if request.method == "GET":
+        helper = TeamAdminHelper(
+            user=request.user, uuid=uuid, account_uuid=account_uuid
+        )
+        context = helper.get_nav_details()
+        context["member_profile"] = helper.get_member_profile()
+        return render(request, "admin_user/teamprofile.html", context=context)
+    if request.method == "POST":
+        if "accountStatus" in request.POST:
+            active = True if request.POST["accountStatus"] == "on" else False
+        else:
+            active = False
+
+        member_Custom_instance = CustomUser.objects.get(account=account_uuid)
+        member_Custom_instance.is_active = active
+        member_Custom_instance.save()
+        state = "active" if active else "inactive"
+        messages.success(request, f"User has been made {state}")
+        return redirect(admin_member_profile, uuid, account_uuid)
+
+
+@login_required(login_url=LOGIN_URL)
 def admin_roles(request, uuid):
     helper = RolesAdminHelper(user=request.user, uuid=uuid)
     context = helper.get_nav_details()
@@ -43,7 +66,7 @@ def admin_roles(request, uuid):
     return render(request, "admin_user/roles.html", context=context)
 
 
-@login_required(login_url=LOGIN_URL)  # type: ignore
+@login_required(login_url=LOGIN_URL)
 def admin_roles_form(request, uuid):
     if request.method == "GET":
         helper = RolesAdminHelper(user=request.user, uuid=uuid)
