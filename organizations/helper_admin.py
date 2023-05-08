@@ -90,6 +90,11 @@ class TeamAdminHelper(UserAdminDetailsHelper):
             "account_uuid":account_uuid,
         }
         return context
+    
+    def get_unassigned_user(self):
+        return Account.objects.filter(UserRole = None)
+    
+        pass
 
 
 class RolesAdminHelper(UserAdminDetailsHelper):

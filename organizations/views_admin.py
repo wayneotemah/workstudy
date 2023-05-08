@@ -36,6 +36,27 @@ def admin_myteam(request, uuid):
 
 
 @login_required(login_url=LOGIN_URL)
+def new_members(request, uuid):
+    """
+    add a team to supervisors organization
+    """
+    if request.method == "GET":
+        helper = TeamAdminHelper(user=request.user, uuid=uuid)
+        context = helper.get_nav_details()
+        context["accounts"] = helper.get_unassigned_user()
+        return render(request, "admin_user/addteammember.html", context=context)
+
+
+@login_required(login_url=LOGIN_URL)
+def add_new_member(request, uuid, account_uuid=None):
+    if request.method == "GET":
+        new_member = Account.objects.get(account_uuid = account_uuid)
+        new_member.role
+        messages.success(request, f"Is all good 👍")
+        return redirect(admin_myteam, uuid)
+
+
+@login_required(login_url=LOGIN_URL)
 def admin_member_profile(request, uuid, account_uuid):
     if request.method == "GET":
         helper = TeamAdminHelper(

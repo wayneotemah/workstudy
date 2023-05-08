@@ -9,9 +9,6 @@ from datetime import date, timedelta, datetime
 import calendar
 
 
-# Create your models here.
-
-
 class Role(models.Model):
 
     title = models.CharField(_('Title'),blank = True, null =True,max_length = 100)

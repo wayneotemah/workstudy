@@ -1,0 +1,64 @@
+{% extends 'admin_user\navigation.html' %}
+
+{% block innercontent %} 
+
+{% block orgName%} {{organizationName }} {% endblock orgName %} 
+{% block username %} {{username}} {%endblock %}
+
+{% block role %} {{ role }} {% endblock role %}
+
+
+<main id="main" class="main">
+
+    {% if   accounts %} 
+    <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">My Team Member</h5>
+  
+          <!-- Default Table -->
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Admission number</th>
+                <th scope="col">Name</th>
+                <th scope="col">contacts </th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for account in accounts %}
+              <tr>
+                <th scope="row">{{account.account_uuid}}</th>
+                <td>{{account.first_name}}</td>
+                <td>{{account.user.phone_number}}</td>
+                <th>
+                  <a
+                    href="{% url 'admin_add_to_team' organizationUUID account.account_uuid %}"
+                    >Add to team
+                    <i class="bi bi-person-plus-fill"></i>
+                  </a>
+                </th>
+                <td>{{member.assigned_to.user.date_joined}}</td>
+              </tr>
+              <tr>
+              {% endfor %}
+                
+            </tbody>
+          </table>
+        </div>
+    </div>
+    {% else %}
+    <div class="container">
+      <section
+        class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center"
+      >
+      <h5 class="card-title">No Users to add to your the lab/ please inform them to create an account on the platform</h6> 
+      </section>
+    </div>
+    
+    {% endif %} 
+
+</main>
+
+
+{% endblock innercontent %}
