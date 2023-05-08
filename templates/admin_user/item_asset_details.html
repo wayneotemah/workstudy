@@ -1,6 +1,11 @@
-{% extends 'team\navigation.html' %} {% block innercontent %} {% block orgName
-%} {{ organizationName }} {% endblock orgName %} {% block username %} {{
-username}} {% endblock %} {% block role %} {{ role }} {% endblock role %}
+{% extends 'admin_user\navigation.html' %}
+
+{% block innercontent %} 
+
+{% block orgName%} {{organizationName }} {% endblock orgName %} 
+{% block username %} {{username}} {%endblock %}
+
+{% block role %} {{ role }} {% endblock role %}
 
 <main id="main" class="main">
   <div class="pagetitle">

@@ -11,6 +11,10 @@ from organizations.models import Organization
 from workstudy.globalsettings import LOGIN_URL
 from roles.models import UserRole
 
+import logging
+
+logger = logging.getLogger('django')
+
 # Create your views here.
 
 
@@ -87,34 +91,54 @@ def createprofile(request):
         return render(request, "team/createprofile.html")
 
 
-@login_required(login_url=LOGIN_URL)  # type: ignore
+@login_required(login_url=LOGIN_URL)
 def organization(request):
     try:
         # get the users account profile details
-        user = Account.get_account(request.user)  # type: ignore
+        user = Account.get_account(request.user) 
     except ObjectDoesNotExist as e:
         messages.info(
             request, 'It seems you dont have a profile, lets get that.')
         return render(request, "team/createprofile.html")
 
-    organization_list = Organization.get_organizations(user)
-    if not organization_list:
-        # check if user has a role
+    logger.info(f"{request.user} is supervisor: {user.is_supervisor}")
+    organization = Organization.get_organizations(user) # check if users is a supervisor
+    if  not user.is_supervisor:  # user is not supervisor
 
-        role = UserRole.getUserOrganizationRoles(user)
+        role = UserRole.getUserOrganizationRoles(user) # check if user has a role
         if role:
             # use the user to get the organization
 
-            organization_list = UserRole.getOrganization(user)
-        else:
-            messages.info(
-                request, 'It seems you dont have a workstudy location.Please contact you supervisor to add you to his/her location, then refresh the page')
-
+            organization = UserRole.getOrganization(user)
             context = {
-                # "organization_name": organization_list.name,
-                # "organization_uuid": organization_list.organization_uuid
+                "organization_name": organization.name,
+                "organization_uuid": organization.organization_uuid
             }
             return render(request, "choose_organization.html", context=context)
+
+        else:
+            # if no roles, user has not be assigend to any work location
+            messages.info(
+                request, 'No work location🥲')
+            context = {
+                "message":"""It seems you dont have a workstudy location.Please contact you supervisor
+                            to add you to his/her location, then refresh the page.
+                            If you want to create an organization, contact the platform developers"""
+            }
+            return render(request, "errorpage.html", context=context)
+    if  user.is_supervisor:  # user is supervisour
+
+        if organization:
+            
+
+            context = {
+                    "organization_name": organization.name,
+                    "organization_uuid": organization.organization_uuid
+                }
+        else: 
+            messages.info(request, "No organization, create one")
+            context = {}
+        return render(request, "choose_organization.html", context=context)
 
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
@@ -130,14 +154,18 @@ def create_organization(request):
         except ObjectDoesNotExist as e:
             return render(request, "createprofile.html", {"message": "You do not have a profile, please create one"})
         except IntegrityError as e:
-            return render(request, "create_organization.html", {"message": e})
+            messages.warning(request, "You already created this organization")
+            return render(request, "create_organization.html", {"message": "Already exists"})
     elif request.method == "GET":
         try:
             # get the users account profile details
             user = Account.get_account(request.user)
-            if user.is_supervisor:
+            if user.is_supervisor: 
+                # chech if user is a supervisor the allow them to create the organization
+
                 return render(request, "create_organization.html")
             elif not user.is_supervisor:
+                messages.info(request, 'No system privileges to create an ornanizations')
                 return redirect(organization)
 
         except ObjectDoesNotExist as e:

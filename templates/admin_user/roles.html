@@ -1,24 +1,11 @@
-{% extends 'team\navigation.html' %}
-{% block innercontent %}
+{% extends 'admin_user\navigation.html' %}
 
-{% block orgName %}
+{% block innercontent %} 
 
-{{ organizationName }}
+{% block orgName%} {{organizationName }} {% endblock orgName %} 
+{% block username %} {{username}} {%endblock %}
 
-{% endblock orgName %}
-
-
-{% block username %}
-
-{{ username}}
-
-{% endblock %}
-
-{% block role %}
-
-{{ role }}
-
-{% endblock role %}
+{% block role %} {{ role }} {% endblock role %}
 
 
 <main id="main" class="main">
@@ -26,6 +13,11 @@
 
 
             <h5 class="card-title">Roles in {{ organizationName }} </h5>
+            <a href= {% url 'admin_rolesfrom' organizationUUID %} >
+              <button style="margin-bottom: 15px;" type="button" class="btn btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#fullscreenModal">
+                Add a new role
+              </button>
+            </a>
 
             <!-- Accordion without outline borders -->
               {% for role in roles %}

@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>You do not have a work schedule</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">Please select your work schedule</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section dashboard">
+      <div class="row">
+        <div class="col-lg-6">
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Form</h5>
+
+              <!-- General Form Elements -->
+              <form action = {% url 'pick my schedule' orgSelectedUUID %} method ="post" >
+                {% csrf_token %}
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">Day</label>
+                    <div class="col-sm-10">
+                      <select name ="day" class="form-select" aria-label="Default select example" required>
+                        <option selected></option>
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thurday">Thurday</option>
+                        <option value="Friday">Friday</option>
+                        <option value="Saturday">Saturday</option>
+                      </select>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                  <label for="inputTime" class="col-sm-2 col-form-label">Time in</label>
+                  <div class="col-sm-10">
+                    <input type="time" name ="start_time" class="form-control" required>
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="inputTime" class="col-sm-2 col-form-label">Time out</label>
+                    <div class="col-sm-10">
+                      <input type="time" name ="end_time" class="form-control" required>
+                    </div>
+                  </div>
+
+                <div class="row mb-3">
+                  <div class="col-sm-10">
+                    <button class="btn btn-secondary" >Add day and time</button>
+                  </div>
+                </div>
+
+              </form><!-- End General Form Elements -->
+
+            </div>
+          </div>         
+        </div>
+
+        <div class="col-lg-6">
+          <div class="card">
+            <div class="card-body">
+              {% if schedule %}
+              <h5 class="card-title">Your Time schedule</h5>
+              {% endif %}
+              <div id ="schedule" >
+                {% if schedule %}
+                  {% for item in schedule %}
+                    <div class="list-group" style = "padding: 10px 0px;">
+                      <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+                        <div class="d-flex w-100 justify-content-between">
+                          <h5 class="mb-1">{{item.day}} {{item.start_time}} - {{item.end_time}}</h5>
+                          <small> Hours</small>
+                        </div>
+                      </a>
+                    </div>
+                  {% endfor %}
+                  <div style="margin: 20px 0px;" >
+                    <a href ="{% url 'dashboard' orgSelectedUUID %}">
+                      <button class="btn btn-primary" >Save and continue</button>
+                    </a>
+                  </div>
+                {% else %}
+                <h4 class="card-title">You can add as many as six working shifts across the whole week</h4>
+                {% endif %}
+              </div>
+               
+              <div id="continueButton">
+                       
+              </div>  
+            </div>
+          </div>
+        </div
+
+      </div>
+    </section>
+
+
+  </main><!-- End #main -->
+
+
+  {% comment %} <script>
+    const schedule = document.querySelector('#schedule');
+    const saveContinue = document.querySelector('#continueButton');
+
+    function addSaveButton(){
+      saveContinue.innerHTML =`
+      <div style="margin: 20px 0px;" >
+        <a href ="#">
+          <button class="btn btn-primary" >Save and continue</button>
+        </a>
+      </div>
+      ` 
+    }  
+    function sendSchedule(){
+      var start_time = document.getElementsByName("start_time")[0].value;
+      var end_time = document.getElementsByName("end_time")[0].value;
+      var day = document.getElementsByName("day")[0].value;
+
+      console.log(end_time);
+      console.log(start_time);
+      var hours = Math.abs(end_time - start_time)
+
+      schedule.innerHTML += `
+      <div class="list-group" style = "padding: 10px 0px;">
+        <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">${day}: ${start_time} - ${end_time}</h5>
+            {% comment %} <small>${hours} Hours</small> {% endcomment %}
+          {% comment %} </div>
+        </a>
+      </div>
+      `;
+      addSaveButton();
+    }; {% endcomment %}
+  
+
+  </script>
+{% endblock content %}

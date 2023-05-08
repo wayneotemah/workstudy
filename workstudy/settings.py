@@ -3,6 +3,9 @@ from pathlib import Path
 from dotenv import load_dotenv #type: ignore
 import dj_database_url
 
+import logging
+from django.utils.log import DEFAULT_LOGGING
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -100,3 +103,18 @@ STATICFILES_DIRS = ( os.path.join('static'), )
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {"class": "logging.StreamHandler"},
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": "INFO",
+        },
+    }
+}

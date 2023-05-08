@@ -13,13 +13,13 @@ class UserDetailsHelper():
 
         userAccount = Account.get_account(self.user)
         username = " ".join([userAccount.first_name,userAccount.last_name])   # type: ignore
-        role = UserRole.getUserOrganizationRoles(userAccount).role.title # type: ignore
+        # role = UserRole.getUserOrganizationRoles(userAccount).role.title # type: ignore
 
         context = {
             "username":username,
             "organizationName":organizationName,
             "organizationUUID":self.companyUUID,
-            "role": role,
+            # "role": role,
         }
         return context
 
@@ -47,7 +47,6 @@ class UserDetailsHelper():
             "firstname":firstname
 
         }
-        print(context)
         return context
      
 
@@ -76,7 +75,7 @@ class TeamsHelper(UserDetailsHelper):
 
     def get_members(self):
         user = Account.get_account(self.user)
-        data = UserRole.getTeam(UserRole.getUserOrganizationRoles(user).role) # type : ignore 
+        data = UserRole.getTeam(UserRole.getUserOrganizationRoles(user).role)
         return data
 
 class ReportsHelper(UserDetailsHelper):

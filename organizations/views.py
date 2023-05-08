@@ -31,12 +31,7 @@ def dashboard_redirect(request):
             messages.info(request, 'You did not select a workstudy location')
             return redirect(organization)
     else:
-        messages.info(
-            request, 'You are a supevisor.')
-        context = {
-            "message": "We have noticed you are a lab supervisor, the supervisor dashboard is under development"
-        }
-        return render(request, "team/errorpage.html", context=context)
+        return redirect('admin_dashboard',uuid=orgSelectedUUID)
 
 
 @login_required(login_url=LOGIN_URL)
@@ -60,7 +55,7 @@ def roles(request, uuid):
     return render(request, "team/roles.html", context=context)
 
 
-@login_required(login_url=LOGIN_URL)  # type: ignore
+@login_required(login_url=LOGIN_URL)
 def myteam(request, uuid):
     helper = TeamsHelper(user=request.user, uuid=uuid)
     context = helper.get_nav_details()
@@ -98,7 +93,7 @@ def raiseIssue(request, uuid):
         except Exception as e:
             # unexpected error failing to save issue
             context = {
-                "message": f"Please contact the devs and notify the off the error \nerror is: \n{e}"
+                "message": f"Please contact the devs and notify them of the error \nerror is: \n{e}"
             }
             messages.warning(request, "Unexpected Exception error has risen")
             return render(request, "errorpage.html", context=context)
