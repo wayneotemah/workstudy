@@ -269,27 +269,6 @@ class UserRole(models.Model):
             counter +=1 # increment counter
 
 
-
-        
-
-# def checksixHrrang(x):
-#     now = datetime.now()
-#     current_time = now.strftime("%H:%M")
-#     event_time = x
-#     event_time = datetime.combine(datetime.today(), event_time)
-
-
-#     # Check if the current time is within 30 minutes of the other time
-#     if (now - timedelta(minutes=30) <= event_time <= now + timedelta(hours=6)):
-#         print("The current time is within 30 minutes of the other time.")
-#     else:
-#         print("The current time is not within 30 minutes of the other time.")
-#     print(current_time)
-
-#     print(now) # type: ignore
-#     print(event_time) # type: ignore
-#     pass
-
 class Task(models.Model):
 
     role = models.ForeignKey(Role, verbose_name=_("Role"), on_delete=models.CASCADE)

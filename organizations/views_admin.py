@@ -24,7 +24,7 @@ def admin_dashboard(request, uuid):
     return render(request, "admin_user/dashboard.html", context=context)
 
 
-@login_required(login_url=LOGIN_URL)  # type: ignore
+@login_required(login_url=LOGIN_URL)
 def admin_myteam(request, uuid):
     """
     list of user accounts who work in the organization
@@ -44,15 +44,15 @@ def new_members(request, uuid):
         helper = TeamAdminHelper(user=request.user, uuid=uuid)
         context = helper.get_nav_details()
         context["accounts"] = helper.get_unassigned_user()
+        context["roles"] = Role.objects.filter(organization__organization_uuid=uuid)
         return render(request, "admin_user/addteammember.html", context=context)
-
-
-@login_required(login_url=LOGIN_URL)
-def add_new_member(request, uuid, account_uuid=None):
-    if request.method == "GET":
-        new_member = Account.objects.get(account_uuid = account_uuid)
-        new_member.role
-        messages.success(request, f"Is all good 👍")
+    if request.method == "POST":
+        account_id = request.POST["account_uuid"]
+        role_id = request.POST["role_id"]
+        print(role_id)
+        userrole = UserRole(role_id=role_id, assigned_to_id=account_id)
+        userrole.save()
+        messages.success(request, f"Added new team member👍")
         return redirect(admin_myteam, uuid)
 
 
