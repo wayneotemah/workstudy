@@ -15,11 +15,6 @@ admin_urls = [
         name="new_member_list",
     ),
     path(
-        "admin_addtoteam/<str:uuid>/<str:account_id>",
-        views_admin.add_new_member,
-        name="admin_add_to_team",
-    ),
-    path(
         "admin_team/profile/<str:uuid>/<str:account_uuid>",
         views_admin.admin_member_profile,
         name="admin_member_profile",
@@ -31,6 +26,7 @@ admin_urls = [
         name="admin_rolesfrom",
     ),
     path("admin_issues/<str:uuid>/", views_admin.admin_issues, name="admin_issues"),
+    path("admin_issuesdetails/<str:uuid>/<int:issue_pk>", views_admin.admin_IssueDetails, name="admin_issues_details"),
 ]
 
 

@@ -10,16 +10,10 @@
 
 <main id="main" class="main">
   <div class="pagetitle">
-    <h1>Lab assets</h1>
-    <nav>
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index.html">Assets</a></li>
-        <li class="breadcrumb-item active">Lab assets</li>
-      </ol>
-    </nav>
+    <h1>Lab assets categories</h1>
   </div>
   <!-- End Page Title -->
-  <a href="{% url 'add asset category' organizationUUID %}">
+  <a href="{% url 'admin post assets' organizationUUID %}">
     <button
       style="margin-bottom: 15px"
       type="button"
@@ -64,7 +58,7 @@
                       </td>
                       <td>
                         <a
-                          href="{% url 'asset category details' organizationUUID item.pk %}"
+                          href="{% url 'admin assets details' organizationUUID item.pk %}"
                         >
                           {{item.category}}
                         </a>

@@ -24,7 +24,7 @@ def admin_dashboard(request, uuid):
     return render(request, "admin_user/dashboard.html", context=context)
 
 
-@login_required(login_url=LOGIN_URL)  # type: ignore
+@login_required(login_url=LOGIN_URL)
 def admin_myteam(request, uuid):
     """
     list of user accounts who work in the organization
@@ -44,15 +44,15 @@ def new_members(request, uuid):
         helper = TeamAdminHelper(user=request.user, uuid=uuid)
         context = helper.get_nav_details()
         context["accounts"] = helper.get_unassigned_user()
+        context["roles"] = Role.objects.filter(organization__organization_uuid=uuid)
         return render(request, "admin_user/addteammember.html", context=context)
-
-
-@login_required(login_url=LOGIN_URL)
-def add_new_member(request, uuid, account_uuid=None):
-    if request.method == "GET":
-        new_member = Account.objects.get(account_uuid = account_uuid)
-        new_member.role
-        messages.success(request, f"Is all good 👍")
+    if request.method == "POST":
+        account_id = request.POST["account_uuid"]
+        role_id = request.POST["role_id"]
+        print(role_id)
+        userrole = UserRole(role_id=role_id, assigned_to_id=account_id)
+        userrole.save()
+        messages.success(request, f"Added new team member👍")
         return redirect(admin_myteam, uuid)
 
 
@@ -140,3 +140,31 @@ def admin_issues(request, uuid):
     page_obj = paginator.get_page(page_number)
     context["issues"] = page_obj
     return render(request, "admin_user/issues.html", context=context)
+
+from datetime import datetime
+
+
+@login_required(login_url=LOGIN_URL)
+def admin_IssueDetails(request, uuid, issue_pk):
+    
+    try:
+        if request.method =="GET":
+            helper = UserAdminDetailsHelper(user=request.user, uuid=uuid)
+            context = helper.get_nav_details()
+            context["issue"] = Issue.getIssueByPk(issue_pk)
+            return render(request, "admin_user/issuedetails.html", context=context)
+        elif request.method == "POST":
+                issue = Issue.getIssueByPk(issue_pk)
+                issue.status = request.POST['issue_status']
+                issue.admin_response = request.POST['admin_response']
+                if request.POST['issue_status'] == "Done":
+                    issue.addressed_on = datetime.now()
+
+                issue.save()
+                return redirect(admin_IssueDetails,uuid, issue_pk)
+    except Exception as e:
+        context = {
+            "message": f"Please contact the devs and notify them of the error \nerror is: \n{e}"
+        }
+        messages.warning(request, "Unexpected Exception error has risen")
+        return render(request, "errorpage.html", context=context)

@@ -331,9 +331,9 @@ setTimeout(function() {
 
 
 // modal open  
-$("#open-modal").click(function(){
-$("#exampleModal").modal("show");
-});
+// $("#open-modal").click(function(){
+// $("#exampleModal").modal("show");
+// });
 
 
 

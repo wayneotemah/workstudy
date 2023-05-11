@@ -56,7 +56,7 @@
                   <th>
                     <a
                       href="{% url 'issues details' organizationUUID issue.pk %}"
-                      >{{issue.details}}</a
+                      >{{issue.title}}</a
                     >
                   </th>
                   <td>{{issue.reported_on}}</td>
@@ -64,13 +64,20 @@
                   <td>
                     <span class="badge bg-success">{{issue.status}}</span>
                   </td>
-                  {% endif %} {% if issue.status == 'Pending' %}
+                  {% endif %} {% if issue.status == 'Addressing' %}
                   <td>
-                    <span class="badge bg-warning">{{issue.status}}</span>
+                    <span class="badge bg-primary">{{issue.status}}</span>
                   </td>
-                  {% endif %} {% if issue.status == 'Argent' %}
+                  {% endif %} {% if issue.status == 'Noted pending address' %}
+                  <td><span class="badge bg-info">{{issue.status}}</span></td>
+                  {% endif %}{% if issue.status == 'Urgent attention' %}
                   <td><span class="badge bg-danger">{{issue.status}}</span></td>
+                  {% endif %}{% if issue.status == 'Medium attention' %}
+                  <td><span class="badge bg-warning text-dark">{{issue.status}}</span></td>
+                  {% endif %}{% if issue.status == 'Low attention' %}
+                  <td><span class="badge bg-light text-dark">{{issue.status}}</span></td>
                   {% endif %}
+
                 </tr>
                 {% endfor %}
               </tbody>
@@ -115,10 +122,12 @@
         </div>
 
         {% else %}
-        <div class="ps-3">
-          <span class="text-danger small pt-1 fw-bold"
-            >No issue has been repoted by you</span
+        <div class="container">
+          <section
+            class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center"
           >
+          <h5 class="card-title">You have not raised ay issue</h5>    
+          </section>
         </div>
         {% endif %}
       </div>

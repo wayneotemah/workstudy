@@ -14,7 +14,7 @@
         <div class="card-body">
         <h5 class="card-title"> Lend out an item</h5>
 
-        <form  method = "post" action = "{% url 'borrowed assets' organizationUUID %}" validate >
+        <form  method = "post" action = "{% url 'admin borrow asset' organizationUUID %}" validate >
             {% csrf_token %}
             <div class="row mb-3">
             <div class="row mb-3">
