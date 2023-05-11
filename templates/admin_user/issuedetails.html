@@ -23,7 +23,7 @@
   <div class="container">
     <div class="card">
       <div class="card-body">
-        <h3 class="card-title">{{issue.title}}</h3>
+        <h2 class="card-title">{{issue.title}}</h2>
         <div class="row">
           <div class="col-lg-7 col-md-7 col-sm-6">
             <h4 class="box-title mt-5">Description</h4>
@@ -75,6 +75,11 @@
               </table>
             </div>
           </div>
+
+          <h5 class="box-title mt-5">You's response</h5>
+            <p>
+              {{issue.admin_response}}
+            </p>
         </div>
       </div>
     </div>
@@ -109,7 +114,7 @@
               <div class="col-12">
                 <label for="inputPassword"  class="col col-form-label">Your response as the admin</label>
                 <div class="col-12">
-                  <textarea name = "admin_response" class="form-control" style="height: 100px"></textarea>
+                  <textarea  required name = "admin_response" class="form-control" style="height: 100px"></textarea>
                 </div>
               </div>
             </div>

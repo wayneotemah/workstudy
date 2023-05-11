@@ -65,6 +65,13 @@
               </table>
             </div>
           </div>
+          {% if issue.admin_response %}
+          <h5 class="box-title mt-5">You's response</h5>
+            <p>
+              {{issue.admin_response}}
+            </p>
+          {% endif %}
+        </div>
         </div>
       </div>
     </div>
