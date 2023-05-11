@@ -83,12 +83,13 @@ def raiseIssue(request, uuid):
     if request.method == "POST":
         details = request.POST["details"]
         status = request.POST["status"]
+        title = request.POST["title"]
         now = datetime.datetime.now()
         try:
             reported_by = Account.get_account(request.user)
             organization = Organization.get_organizations_from_uuid(uuid)
             issue = Issue(organization=organization, status=status,
-                          details=details, reported_on=now, reported_by=reported_by)
+                          details=details, reported_on=now, reported_by=reported_by,title=title)
             issue.save()
         except Exception as e:
             # unexpected error failing to save issue

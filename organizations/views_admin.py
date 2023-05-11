@@ -140,3 +140,25 @@ def admin_issues(request, uuid):
     page_obj = paginator.get_page(page_number)
     context["issues"] = page_obj
     return render(request, "admin_user/issues.html", context=context)
+
+
+@login_required(login_url=LOGIN_URL)
+def admin_IssueDetails(request, uuid, issue_pk):
+    if request.method =="GET":
+        helper = UserAdminDetailsHelper(user=request.user, uuid=uuid)
+        context = helper.get_nav_details()
+        context["issue"] = Issue.getIssueByPk(issue_pk)
+        return render(request, "admin_user/issuedetails.html", context=context)
+    elif request.method == "POST":
+        try:
+            issue = Issue.getIssueByPk(issue_pk)
+            issue.status = request.POST['issue_status']
+            issue.admin_response = request.POST['admin_response']
+            issue.save()
+            return redirect(admin_IssueDetails,uuid, issue_pk)
+        except Exception as e:
+            context = {
+                "message": f"Please contact the devs and notify them of the error \nerror is: \n{e}"
+            }
+            messages.warning(request, "Unexpected Exception error has risen")
+            return render(request, "errorpage.html", context=context)

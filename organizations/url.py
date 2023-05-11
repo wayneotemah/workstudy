@@ -26,6 +26,7 @@ admin_urls = [
         name="admin_rolesfrom",
     ),
     path("admin_issues/<str:uuid>/", views_admin.admin_issues, name="admin_issues"),
+    path("admin_issuesdetails/<str:uuid>/<int:issue_pk>", views_admin.admin_IssueDetails, name="admin_issues_details"),
 ]
 
 

@@ -39,15 +39,21 @@ class Organization(models.Model):
 class Issue(models.Model):
     issueStates = {
         ('Done','Done'),
-        ('Argent','Argent'),
-        ('Pending','Pending'),
+        ('Addressing','Addressing'),
+        ('Noted pending address','Noted pending address'),
+        ('Urgent attention','Urgent attention'),
+        ('Medium attention','Medium attention'),
+        ('Low attention','Low attention'),
         
     }
     organization = models.ForeignKey(Organization, verbose_name=_("organization/lab"), on_delete=models.CASCADE)
-    details =models.TextField(verbose_name = _("issue details"), max_length=150)
+    title = models.CharField(_("title of the field"), max_length=100)
+    details =models.TextField(verbose_name = _("issue details"), max_length=400)
     reported_on = models.DateTimeField(verbose_name = _("date reported"))
     status = models.CharField(verbose_name = _("state"), max_length=50, choices=issueStates)
     reported_by = models.ForeignKey(Account, verbose_name=_("reported_by"), on_delete=models.CASCADE)
+    addressed_on = models.DateTimeField(verbose_name = _("addressed reported"),null=True,blank=True),
+    admin_response  = models.TextField(_("admins responses "),null=True,blank=True)
 
     class Meta:
         verbose_name = _("Issue")

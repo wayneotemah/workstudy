@@ -30,20 +30,27 @@
         <form class="row g-3" action ="{% url 'raiseIssue' organizationUUID%}" method = "post" validate>
             {% csrf_token %}
             <div class="col-12">
-                <label for="inputAddress" class="form-label">Explain the matter(100 words)</label>
-                <input type="text" name="details" class="form-control" id="inputAddress" placeholder="Missing VGA | Fault computer with OS problems in lab SC21 ">
+                <label for="inputAddress" class="form-label">Descriptive title (100 characters max)</label>
+                <input type="text" name="title" class="form-control" id="inputAddress" placeholder="Missing VGA | Fault computer with OS problems in lab SC21 ">
             </div>
             <div class="col-12">
-                <label class="col-sm-2 col-form-label">State of the issue</label>
-                <div class="col-sm-10">
+                <label class="form-label">State of the issue</label>
+                <div>
                     <select name ="status" class="form-select" aria-label="Default select example" required>
                         <option selected></option>
-                        <option value="Done">Done</option>
-                        <option value="Argent">Argent</option>
-                        <option value="Pending">Pending</option>
+                        <option value="Done">Low attention</option>
+                        <option value="Argent">Medium attention</option>
+                        <option value="Urgent">Urgent</option>
                     </select>
                 </div>
             </div>
+
+            <div class="col-12">
+                <label for="inputPassword" class="form-label">Describe the issues(400 characters max)</label>
+                <div >
+                  <textarea name="details"  class="form-control" style="height: 100px"></textarea>
+                </div>
+              </div>
 
             <div class="text-center">
                 <button type="submit" class="btn btn-primary rounded-pill">Submit</button>
