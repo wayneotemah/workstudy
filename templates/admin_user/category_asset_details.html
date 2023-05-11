@@ -30,8 +30,6 @@
                         </div>
                     </div>
                     <div class="col-lg-7 col-md-7 col-sm-6">
-                        <h4 class="box-title mt-5">Asset description</h4>
-                        <p>Lorem Ipsum available,but the majority have suffered alteration in some form,by injected humour,or randomised words which don't look even slightly believable.but the majority have suffered alteration in some form,by injected humour</p>
                         <h2 class="mt-5">
                             Borrowed:<small class="text-info">{{item_category.borrowed_assets}}</small>         
                         </h2>
@@ -39,7 +37,7 @@
                             Total:<small class="text-info">{{item_category.quantity}}</small>
                         </h2>
 
-                        <a href="{% url 'add asset' organizationUUID item_category.pk %}">
+                        <a href="{% url 'admin add assets' organizationUUID item_category.pk %}">
                             <button
                               style="margin-bottom: 15px"
                               type="button"
