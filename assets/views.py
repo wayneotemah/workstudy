@@ -233,8 +233,8 @@ def return_asset(request, borrowedasset_id, uuid):
         asset = borrowed_item.asset  # get the asset instance
         asset.status = "Available"  # Turn status to availbe
         asset.save()  # save the asset instance
-        messages.info(request, f"{borrowed_item.asset.name} return successfully")
-        return redirect("team/borrowed assets", uuid=uuid)
+        messages.info(request, f"{borrowed_item.asset.name} returned successfully")
+        return redirect("borrowed assets", uuid=uuid)
 
 
 @login_required(login_url=LOGIN_URL)

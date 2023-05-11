@@ -65,7 +65,7 @@
                                         <th scope="col">Name</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Condition</th>
-                                        <th scope="col">Returned</th>
+                                        <th scope="col">Return Item</th>
                                         {% comment %} <th scope="col">Action</th> {% endcomment %}
                                     </tr>
                                     </thead>
@@ -82,7 +82,7 @@
                                             <td>{{item.status}}</td>
                                             <td>{{item.condition}}</td>
                                             {% if item.status == 'Borrowed' %}
-                                            <td><a href = {% url 'borrowed assets' organizationUUID %}>Returned</a></td>
+                                            <td><a href = {% url 'admin borrow asset' organizationUUID %}>Return</a></td>
                                             {% endif %}
                                         </tr>
                                     {% endfor %}
