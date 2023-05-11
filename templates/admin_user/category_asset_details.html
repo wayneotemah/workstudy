@@ -93,34 +93,6 @@
 
                         
                             </div>
-
-                            {% comment %} <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title">Pages</h5>
-                                <nav aria-label="...">
-                                <ul class="pagination">
-                                    {% if borrowed_assets.has_previous %}          
-                                    <li class="page-item">
-                                    <a class="page-link" href="?page={{ borrowed_assets.previous_page_number }}" tabindex="-1" aria="true">Previous</a>
-                                    </li>
-                                    {% endif %}
-
-                                    
-                                    <li class="page-item active" aria-current="page">
-                                    <a class="page-link" href="#">{{ borrowed_assets.number }}</a>
-                                    </li>
-
-                                    {% if borrowed_assets.has_next %}
-                                    <li class="page-item">
-                                    <a class="page-link" href="?page={{ borrowed_assets.next_page_number }}">Next</a>
-                                    </li>
-                                    {% endif %}
-
-                                </ul>
-                                </nav><!-- End Disabled and active states -->
-                
-                            </div>
-                            </div> {% endcomment %}
                             
                         </div>
                         {% else %}
