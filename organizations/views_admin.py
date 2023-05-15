@@ -21,6 +21,10 @@ logger = logging.getLogger("django")
 def admin_dashboard(request, uuid):
     helper = UserAdminDetailsHelper(user=request.user, uuid=uuid)
     context = helper.get_nav_details()
+    context["schedule"] = UserRole.get_current_shift_assignment()
+    context["issues"] = Issue.objects.all()
+    context["borrowedItems"] = Borrowd_Asset.getBorrowedAssets(uuid)
+
     return render(request, "admin_user/dashboard.html", context=context)
 
 
@@ -141,30 +145,38 @@ def admin_issues(request, uuid):
     context["issues"] = page_obj
     return render(request, "admin_user/issues.html", context=context)
 
+
 from datetime import datetime
 
 
 @login_required(login_url=LOGIN_URL)
 def admin_IssueDetails(request, uuid, issue_pk):
-    
     try:
-        if request.method =="GET":
+        if request.method == "GET":
             helper = UserAdminDetailsHelper(user=request.user, uuid=uuid)
             context = helper.get_nav_details()
             context["issue"] = Issue.getIssueByPk(issue_pk)
             return render(request, "admin_user/issuedetails.html", context=context)
         elif request.method == "POST":
-                issue = Issue.getIssueByPk(issue_pk)
-                issue.status = request.POST['issue_status']
-                issue.admin_response = request.POST['admin_response']
-                if request.POST['issue_status'] == "Done":
-                    issue.addressed_on = datetime.now()
+            issue = Issue.getIssueByPk(issue_pk)
+            issue.status = request.POST["issue_status"]
+            issue.admin_response = request.POST["admin_response"]
+            if request.POST["issue_status"] == "Done":
+                issue.addressed_on = datetime.now()
 
-                issue.save()
-                return redirect(admin_IssueDetails,uuid, issue_pk)
+            issue.save()
+            return redirect(admin_IssueDetails, uuid, issue_pk)
     except Exception as e:
         context = {
             "message": f"Please contact the devs and notify them of the error \nerror is: \n{e}"
         }
         messages.warning(request, "Unexpected Exception error has risen")
         return render(request, "errorpage.html", context=context)
+
+
+@login_required(login_url=LOGIN_URL)  # type: ignore
+def admin_profile(request, uuid):
+    if request.method == "GET":
+        helper = UserAdminDetailsHelper(user=request.user, uuid=uuid)
+        context = helper.get_profile()
+        return render(request, "admin_user/users-profile.html", context=context)

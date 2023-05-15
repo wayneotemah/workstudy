@@ -80,27 +80,25 @@
               </div>
 
               <div class="card-body">
-                {% for schedule in my_schedule %}
                 <h5 class="card-title">
-                  My schedule <span>| Computer Labs</span>
+                  Active Shift 
                 </h5>
 
                 <div class="d-flex align-items-center">
                   <div class="ps-3">
                     <span class="text-success small pt-1 fw-bold"
-                      >{{schedule.day}}</span
+                      >{{schedule.assigned_to}}</span
                     >
                     <h6>{{schedule.start_time}} - {{schedule.end_time}}</h6>
                   </div>
                 </div>
-                {% endfor %}
               </div>
             </div>
           </div>
           <!-- End My schedule Card -->
 
           <!-- pending-tasks Card -->
-          <div class="col-xxl-4 col-xl-12">
+          {% comment %} <div class="col-xxl-4 col-xl-12">
             <div class="card info-card pending-tasks">
               <div class="card-body">
                 <h5 class="card-title">Pending activites today</h5>
@@ -122,7 +120,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> {% endcomment %}
           <!-- End pending-tasks Card -->
 
           <!-- Task list report -->
@@ -151,14 +149,18 @@
                       <td>
                         <span class="badge bg-success">{{issue.status}}</span>
                       </td>
-                      {% endif %} {% if issue.status == 'Pending' %}
+                      {% endif %} {% if issue.status == 'Addressing' %}
                       <td>
-                        <span class="badge bg-warning">{{issue.status}}</span>
+                        <span class="badge bg-primary">{{issue.status}}</span>
                       </td>
-                      {% endif %} {% if issue.status == 'Argent' %}
-                      <td>
-                        <span class="badge bg-danger">{{issue.status}}</span>
-                      </td>
+                      {% endif %} {% if issue.status == 'Noted pending address' %}
+                      <td><span class="badge bg-info">{{issue.status}}</span></td>
+                      {% endif %}{% if issue.status == 'Urgent attention' %}
+                      <td><span class="badge bg-danger">{{issue.status}}</span></td>
+                      {% endif %}{% if issue.status == 'Medium attention' %}
+                      <td><span class="badge bg-warning text-dark">{{issue.status}}</span></td>
+                      {% endif %}{% if issue.status == 'Low attention' %}
+                      <td><span class="badge bg-light text-dark">{{issue.status}}</span></td>
                       {% endif %}
                     </tr>
                     {% endfor %}
@@ -224,7 +226,7 @@
       <!-- End Left side columns -->
 
       <!-- Right side columns -->
-      <div class="col-lg-4">
+      {% comment %} <div class="col-lg-4">
         <!-- Recent Activity -->
         <div class="card">
           <div class="card-body">
@@ -356,7 +358,7 @@
           </div>
         </div>
         <!-- End Website Traffic -->
-      </div>
+      </div> {% endcomment %}
       <!-- End Right side columns -->
     </div>
   </section>

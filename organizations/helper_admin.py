@@ -32,8 +32,12 @@ class UserAdminDetailsHelper:
         userAccount = Account.get_account(self.user)
         firstname = userAccount.first_name
         lastname = userAccount.last_name
-        username = " ".join([firstname, lastname])  # type: ignore
-        role = UserRole.getUserOrganizationRoles(userAccount).role.title  # type: ignore
+        username = " ".join([firstname, lastname]) 
+        try:
+            role = UserRole.getUserOrganizationRoles(userAccount).role.title
+        except AttributeError as e:
+            role = "Admin"
+     
 
         context = {
             "username": username,
