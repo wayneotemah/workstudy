@@ -314,63 +314,99 @@ class UserRole(models.Model):
 
     @staticmethod
     def get_current_shift_assignment():
-        current_day = timezone.now().strftime("%A")
+        current_day = timezone.now().strftime('%A')
         current_time = timezone.now().time()
-
+        
         try:
-            return UserRole.objects.get(
+            user_role = UserRole.objects.get(
                 day1=current_day,
                 day1_start_time__lte=current_time,
-                # day1_end_time__gte=current_time
+                day1_end_time__gte=current_time
             )
         except UserRole.DoesNotExist:
             pass
-
+        else:
+            return {
+                'assigned_to': user_role.assigned_to,
+                'start_time': user_role.day1_start_time,
+                'end_time': user_role.day1_end_time
+            }
+        
         try:
-            return UserRole.objects.get(
+            user_role = UserRole.objects.get(
                 day2=current_day,
                 day2_start_time__lte=current_time,
-                # day2_end_time__gte=current_time
+                day2_end_time__gte=current_time
             )
         except UserRole.DoesNotExist:
             pass
-
+        else:
+            return {
+                'assigned_to': user_role.assigned_to,
+                'start_time': user_role.day2_start_time,
+                'end_time': user_role.day2_end_time
+            }
+        
         try:
-            return UserRole.objects.get(
+            user_role = UserRole.objects.get(
                 day3=current_day,
                 day3_start_time__lte=current_time,
-                # day3_end_time__gte=current_time
+                day3_end_time__gte=current_time
             )
         except UserRole.DoesNotExist:
             pass
-
+        else:
+            return {
+                'assigned_to': user_role.assigned_to,
+                'start_time': user_role.day3_start_time,
+                'end_time': user_role.day3_end_time
+            }
+        
         try:
-            return UserRole.objects.get(
+            user_role = UserRole.objects.get(
                 day4=current_day,
                 day4_start_time__lte=current_time,
-                # day4_end_time__gte=current_time
+                day4_end_time__gte=current_time
             )
         except UserRole.DoesNotExist:
             pass
-
+        else:
+            return {
+                'assigned_to': user_role.assigned_to,
+                'start_time': user_role.day4_start_time,
+                'end_time': user_role.day4_end_time
+            }
+        
         try:
-            return UserRole.objects.get(
+            user_role = UserRole.objects.get(
                 day5=current_day,
                 day5_start_time__lte=current_time,
-                # day5_end_time__gte=current_time
+                day5_end_time__gte=current_time
             )
         except UserRole.DoesNotExist:
             pass
-
+        else:
+            return {
+                'assigned_to': user_role.assigned_to,
+                'start_time': user_role.day5_start_time,
+                'end_time': user_role.day5_end_time
+            }
+        
         try:
-            return UserRole.objects.get(
+            user_role = UserRole.objects.get(
                 day6=current_day,
                 day6_start_time__lte=current_time,
-                # day6_end_time__gte=current_time
+                day6_end_time__gte=current_time
             )
         except UserRole.DoesNotExist:
             pass
-
+        else:
+            return {
+                'assigned_to': user_role.assigned_to,
+                'start_time': user_role.day6_start_time,
+                'end_time': user_role.day6_end_time
+            }
+        
         return None
 
 
