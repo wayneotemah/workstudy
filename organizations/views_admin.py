@@ -168,3 +168,11 @@ def admin_IssueDetails(request, uuid, issue_pk):
         }
         messages.warning(request, "Unexpected Exception error has risen")
         return render(request, "errorpage.html", context=context)
+    
+
+@login_required(login_url=LOGIN_URL)  # type: ignore
+def admin_profile(request, uuid):
+    if request.method == "GET":
+        helper = UserAdminDetailsHelper(user=request.user, uuid=uuid)
+        context = helper.get_profile()
+        return render(request, "admin_user/users-profile.html", context=context)

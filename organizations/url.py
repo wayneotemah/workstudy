@@ -19,14 +19,15 @@ admin_urls = [
         views_admin.admin_member_profile,
         name="admin_member_profile",
     ),
+    path("admin_profile/<str:uuid>/", views_admin.admin_profile, name="admin profile"),
     path("admin_roles/<str:uuid>/", views_admin.admin_roles, name="admin_roles"),
     path(
         "admin_rolesform/<str:uuid>/",
         views_admin.admin_roles_form,
         name="admin_rolesfrom",
     ),
-    path("admin_issues/<str:uuid>/", views_admin.admin_issues, name="admin_issues"),
     path("admin_issuesdetails/<str:uuid>/<int:issue_pk>", views_admin.admin_IssueDetails, name="admin_issues_details"),
+    path("admin_issues/<str:uuid>/", views_admin.admin_issues, name="admin_issues"),
 ]
 
 
