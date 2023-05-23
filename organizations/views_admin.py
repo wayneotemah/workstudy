@@ -19,8 +19,7 @@ logger = logging.getLogger("django")
 
 @login_required(login_url=LOGIN_URL)
 def admin_dashboard(request, uuid):
-    helper = UserAdminDetailsHelper(user=request.user, uuid=uuid)
-    context = helper.get_nav_details()
+    context = {}
     context["schedule"] = UserRole.get_current_shift_assignment()
     context["issues"] = Issue.objects.all()
     context["borrowedItems"] = Borrowd_Asset.getBorrowedAssets(uuid)
@@ -34,7 +33,7 @@ def admin_myteam(request, uuid):
     list of user accounts who work in the organization
     """
     helper = TeamAdminHelper(user=request.user, uuid=uuid)
-    context = helper.get_nav_details()
+    context = {}
     context["team"] = helper.get_members()
     return render(request, "admin_user/team.html", context=context)
 
@@ -46,7 +45,7 @@ def new_members(request, uuid):
     """
     if request.method == "GET":
         helper = TeamAdminHelper(user=request.user, uuid=uuid)
-        context = helper.get_nav_details()
+        context = {}
         context["accounts"] = helper.get_unassigned_user()
         context["roles"] = Role.objects.filter(organization__organization_uuid=uuid)
         return render(request, "admin_user/addteammember.html", context=context)
@@ -66,7 +65,7 @@ def admin_member_profile(request, uuid, account_uuid):
         helper = TeamAdminHelper(
             user=request.user, uuid=uuid, account_uuid=account_uuid
         )
-        context = helper.get_nav_details()
+        context = {}
         context["member_profile"] = helper.get_member_profile()
         return render(request, "admin_user/teamprofile.html", context=context)
     if request.method == "POST":
@@ -86,7 +85,7 @@ def admin_member_profile(request, uuid, account_uuid):
 @login_required(login_url=LOGIN_URL)
 def admin_roles(request, uuid):
     helper = RolesAdminHelper(user=request.user, uuid=uuid)
-    context = helper.get_nav_details()
+    context = {}
     context["roles"] = helper.get_roles()
     return render(request, "admin_user/roles.html", context=context)
 
@@ -95,7 +94,7 @@ def admin_roles(request, uuid):
 def admin_roles_form(request, uuid):
     if request.method == "GET":
         helper = RolesAdminHelper(user=request.user, uuid=uuid)
-        context = helper.get_nav_details()
+        context = {}
         context["roles"] = helper.get_roles()
         return render(request, "admin_user/roleform.html", context=context)
     if request.method == "POST":
@@ -138,7 +137,7 @@ def admin_issues(request, uuid):
     if request.GET.get("page"):
         page_number = request.GET.get("page")
     helper = IssuessAdminHelper(user=request.user, uuid=uuid)
-    context = helper.get_nav_details()
+    context = {}
     issues = helper.getAllIssuesList()
     paginator = Paginator(issues, 5)
     page_obj = paginator.get_page(page_number)
@@ -153,8 +152,7 @@ from datetime import datetime
 def admin_IssueDetails(request, uuid, issue_pk):
     try:
         if request.method == "GET":
-            helper = UserAdminDetailsHelper(user=request.user, uuid=uuid)
-            context = helper.get_nav_details()
+            context = {}
             context["issue"] = Issue.getIssueByPk(issue_pk)
             return render(request, "admin_user/issuedetails.html", context=context)
         elif request.method == "POST":

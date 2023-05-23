@@ -20,7 +20,7 @@
   </div>
   <!-- End Page Title -->
 
-  <a href="{% url 'raiseIssue' organizationUUID %}">
+  <a href="{% url 'raiseIssue' request.user.account.organization.organization_uuid %}">
     <button
       style="margin-bottom: 15px"
       type="button"
@@ -55,7 +55,7 @@
                   <th scope="row">#{{issue.pk}}</th>
                   <th>
                     <a
-                      href="{% url 'admin_issues_details' organizationUUID issue.pk %}"
+                      href="{% url 'admin_issues_details' request.user.account.organization.organization_uuid issue.pk %}"
                       >{{issue.title}}</a
                     >
                   </th>

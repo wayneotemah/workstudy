@@ -10,16 +10,13 @@ class UserDetailsHelper():
 
     def get_nav_details(self)-> dict:
         organizationName  = Organization.objects.get(organization_uuid = self.companyUUID )
-
         userAccount = Account.get_account(self.user)
-        username = " ".join([userAccount.first_name,userAccount.last_name])   # type: ignore
-        # role = UserRole.getUserOrganizationRoles(userAccount).role.title # type: ignore
+        role = UserRole.getUserOrganizationRoles(userAccount).role.title 
 
         context = {
-            "username":username,
             "organizationName":organizationName,
             "organizationUUID":self.companyUUID,
-            # "role": role,
+            "role": role,
         }
         return context
 

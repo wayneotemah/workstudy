@@ -13,7 +13,7 @@
         <h5 class="card-title"> Add an asset</h5>
 
         <!-- Vertical Form -->
-            <form  method = "post" action = "{% url 'admin assets' organizationUUID %}" enctype="multipart/form-data"x validate >
+            <form  method = "post" action = "{% url 'admin assets' request.user.account.organization.organization_uuid %}" enctype="multipart/form-data"x validate >
               {% csrf_token %}
 
               <div class="row mb-3">
@@ -39,7 +39,7 @@
 
               <div class="modal-footer">
                 <button type="submit" class="btn btn-primary rounded-pill" style="margin:0 10px;">Submit Form</button>
-                <a href="{% url 'category assets' organizationUUID %}">
+                <a href="{% url 'category assets' request.user.account.organization.organization_uuid %}">
                   <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
                 </a>
                 </div>

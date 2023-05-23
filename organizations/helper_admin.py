@@ -9,20 +9,6 @@ class UserAdminDetailsHelper:
         self.user = user
         self.companyUUID = uuid
 
-    def get_nav_details(self) -> dict:
-        organizationName = Organization.objects.get(organization_uuid=self.companyUUID)
-
-        userAccount = Account.get_account(self.user)
-        username = " ".join([userAccount.first_name, userAccount.last_name])
-        # role = UserRole.getUserOrganizationRoles(userAccount).role.title
-        context = {
-            "username": username,
-            "organizationName": organizationName,
-            "organizationUUID": self.companyUUID,
-            "role": "Supervisor",
-        }
-        return context
-
     def get_profile(self) -> dict:
         userinstance = CustomUser.objects.get(pk=self.user.pk)
         email_address = userinstance.get_email_address()

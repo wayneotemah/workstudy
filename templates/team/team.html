@@ -1,24 +1,9 @@
-{% extends 'team\navigation.html' %}
-{% block innercontent %}
+{% extends 'base.html' %}
+{% block content %}
 
-{% block orgName %}
-
-{{ organizationName }}
-
-{% endblock orgName %}
-
-{% block username %}
-
-{{ username}}
-
-{% endblock username %}
+{% include 'team\navigation.html' %}
 
 
-{% block role %}
-
-{{ role }}
-
-{% endblock role %}
 <main id="main" class="main">
   <div class="pagetitle">
     <h1>My Team</h1>
@@ -74,4 +59,4 @@
 </main>
 <!-- End #main -->
 
-{% endblock innercontent %}
+{% endblock content %}

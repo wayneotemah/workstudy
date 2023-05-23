@@ -1,5 +1,3 @@
-{% extends 'base.html' %}
-{% block content %}
   <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top d-flex align-items-center">
 
@@ -7,19 +5,19 @@
       <a href="#" class="logo d-flex align-items-center">
         {% comment %} <img src="{% static 'assets/img/logo.png' %}" alt="logo"> {% endcomment %}
         <span class="d-none d-lg-block">
-          {% block orgName %}
-          {% endblock orgName %}
+          {% comment %} {{request.user.account.UserRole.role.organization.name}} {% endcomment %}
+          {{ organizationName }}
         </span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
-    <div class="search-bar">
+    {% comment %} <div class="search-bar">
       <form class="search-form d-flex align-items-center" method="POST" action="#">
         <input type="text" name="query" placeholder="Search" title="Enter search keyword">
         <button type="submit" title="Search"><i class="bi bi-search"></i></button>
       </form>
-    </div><!-- End Search Bar -->
+    </div><!-- End Search Bar --> {% endcomment %}
 
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
@@ -176,16 +174,15 @@
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             {% comment %} <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle"> {% endcomment %}
             <span class="d-none d-md-block dropdown-toggle ps-2">
-              {% block username %}
-              {% endblock username %}
+              {{request.user.account.first_name}}
+              {{request.user.account.last_name}} 
             </span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
               <h6>
-                {% block role %}
-                {% endblock role %}
+                {{ role }}
               </h6>
               <span>
 
@@ -316,8 +313,3 @@
       <!-- End Contact Page Nav -->
 
   </aside><!-- End Sidebar-->
-  
-{% block innercontent %}
-{% endblock innercontent %}
-
-{% endblock content %}

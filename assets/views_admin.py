@@ -59,9 +59,9 @@ def admin_postassetCategory(request, uuid):
     returns page with post asset form
     """
     if request.method == "GET":
-        helper = AssetsHelper(user=request.user, uuid=uuid)
-        context = helper.get_nav_details()
-        return render(request, "admin_user/addassetcategory.html", context=context)
+        # helper = AssetsHelper(user=request.user, uuid=uuid)
+        # context = helper.get_nav_details()
+        return render(request, "admin_user/addassetcategory.html")
 
 
 @login_required(login_url=LOGIN_URL)
@@ -71,7 +71,7 @@ def admin_category_Details(request, uuid, category_pk):
     """
     if request.method == "GET":
         helper = AssetsHelper(user=request.user, uuid=uuid)
-        context = helper.get_nav_details()
+        context = {}
         category = AssetCategory.getCategory(category_pk, uuid)
         if category:
             context["item_category"] = category
@@ -87,7 +87,7 @@ def admin_post_asset(request, uuid, category_pk):
     # get asset posting page
     if request.method == "GET":
         helper = AssetsHelper(user=request.user, uuid=uuid)
-        context = helper.get_nav_details()
+        context = {}
         context["category_pk"] = category_pk
         context["category"] = AssetCategory.objects.get(id=category_pk)
         return render(request, "admin_user/addasset.html", context=context)
@@ -135,7 +135,7 @@ def admin_borrowed_assets(request, uuid):
         if request.GET.get("page"):
             page_number = request.GET.get("page")
         helper = AssetsHelper(user=request.user, uuid=uuid)
-        context = helper.get_nav_details()
+        context = {}
         borrowed_assets = helper.getBorrowesAssets()
         paginator = Paginator(borrowed_assets, 5)
         page_obj = paginator.get_page(page_number)
@@ -186,7 +186,7 @@ def admin_borrowed_assets(request, uuid):
 def admin_borrowed_assets_page(request, uuid):
     if request.method == "GET":
         helper = AssetsHelper(user=request.user, uuid=uuid)
-        context = helper.get_nav_details()
+        context = {}
         context["assets"] = helper.getAvailbleAssets()
         return render(request, "admin_user/addborrowed.html", context=context)
 
@@ -198,7 +198,7 @@ def admin_assetDetails(request, uuid, item_pk):
     """
     if request.method == "GET":
         helper = AssetsHelper(user=request.user, uuid=uuid)
-        context = helper.get_nav_details()
+        context = {}
         item = helper.getAssetDetails(item_pk)
         if item.status == "Borrowed":
             item_borrowed_details = Borrowd_Asset.objects.get(asset=item)
