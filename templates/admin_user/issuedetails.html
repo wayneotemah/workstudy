@@ -1,11 +1,8 @@
-{% extends 'admin_user\navigation.html' %}
+{% extends 'base.html' %}
 
-{% block innercontent %} 
+{% block content %} 
 
-{% block orgName%} {{organizationName }} {% endblock orgName %} 
-{% block username %} {{username}} {%endblock %}
-
-{% block role %} {{ role }} {% endblock role %}
+{% include 'admin_user\navigation.html' %}
 
 
 <main id="main" class="main">
@@ -93,7 +90,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
 
-        <form id="add-to-team-form" method="POST" action="{% url 'admin_issues_details' organizationUUID issue.pk %}">
+        <form id="add-to-team-form" method="POST" action="{% url 'admin_issues_details' request.user.account.organization.organization_uuid issue.pk %}">
             {% csrf_token %}
             <div class="modal-body">
               <div class="col-12">
@@ -127,5 +124,6 @@
   </div><!-- End Large Modal-->
 
 
-  {% endblock innercontent %}
 </main>
+
+{% endblock content %}

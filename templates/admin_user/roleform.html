@@ -1,11 +1,12 @@
-{% extends 'admin_user\navigation.html' %}
+{% extends 'base.html' %}
 
-{% block innercontent %} 
 
-{% block orgName%} {{organizationName }} {% endblock orgName %} 
-{% block username %} {{username}} {%endblock %}
 
-{% block role %} {{ role }} {% endblock role %}
+
+{% block content %} 
+
+
+{% include 'admin_user\navigation.html' %}
 
 
 <main id="main" class="main">
@@ -16,7 +17,7 @@
         <h5 class="card-title">Add role to your organization</h5>
 
         <!-- Role form -->
-        <form class="row g-3"  method = "post" action = "{% url 'admin_rolesfrom' organizationUUID %}" enctype="multipart/form-data" validate >
+        <form class="row g-3"  method = "post" action = "{% url 'admin_rolesfrom' request.user.account.organization.organization_uuid %}" enctype="multipart/form-data" validate >
           {% csrf_token %}
           <div class="col-md-6">
             <div class="form-floating">
@@ -74,7 +75,7 @@
 
           <div class="modal-footer">
             <button type="submit" class="btn btn-primary rounded-pill" style="margin:0 10px;">Submit Form</button>
-            <a href="{% url 'category assets' organizationUUID %}">
+            <a href="{% url 'category assets' request.user.account.organization.organization_uuid %}">
               <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
             </a>
             </div>
@@ -92,4 +93,4 @@
 </main>
 
 
-{% endblock innercontent %}
+{% endblock content %}

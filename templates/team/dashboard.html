@@ -1,24 +1,10 @@
-{% extends 'team\navigation.html' %}
-{% block innercontent %}
-
-{% block orgName %}
-
-{{ organizationName }}
-
-{% endblock orgName %}
-
-{% block username %}
-
-{{ username}}
-
-{% endblock username %}
 
 
-{% block role %}
+{% extends 'base.html' %}
+{% block content %}
 
-{{ role }}
+{% include 'team\navigation.html' %}
 
-{% endblock role %}
 <main id="main" class="main">
   <div class="pagetitle">
     <h1>Dashboard</h1>
@@ -112,7 +98,7 @@
           <!-- End My schedule Card -->
 
           <!-- pending-tasks Card -->
-          <div class="col-xxl-4 col-xl-12">
+          {% comment %} <div class="col-xxl-4 col-xl-12">
             <div class="card info-card pending-tasks">
               <div class="card-body">
                 <h5 class="card-title">Pending activites today</h5>
@@ -134,7 +120,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> {% endcomment %}
           <!-- End pending-tasks Card -->
 
           <!-- Task list report -->
@@ -236,7 +222,7 @@
       <!-- End Left side columns -->
 
       <!-- Right side columns -->
-      <div class="col-lg-4">
+      {% comment %} <div class="col-lg-4">
         <!-- Recent Activity -->
         <div class="card">
           <div class="card-body">
@@ -368,11 +354,11 @@
           </div>
         </div>
         <!-- End Website Traffic -->
-      </div>
+      </div> {% endcomment %}
       <!-- End Right side columns -->
     </div>
   </section>
 </main>
 <!-- End #main -->
 
-{% endblock innercontent %}
+{% endblock content %}

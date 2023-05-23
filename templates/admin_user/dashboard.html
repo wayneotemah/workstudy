@@ -1,11 +1,13 @@
-{% extends 'admin_user\navigation.html' %} 
-{% block innercontent %} 
+{% extends 'base.html' %}
 
-{% block orgName %} {{organizationName }}  {% endblock orgName %}
 
-{% block username %} {{ username}} {%endblock %} 
 
-{% block role %} {{ role }} {% endblock role %}
+
+{% block content %} 
+
+
+{% include 'admin_user\navigation.html' %}
+
 
 <main id="main" class="main">
   <div class="pagetitle">
@@ -364,5 +366,4 @@
   </section>
 </main>
 <!-- End #main -->
-
-{% endblock innercontent %}
+{% endblock content %}
