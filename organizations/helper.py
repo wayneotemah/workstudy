@@ -11,7 +11,10 @@ class UserDetailsHelper():
     def get_nav_details(self)-> dict:
         organizationName  = Organization.objects.get(organization_uuid = self.companyUUID )
         userAccount = Account.get_account(self.user)
-        role = UserRole.getUserOrganizationRoles(userAccount).role.title 
+        try:
+            role = UserRole.getUserOrganizationRoles(userAccount).role.title
+        except AttributeError as e:
+            role = "Admin"
 
         context = {
             "organizationName":organizationName,

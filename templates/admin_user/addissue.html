@@ -32,7 +32,7 @@
             <div class="text-center">
                 <button type="submit" class="btn btn-primary rounded-pill">Submit</button>
                 <button type="reset" class="btn btn-secondary rounded-pill">Reset</button>
-                <a href = {% url "issues" organizationUUID %}>
+                <a href = {% url "issues" request.user.account.organization.organization_uuid %}>
                     <button type="button" class="btn btn-light rounded-pill">Cancel</button>
                 </a>
 
