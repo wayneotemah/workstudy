@@ -149,14 +149,18 @@
                       <td>
                         <span class="badge bg-success">{{issue.status}}</span>
                       </td>
-                      {% endif %} {% if issue.status == 'Pending' %}
+                      {% endif %} {% if issue.status == 'Addressing' %}
                       <td>
-                        <span class="badge bg-warning">{{issue.status}}</span>
+                        <span class="badge bg-primary">{{issue.status}}</span>
                       </td>
-                      {% endif %} {% if issue.status == 'Argent' %}
-                      <td>
-                        <span class="badge bg-danger">{{issue.status}}</span>
-                      </td>
+                      {% endif %} {% if issue.status == 'Noted pending address' %}
+                      <td><span class="badge bg-info">{{issue.status}}</span></td>
+                      {% endif %}{% if issue.status == 'Urgent attention' %}
+                      <td><span class="badge bg-danger">{{issue.status}}</span></td>
+                      {% endif %}{% if issue.status == 'Medium attention' %}
+                      <td><span class="badge bg-warning text-dark">{{issue.status}}</span></td>
+                      {% endif %}{% if issue.status == 'Low attention' %}
+                      <td><span class="badge bg-light text-dark">{{issue.status}}</span></td>
                       {% endif %}
                     </tr>
                     {% endfor %}

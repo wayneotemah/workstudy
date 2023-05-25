@@ -80,7 +80,6 @@ class Issue(models.Model):
     
     @staticmethod
     def getListbyStatus(x,y):
-        #get all organizations issues
         return Issue.objects.filter(organization = x, status = y)
 
     @staticmethod
