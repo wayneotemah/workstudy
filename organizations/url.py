@@ -8,7 +8,8 @@ admin_urls = [
         views_admin.admin_dashboard,
         name="admin_dashboard",
     ),
-    path("admin_myteam/<str:uuid>/", views_admin.admin_myteam, name="admin_myTeam"),
+    path("admin_myteam/<str:uuid>/", views_admin.admin_myteam,
+         name="admin_myTeam"),
     path(
         "admin_new_members/<str:uuid>/",
         views_admin.new_members,
@@ -19,15 +20,19 @@ admin_urls = [
         views_admin.admin_member_profile,
         name="admin_member_profile",
     ),
-    path("admin_profile/<str:uuid>/", views_admin.admin_profile, name="admin profile"),
-    path("admin_roles/<str:uuid>/", views_admin.admin_roles, name="admin_roles"),
+    path("admin_profile/<str:uuid>/", views_admin.admin_profile,
+         name="admin profile"),
+    path("admin_roles/<str:uuid>/", views_admin.admin_roles,
+         name="admin_roles"),
     path(
         "admin_rolesform/<str:uuid>/",
         views_admin.admin_roles_form,
         name="admin_rolesfrom",
     ),
-    path("admin_issuesdetails/<str:uuid>/<int:issue_pk>", views_admin.admin_IssueDetails, name="admin_issues_details"),
-    path("admin_issues/<str:uuid>/", views_admin.admin_issues, name="admin_issues"),
+    path("admin_issuesdetails/<str:uuid>/<int:issue_pk>",
+         views_admin.admin_IssueDetails, name="admin_issues_details"),
+    path("admin_issues/<str:uuid>/", views_admin.admin_issues,
+         name="admin_issues"),
 ]
 
 
@@ -44,5 +49,6 @@ urlpatterns = [
         name="issues details",
     ),
     path("raiseIssue/<str:uuid>/", views.raiseIssue, name="raiseIssue"),
-    path("redirect/dashboard", views.dashboard_redirect, name="dashboard redirect"),
+    path("redirect/dashboard", views.dashboard_redirect,
+         name="dashboard redirect"),
 ] + admin_urls

@@ -31,10 +31,10 @@ def admin_assets_catrgory(request, uuid):
         return render(request, "admin_user/categoryassets.html", context=context)
     elif request.method == "POST":
         category = request.POST["category_type"]
-        pic = request.FILES["asset_category_pic"]
+        # pic = request.FILES["asset_category_pic"]
         try:
             categoryItem = AssetCategory(
-                category=category, category_pic=pic, organization_id=uuid
+                category=category, organization_id=uuid
             )
             categoryItem.save()
             messages.success(request, f"Added new catrogy of asset 👍")

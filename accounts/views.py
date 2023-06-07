@@ -43,13 +43,17 @@ def sign_up(request):
             return render(request, "pages-login.html")
 
         else:
-            
             """
             if user does not exist, save detail
             """
 
             phone_number = request.POST['phone_number']
             password = request.POST['password']
+            confirm_password = request.POST['confirm_password']
+            if password != confirm_password:
+                messages.error(
+                    request, 'Password and confirm password do not match.😟')
+                return render(request, "pages-register.html")
             try:
                 user = CustomUser(email=email,
                                   phone_number=phone_number)
@@ -67,7 +71,9 @@ def sign_up(request):
                 something went wront.
                 """
                 messages.warning(
-                    request, 'Something went wrong while creating you account, Please infrom the admin or devs')
+                    request,
+                    'Something went wrong while creating you account, Please inform the admin or devs'
+                    )
                 return render(request, "pages-register.html")
 
     elif request.method == "GET":

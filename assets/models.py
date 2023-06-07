@@ -2,8 +2,6 @@ import os
 import uuid
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.db.models.signals import post_save, post_delete
-from django.dispatch import receiver
 from organizations.models import Organization
 
 
@@ -48,16 +46,15 @@ class AssetCategory(models.Model):
         blank=False,
     )
 
-    category_pic = (
-        models.ImageField(
+    category_pic = models.ImageField(
             _("Category image"),
             upload_to=asset_categorty_photo_upload,
             null=True,
             blank=True,
         ),
-    )
 
-    quantity = models.PositiveIntegerField(_("number of assets available"), default=0)
+    quantity = models.PositiveIntegerField(_("number of assets available"),
+                                           default=0)
     working_quantity = models.PositiveIntegerField(
         _("number is assets that are working"), default=0
     )
@@ -121,10 +118,17 @@ class Asset(models.Model):
         blank=True,
     )
     organization = models.ForeignKey(
-        Organization, verbose_name="lab / organization", on_delete=models.CASCADE
+        Organization, verbose_name="lab / organization",
+        on_delete=models.CASCADE
     )
-    pic = models.ImageField(_(" asset image"), upload_to=asset_photo_upload, null=False)
-    status = models.CharField(_("asset status"), choices=asset_status, max_length=50)
+    pic = models.ImageField(
+        _(" asset image"), upload_to=asset_photo_upload,
+        null=False
+        )
+    status = models.CharField(
+        _("asset status"),
+        choices=asset_status,
+        max_length=50)
     condition = models.CharField(
         _("asset condition"), choices=asset_condition, max_length=50
     )
@@ -228,7 +232,8 @@ class Borrowd_Asset(models.Model):
 # Assets Post save
 def asset_count(instance):
     count = Asset.objects.filter(
-        category_type=instance.category_type, organization=instance.organization
+        category_type=instance.category_type,
+        organization=instance.organization
     )
     count = len(count)
 
