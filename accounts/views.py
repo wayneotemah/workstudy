@@ -1,5 +1,4 @@
 from django.shortcuts import redirect, render
-from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
@@ -7,28 +6,28 @@ from accounts.models import Account, CustomUser
 from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import logout
-from organizations.models import Organization
+from Labs.models import Lab
 from workstudy.globalsettings import LOGIN_URL
 from roles.models import UserRole
 
 import logging
 
-logger = logging.getLogger('django')
+logger = logging.getLogger("django")
 
 # Create your views here.
 
 
 def sign_in(request):
-    if request.method == 'POST':
-        email = request.POST['email']
-        password = request.POST['password']
+    if request.method == "POST":
+        email = request.POST["email"]
+        password = request.POST["password"]
 
         user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
-            return redirect(organization)
+            return redirect(Labview)
         else:
-            messages.error(request, 'Wrong email or password.')
+            messages.error(request, "Wrong email or password.")
             return render(request, "pages-login.html")
 
     elif request.method == "GET":
@@ -36,37 +35,41 @@ def sign_in(request):
 
 
 def sign_up(request):
-    if request.method == 'POST':
-        email = request.POST['email']
+    if request.method == "POST":
+        email = request.POST["email"]
         if CustomUser.user_exists(email):
-            messages.info(request, 'Your account already exists, please login')
+            messages.info(request, "Your account already exists, please login")
             return render(request, "pages-login.html")
 
         else:
-            
             """
             if user does not exist, save detail
             """
-            phone_number = request.POST['phone_number']
-            password = request.POST['password']
+
+            phone_number = request.POST["phone_number"]
+            password = request.POST["password"]
+            confirm_password = request.POST["confirm_password"]
+            if password != confirm_password:
+                messages.error(request, "Password and confirm password do not match.😟")
+                return render(request, "pages-register.html")
             try:
-                user = CustomUser(email=email,
-                                  phone_number=phone_number)
+                user = CustomUser(email=email, phone_number=phone_number)
                 user.set_password(password)
                 user.save()
                 if user is not None:
-                    messages.info(request, 'Account created please login')
+                    messages.info(request, "Account created please login")
                     return render(request, "pages-login.html")
             except IntegrityError:
-                messages.error(
-                    request, 'Phone number already exists.')
+                messages.error(request, "Phone number already exists.")
                 return render(request, "pages-register.html")
             else:
                 """
                 something went wront.
                 """
                 messages.warning(
-                    request, 'Something went wrong while creating you account, Please infrom the admin or devs')
+                    request,
+                    "Something went wrong while creating you account, Please inform the admin or devs",
+                )
                 return render(request, "pages-register.html")
 
     elif request.method == "GET":
@@ -77,103 +80,100 @@ def sign_up(request):
 def createprofile(request):
     if request.method == "POST":
         user = request.user
-        firstName = request.POST['firstName']
-        lastName = request.POST['lastName']
+        firstName = request.POST["firstName"]
+        lastName = request.POST["lastName"]
         try:
-            newAccount = Account(last_name=lastName,
-                                 first_name=firstName, user=user)
+            newAccount = Account(last_name=lastName, first_name=firstName, user=user)
             newAccount.save()
-            return redirect(organization)
+            return redirect(Labview)
         except IntegrityError:
-            return render(request, "team/createprofile.html", {"message": "Your account already exists."})
+            return render(
+                request,
+                "team/createprofile.html",
+                {"message": "Your account already exists."},
+            )
 
     elif request.method == "GET":
         return render(request, "team/createprofile.html")
 
 
 @login_required(login_url=LOGIN_URL)
-def organization(request):
+def Labview(request):
     try:
         # get the users account profile details
-        user = Account.get_account(request.user) 
-    except ObjectDoesNotExist as e:
-        messages.info(
-            request, 'It seems you dont have a profile, lets get that.')
+        user = Account.get_account(request.user)
+    except ObjectDoesNotExist:
+        messages.info(request,
+                      "It seems you dont have a profile, lets get that.")
         return render(request, "team/createprofile.html")
 
     logger.info(f"{request.user} is supervisor: {user.is_supervisor}")
-    organization = Organization.get_organizations(user) # check if users is a supervisor
-    if  not user.is_supervisor:  # user is not supervisor
-
-        role = UserRole.getUserOrganizationRoles(user) # check if user has a role
+    supervisor_lab = Lab.get_Labs(user)  # check if users is a supervisor
+    if not user.is_supervisor:  # user is not supervisor
+        role = UserRole.getUserLabRoles(user)  # check if user has a role
         if role:
-            # use the user to get the organization
+            # use the user to get the Lab
 
-            organization = UserRole.getOrganization(user)
-            context = {
-                "organization_name": organization.name,
-                "organization_uuid": organization.organization_uuid
-            }
-            return render(request, "choose_organization.html", context=context)
+            user_lab = UserRole.getLab(user)
+            context = {"Lab_name": user_lab.name,
+                       "Lab_uuid": user_lab.Lab_uuid}
+            return render(request, "choose_Lab.html", context=context)
 
         else:
             # if no roles, user has not be assigend to any work location
-            messages.info(
-                request, 'No work location🥲')
+            messages.info(request, "No work location🥲")
             context = {
-                "message":"""It seems you dont have a workstudy location.Please contact you supervisor
+                "message": """It seems you dont have a workstudy location.Please contact you supervisor
                             to add you to his/her location, then refresh the page.
-                            If you want to create an organization, contact the platform developers"""
+                            If you want to create an Lab, contact the platform developers"""
             }
             return render(request, "errorpage.html", context=context)
-    if  user.is_supervisor:  # user is supervisour
-
-        if organization:
-            
-
-            context = {
-                    "organization_name": organization.name,
-                    "organization_uuid": organization.organization_uuid
-                }
-        else: 
-            messages.info(request, "No organization, create one")
+    if user.is_supervisor:  # user is supervisour
+        if supervisor_lab:
+            context = {"Lab_name": supervisor_lab.name,
+                       "Lab_uuid": supervisor_lab.Lab_uuid}
+        else:
+            messages.info(request, "No Lab, create one")
             context = {}
-        return render(request, "choose_organization.html", context=context)
+        return render(request, "choose_Lab.html", context=context)
 
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
-def create_organization(request):
+def create_Lab(request):
     if request.method == "POST":
-        organizationName = request.POST['organizationname']
+        LabName = request.POST["Labname"]
         try:
             user = Account.get_account(request.user)
-            newOrganization = Organization(
-                name=organizationName, supervisor=user)
-            newOrganization.save()
-            return redirect(organization)
-        except ObjectDoesNotExist as e:
-            return render(request, "createprofile.html", {"message": "You do not have a profile, please create one"})
+            newLab = Lab(name=LabName, supervisor=user)
+            newLab.save()
+            return redirect(Labview)
+        except ObjectDoesNotExist:
+            return render(
+                request,
+                "createprofile.html",
+                {"message": "You do not have a profile, please create one"},
+            )
         except IntegrityError as e:
-            messages.warning(request, "You already created this organization")
-            return render(request, "create_organization.html", {"message": "Already exists"})
+            print(e)
+            messages.info(request, "You already created A lab")
+            return render(request, "create_Lab.html")
     elif request.method == "GET":
         try:
             # get the users account profile details
             user = Account.get_account(request.user)
-            if user.is_supervisor: 
-                # chech if user is a supervisor the allow them to create the organization
+            if user.is_supervisor:
+                # chech if user is a supervisor the allow them to create the Lab
 
-                return render(request, "create_organization.html")
+                return render(request, "create_Lab.html")
             elif not user.is_supervisor:
-                messages.info(request, 'No system privileges to create an ornanizations')
-                return redirect(organization)
+                messages.info(
+                    request, "No system privileges to create an ornanizations"
+                )
+                return redirect(Lab)
 
-        except ObjectDoesNotExist as e:
-            messages.info(
-                request, 'It seems you dont have a profile, lets get that.')
+        except ObjectDoesNotExist:
+            messages.info(request, "It seems you dont have a profile, lets get that.")
             return render(request, "team/createprofile.html")
-
-
 
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
@@ -191,26 +191,27 @@ def schedule(request, uuid):
         day = request.POST["day"]
         if not day:
             messages.warning(request, "The day field can not be emplty")
-            return redirect('dashboard', uuid=uuid)
+            return redirect("dashboard", uuid=uuid)
         start_time = request.POST["start_time"]
         end_time = request.POST["end_time"]
         addSchedule = UserRole.addToSchelule(
-            account=user, start_time=start_time, end_time=end_time, day=day)
+            account=user, start_time=start_time, end_time=end_time, day=day
+        )
         if addSchedule:
             # schedule is not full
             messages.success(request, "Date and time was added successfully")
-            context['schedule'] = UserRole.getUserSchedule(user)
+            context["schedule"] = UserRole.getUserSchedule(user)
             return render(request, "team/datepicker.html", context=context)
         else:
             # schedule is full redirect to dashboard
-            uuid = UserRole.getOrganization(user).organization_uuid
-            return redirect('dashboard', uuid=uuid)
+            uuid = UserRole.getLab(user).Lab_uuid
+            return redirect("dashboard", uuid=uuid)
 
     if request.method == "GET":
-        context['schedule'] = UserRole.getUserSchedule(user)
+        context["schedule"] = UserRole.getUserSchedule(user)
         return render(request, "team/datepicker.html", context=context)
 
 
 def logout_view(request):
     logout(request)
-    return redirect('sign in')
+    return redirect("sign in")

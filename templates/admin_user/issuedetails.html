@@ -66,7 +66,7 @@
                   </tr>
                   <tr>
                     <td>Location</td>
-                    <td>{{issue.organization}}</td>
+                    <td>{{issue.Lab}}</td>
                   </tr>
                 </tbody>
               </table>
@@ -90,7 +90,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
 
-        <form id="add-to-team-form" method="POST" action="{% url 'admin_issues_details' request.user.account.organization.organization_uuid issue.pk %}">
+        <form id="add-to-team-form" method="POST" action="{% url 'admin_issues_details' request.user.account.Lab.Lab_uuid issue.pk %}">
             {% csrf_token %}
             <div class="modal-body">
               <div class="col-12">

@@ -12,8 +12,8 @@
     <div class="col-lg">
 
 
-            <h5 class="card-title">Roles in {{ request.user.account.organization.name }} </h5>
-            <a href= {% url 'admin_rolesfrom' request.user.account.organization.organization_uuid %} >
+            <h5 class="card-title">Roles in {{ request.user.account.Lab.name }} </h5>
+            <a href= {% url 'admin_rolesfrom' request.user.account.Lab.Lab_uuid %} >
               <button style="margin-bottom: 15px;" type="button" class="btn btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#fullscreenModal">
                 Add a new role
               </button>

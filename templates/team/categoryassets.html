@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
-{% block content %}
-
-{% include 'team\navigation.html' %}
+{% block content %} 
+{% include 'team\navigation.html'%}
 
 <main id="main" class="main">
   <div class="pagetitle">
@@ -14,7 +13,7 @@
     </nav>
   </div>
   <!-- End Page Title -->
-  <a href="{% url 'add asset category' organizationUUID %}">
+  <a href="{% url 'add asset category' LabUUID %}">
     <button
       style="margin-bottom: 15px"
       type="button"
@@ -59,7 +58,7 @@
                       </td>
                       <td>
                         <a
-                          href="{% url 'asset category details' organizationUUID item.pk %}"
+                          href="{% url 'asset category details' LabUUID item.pk %}"
                         >
                           {{item.category}}
                         </a>
@@ -108,7 +107,7 @@
               </div>
             </div>
             {% else %}
-            <h3>No assets found for {{organizationName}}</h3>
+            <h3>No assets found for {{LabName}}</h3>
             {% endif %}
           </div>
           <!-- End Top Selling -->

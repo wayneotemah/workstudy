@@ -13,7 +13,7 @@
         <h5 class="card-title"> Add an asset</h5>
 
         <!-- Vertical Form -->
-            <form  method = "post" action = "{% url 'admin assets' request.user.account.organization.organization_uuid %}" enctype="multipart/form-data"x validate >
+            <form  method = "post" action = "{% url 'admin assets' request.user.account.Lab.Lab_uuid %}" enctype="multipart/form-data"x validate >
               {% csrf_token %}
 
               <div class="row mb-3">
@@ -32,14 +32,14 @@
               <div class="row mb-3">
                 <label for="inputNumber" class="col-sm-2 col-form-label">File Upload</label>
                 <div class="col-sm-10">
-                  <input name ="asset_category_pic" class="form-control" type="file" id="formFile">
+                  <input name ="asset_category_pic" class="form-control" type="file" id="formFile" required>
                 </div>
               </div>
 
 
               <div class="modal-footer">
                 <button type="submit" class="btn btn-primary rounded-pill" style="margin:0 10px;">Submit Form</button>
-                <a href="{% url 'category assets' request.user.account.organization.organization_uuid %}">
+                <a href="{% url 'admin assets' request.user.account.Lab.Lab_uuid %}">
                   <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
                 </a>
                 </div>

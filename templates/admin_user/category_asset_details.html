@@ -1,10 +1,6 @@
 {% extends 'base.html' %}
 
-
-
-
 {% block content %} 
-
 
 {% include 'admin_user\navigation.html' %}
 
@@ -37,7 +33,7 @@
                             Total:<small class="text-info">{{item_category.quantity}}</small>
                         </h2>
 
-                        <a href="{% url 'admin add assets' request.user.account.organization.organization_uuid item_category.pk %}">
+                        <a href="{% url 'admin add assets' request.user.account.Lab.Lab_uuid item_category.pk %}">
                             <button
                               style="margin-bottom: 15px"
                               type="button"
@@ -74,7 +70,7 @@
 
                                         <tr>
                                             <th scope="row">
-                                            <a href="{% url 'asset details' request.user.account.organization.organization_uuid item.pk %}">  
+                                            <a href="{% url 'asset details' request.user.account.Lab.Lab_uuid item.pk %}">  
                                                 <img style = "max-width:150px;" src="{{item.pic.url}}" alt="asset image">
                                             </a>
                                             </th>
@@ -82,7 +78,7 @@
                                             <td>{{item.status}}</td>
                                             <td>{{item.condition}}</td>
                                             {% if item.status == 'Borrowed' %}
-                                            <td><a href = {% url 'admin borrow asset' request.user.account.organization.organization_uuid %}>Return</a></td>
+                                            <td><a href = {% url 'admin borrow asset' request.user.account.Lab.Lab_uuid %}>Return</a></td>
                                             {% endif %}
                                         </tr>
                                     {% endfor %}

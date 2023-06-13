@@ -1,10 +1,6 @@
-{% extends 'base.html' %}
-
-
-
+{% extends 'base.html' %} 
 
 {% block content %} 
-
 
 {% include 'admin_user\navigation.html' %}
 
@@ -20,7 +16,7 @@
   </div>
   <!-- End Page Title -->
 
-  <a href="{% url 'raiseIssue' request.user.account.organization.organization_uuid %}">
+  <a href="{% url 'raiseIssue' request.user.account.Lab.Lab_uuid %}">
     <button
       style="margin-bottom: 15px"
       type="button"
@@ -55,7 +51,7 @@
                   <th scope="row">#{{issue.pk}}</th>
                   <th>
                     <a
-                      href="{% url 'admin_issues_details' request.user.account.organization.organization_uuid issue.pk %}"
+                      href="{% url 'admin_issues_details' request.user.account.Lab.Lab_uuid issue.pk %}"
                       >{{issue.title}}</a
                     >
                   </th>
@@ -73,9 +69,17 @@
                   {% endif %}{% if issue.status == 'Urgent attention' %}
                   <td><span class="badge bg-danger">{{issue.status}}</span></td>
                   {% endif %}{% if issue.status == 'Medium attention' %}
-                  <td><span class="badge bg-warning text-dark">{{issue.status}}</span></td>
+                  <td>
+                    <span class="badge bg-warning text-dark"
+                      >{{issue.status}}</span
+                    >
+                  </td>
                   {% endif %}{% if issue.status == 'Low attention' %}
-                  <td><span class="badge bg-light text-dark">{{issue.status}}</span></td>
+                  <td>
+                    <span class="badge bg-light text-dark"
+                      >{{issue.status}}</span
+                    >
+                  </td>
                   {% endif %}
                 </tr>
                 {% endfor %}
@@ -125,8 +129,7 @@
           <section
             class="section error-404 min-vh-100 d-flex flex-column align-items-center justify-content-center"
           >
-          <h5 class="card-title">No issue has been raised yet</h5>
-           
+            <h5 class="card-title">No issue has been raised yet</h5>
           </section>
         </div>
         {% endif %}

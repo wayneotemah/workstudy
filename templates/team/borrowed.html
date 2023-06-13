@@ -15,7 +15,7 @@
       </nav>
     </div><!-- End Page Title -->
 
-    <a href= {% url 'borrowedassetspage' organizationUUID %} >
+    <a href= {% url 'borrowedassetspage' LabUUID %} >
       <button style="margin-bottom: 15px;" type="button" class="btn btn-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#fullscreenModal">
         Lend out a item
       </button>
@@ -50,7 +50,7 @@
 
                       <tr>
                         <th scope="row">
-                          <a href="{% url 'asset details' organizationUUID item.asset.pk %}">  
+                          <a href="{% url 'asset details' LabUUID item.asset.pk %}">  
                             <img style = "max-width:150px;" src="{{item.asset.pic.url}}" alt="asset image">
                           </a>
                         </th>
@@ -59,7 +59,7 @@
                         <td>{{item.picked_on}}</td>
                         <td class="fw-bold">{{item.returned}}</td>
                         {% if not item.returned %}
-                        <td><a href = {% url 'return assets' organizationUUID item.pk %}>Mark as Returned</a></td>
+                        <td><a href = {% url 'return assets' LabUUID item.pk %}>Mark as Returned</a></td>
                         {% endif %}
                       </tr>
                   {% endfor %}

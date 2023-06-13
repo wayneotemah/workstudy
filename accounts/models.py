@@ -94,7 +94,9 @@ class Account(models.Model):
     account_uuid = models.UUIDField(
         _("User ID"), primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(CustomUser, verbose_name=_(
-        "Account's credentials"), on_delete=models.CASCADE,related_name="account")
+        "Account's credentials"),
+        on_delete=models.CASCADE,
+        related_name="account")
     first_name = models.CharField(
         _('First name'), blank=True, null=True, max_length=100)
     last_name = models.CharField(

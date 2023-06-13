@@ -1,0 +1,93 @@
+{% extends 'base.html' %} {% block content %}
+
+<main>
+  <div class="container">
+    <section
+      class="section register min-vh-100 d-flex flex-column align-items-center py-4"
+    >
+      <div class="d-flex justify-content-center py-4">
+        <a href="index.html" class="logo d-flex align-items-center w-auto">
+          <img src="assets/img/logo.png" alt="" />
+          <span class="d-none d-lg-block">NiceAdmin</span>
+        </a>
+      </div>
+      <!-- End Logo -->
+
+      <div class="pt-4 pb-2">
+        <h5 class="card-title text-center pb-0 fs-4">Create your Labs</h5>
+        <p class="text-center pt-4" style="color: #4154f1">
+          Fill in the deatils below to help us set up your Lab
+        </p>
+      </div>
+
+      {% if message %}
+      <div
+        class="alert alert-danger alert-dismissible fade show"
+        style="margin: 20px 0px"
+        role="alert"
+      >
+        {{message}}
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+      {% endif %}
+
+      <form
+        class="row g-3 needs-validation"
+        action="{% url 'create Lab' %}"
+        method="post"
+        validate
+      >
+        {% csrf_token %} {% comment %}
+        <div class="col-12 pb-2">
+          <label class="col-form-label text-center"
+            >Select the kind Lab you wish to create</label
+          >
+          <select
+            name="scale"
+            class="form-select"
+            aria-label="Default select example"
+          >
+            <option selected></option>
+            <option value="medium scale">
+              Medium Enterprice (20 - 100 workers)
+            </option>
+            <option value="Small scale">
+              Small Enterprice (2 - 20 workers)
+            </option>
+            <option value="personal venture">Personal (Only you)</option>
+          </select>
+        </div>
+        {% endcomment %}
+
+        <div class="col-12 pb-2">
+          <label for="yourUsername" class="form-label">Lab name</label>
+          <div class="input-group has-validation">
+            <input
+              type="text"
+              name="Labname"
+              class="form-control"
+              id="yourUsername"
+              required
+            />
+            <div class="invalid-feedback">Please enter the filed.</div>
+          </div>
+        </div>
+
+        <div class="col-lg-8">
+          {% comment %}<button class="btn btn-secondary" type="submit">
+            Back
+          </button>
+          {%endcomment %}
+          <button class="btn btn-primary" type="submit">Next</button>
+        </div>
+      </form>
+    </section>
+  </div>
+</main>
+<!-- End #main -->
+{% endblock content %}

@@ -34,7 +34,7 @@
                             Total:<small class="text-info">{{item_category.quantity}}</small>
                         </h2>
 
-                        <a href="{% url 'add asset' organizationUUID item_category.pk %}">
+                        <a href="{% url 'add asset' LabUUID item_category.pk %}">
                             <button
                               style="margin-bottom: 15px"
                               type="button"
@@ -71,7 +71,7 @@
 
                                         <tr>
                                             <th scope="row">
-                                            <a href="{% url 'asset details' organizationUUID item.pk %}">  
+                                            <a href="{% url 'asset details' LabUUID item.pk %}">  
                                                 <img style = "max-width:150px;" src="{{item.pic.url}}" alt="asset image">
                                             </a>
                                             </th>
@@ -79,7 +79,7 @@
                                             <td>{{item.status}}</td>
                                             <td>{{item.condition}}</td>
                                             {% if item.status == 'Borrowed' %}
-                                            <td><a href = {% url 'borrowed assets' organizationUUID %}>Returned</a></td>
+                                            <td><a href = {% url 'borrowed assets' LabUUID %}>Returned</a></td>
                                             {% endif %}
                                         </tr>
                                     {% endfor %}

@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.validators import MaxValueValidator
 from django.utils.translation import gettext_lazy as _
-from organizations.models import Organization
+from Labs.models import Lab
 from accounts.models import Account
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -15,15 +15,47 @@ class Role(models.Model):
     description = models.TextField(
         _("role description"), blank=True, null=True, max_length=250
     )
-    organization = models.ForeignKey(
-        Organization, verbose_name=_("Organization"), on_delete=models.CASCADE
+    Lab = models.ForeignKey(
+        Lab,
+        verbose_name=_("Lab"),
+        on_delete=models.CASCADE,
     )
-    task_1 = models.CharField(_("task 1"), blank=True, null=True, max_length=200)
-    task_2 = models.CharField(_("task 2"), blank=True, null=True, max_length=200)
-    task_3 = models.CharField(_("task 3"), blank=True, null=True, max_length=200)
-    task_4 = models.CharField(_("task 4"), blank=True, null=True, max_length=200)
-    task_5 = models.CharField(_("task 5"), blank=True, null=True, max_length=200)
-    task_6 = models.CharField(_("task 6"), blank=True, null=True, max_length=200)
+    task_1 = models.CharField(
+        _("task 1"),
+        blank=True,
+        null=True,
+        max_length=200,
+    )
+    task_2 = models.CharField(
+        _("task 2"),
+        blank=True,
+        null=True,
+        max_length=200,
+    )
+    task_3 = models.CharField(
+        _("task 3"),
+        blank=True,
+        null=True,
+        max_length=200,
+    )
+    task_4 = models.CharField(
+        _("task 4"),
+        blank=True,
+        null=True,
+        max_length=200,
+    )
+    task_5 = models.CharField(
+        _("task 5"),
+        blank=True,
+        null=True,
+        max_length=200,
+    )
+    task_6 = models.CharField(
+        _("task 6"),
+        blank=True,
+        null=True,
+        max_length=200,
+    )
 
     class Meta:
         verbose_name = _("Role")
@@ -33,8 +65,8 @@ class Role(models.Model):
         return self.title
 
     @staticmethod
-    def getOrganizationRoles(x):
-        return Role.objects.filter(organization=x)
+    def getLabRoles(x):
+        return Role.objects.filter(Lab=x)
 
 
 class UserRole(models.Model):
@@ -46,7 +78,11 @@ class UserRole(models.Model):
         ("Friday", "Friday"),
         ("Saturday", "Saturday"),
     }
-    role = models.ForeignKey(Role, verbose_name=_("role"), on_delete=models.CASCADE)
+    role = models.ForeignKey(
+        Role,
+        verbose_name=_("role"),
+        on_delete=models.CASCADE,
+    )
     assigned_to = models.ForeignKey(
         Account,
         verbose_name=_("assigned_to"),
@@ -56,22 +92,52 @@ class UserRole(models.Model):
         null=True,
     )
 
-    day1 = models.CharField(max_length=15, choices=days_option, blank=True, null=True)
+    day1 = models.CharField(
+        max_length=15,
+        choices=days_option,
+        blank=True,
+        null=True,
+    )
     day1_start_time = models.TimeField(blank=True, null=True)
     day1_end_time = models.TimeField(blank=True, null=True)
-    day2 = models.CharField(max_length=15, choices=days_option, blank=True, null=True)
+    day2 = models.CharField(
+        max_length=15,
+        choices=days_option,
+        blank=True,
+        null=True,
+    )
     day2_start_time = models.TimeField(blank=True, null=True)
     day2_end_time = models.TimeField(blank=True, null=True)
-    day3 = models.CharField(max_length=15, choices=days_option, blank=True, null=True)
+    day3 = models.CharField(
+        max_length=15,
+        choices=days_option,
+        blank=True,
+        null=True,
+    )
     day3_start_time = models.TimeField(blank=True, null=True)
     day3_end_time = models.TimeField(blank=True, null=True)
-    day4 = models.CharField(max_length=15, choices=days_option, blank=True, null=True)
+    day4 = models.CharField(
+        max_length=15,
+        choices=days_option,
+        blank=True,
+        null=True,
+    )
     day4_start_time = models.TimeField(blank=True, null=True)
     day4_end_time = models.TimeField(blank=True, null=True)
-    day5 = models.CharField(max_length=15, choices=days_option, blank=True, null=True)
+    day5 = models.CharField(
+        max_length=15,
+        choices=days_option,
+        blank=True,
+        null=True,
+    )
     day5_start_time = models.TimeField(blank=True, null=True)
     day5_end_time = models.TimeField(blank=True, null=True)
-    day6 = models.CharField(max_length=15, choices=days_option, blank=True, null=True)
+    day6 = models.CharField(
+        max_length=15,
+        choices=days_option,
+        blank=True,
+        null=True,
+    )
     day6_start_time = models.TimeField(blank=True, null=True)
     day6_end_time = models.TimeField(blank=True, null=True)
 
@@ -83,10 +149,10 @@ class UserRole(models.Model):
         return f"{self.assigned_to.first_name} {self.assigned_to.last_name}"
 
     @staticmethod
-    def getUserOrganizationRoles(x):
+    def getUserLabRoles(x):
         try:
             return UserRole.objects.get(assigned_to=x)
-        except ObjectDoesNotExist as e:
+        except ObjectDoesNotExist:
             return None
 
     @staticmethod
@@ -94,23 +160,21 @@ class UserRole(models.Model):
         return UserRole.objects.filter(role=x)
 
     @staticmethod
-    def getOrganization(x):
+    def getLab(x):
         role = UserRole.objects.get(assigned_to=x)
-        return Organization.objects.get(
-            organization_uuid=role.role.organization.organization_uuid
-        )
+        return Lab.objects.get(Lab_uuid=role.role.Lab.Lab_uuid)
 
     @staticmethod
-    def getUsersInOrganization(x):
+    def getUsersInLab(x):
         """
         gets a listt of all the accounts working in
         x -> org uuid
         """
-        return UserRole.objects.filter(role__organization__organization_uuid=x)
+        return UserRole.objects.filter(role__Lab__Lab_uuid=x)
 
     @staticmethod
     def check_user_schedule(x):
-        role = UserRole.getUserOrganizationRoles(x)
+        role = UserRole.getUserLabRoles(x)
         if role:
             if (
                 not role.day1
@@ -123,7 +187,7 @@ class UserRole(models.Model):
                 return None
             else:
                 return True
-        elif role == None:
+        elif role is None:
             return False
 
     @staticmethod
@@ -314,99 +378,99 @@ class UserRole(models.Model):
 
     @staticmethod
     def get_current_shift_assignment():
-        current_day = timezone.now().strftime('%A')
+        current_day = timezone.now().strftime("%A")
         current_time = timezone.now().time()
-        
+
         try:
             user_role = UserRole.objects.get(
                 day1=current_day,
                 day1_start_time__lte=current_time,
-                day1_end_time__gte=current_time
+                day1_end_time__gte=current_time,
             )
         except UserRole.DoesNotExist:
             pass
         else:
             return {
-                'assigned_to': user_role.assigned_to,
-                'start_time': user_role.day1_start_time,
-                'end_time': user_role.day1_end_time
+                "assigned_to": user_role.assigned_to,
+                "start_time": user_role.day1_start_time,
+                "end_time": user_role.day1_end_time,
             }
-        
+
         try:
             user_role = UserRole.objects.get(
                 day2=current_day,
                 day2_start_time__lte=current_time,
-                day2_end_time__gte=current_time
+                day2_end_time__gte=current_time,
             )
         except UserRole.DoesNotExist:
             pass
         else:
             return {
-                'assigned_to': user_role.assigned_to,
-                'start_time': user_role.day2_start_time,
-                'end_time': user_role.day2_end_time
+                "assigned_to": user_role.assigned_to,
+                "start_time": user_role.day2_start_time,
+                "end_time": user_role.day2_end_time,
             }
-        
+
         try:
             user_role = UserRole.objects.get(
                 day3=current_day,
                 day3_start_time__lte=current_time,
-                day3_end_time__gte=current_time
+                day3_end_time__gte=current_time,
             )
         except UserRole.DoesNotExist:
             pass
         else:
             return {
-                'assigned_to': user_role.assigned_to,
-                'start_time': user_role.day3_start_time,
-                'end_time': user_role.day3_end_time
+                "assigned_to": user_role.assigned_to,
+                "start_time": user_role.day3_start_time,
+                "end_time": user_role.day3_end_time,
             }
-        
+
         try:
             user_role = UserRole.objects.get(
                 day4=current_day,
                 day4_start_time__lte=current_time,
-                day4_end_time__gte=current_time
+                day4_end_time__gte=current_time,
             )
         except UserRole.DoesNotExist:
             pass
         else:
             return {
-                'assigned_to': user_role.assigned_to,
-                'start_time': user_role.day4_start_time,
-                'end_time': user_role.day4_end_time
+                "assigned_to": user_role.assigned_to,
+                "start_time": user_role.day4_start_time,
+                "end_time": user_role.day4_end_time,
             }
-        
+
         try:
             user_role = UserRole.objects.get(
                 day5=current_day,
                 day5_start_time__lte=current_time,
-                day5_end_time__gte=current_time
+                day5_end_time__gte=current_time,
             )
         except UserRole.DoesNotExist:
             pass
         else:
             return {
-                'assigned_to': user_role.assigned_to,
-                'start_time': user_role.day5_start_time,
-                'end_time': user_role.day5_end_time
+                "assigned_to": user_role.assigned_to,
+                "start_time": user_role.day5_start_time,
+                "end_time": user_role.day5_end_time,
             }
-        
+
         try:
             user_role = UserRole.objects.get(
                 day6=current_day,
                 day6_start_time__lte=current_time,
-                day6_end_time__gte=current_time
+                day6_end_time__gte=current_time,
             )
         except UserRole.DoesNotExist:
             pass
         else:
             return {
-                'assigned_to': user_role.assigned_to,
-                'start_time': user_role.day6_start_time,
-                'end_time': user_role.day6_end_time
+                "assigned_to": user_role.assigned_to,
+                "start_time": user_role.day6_start_time,
+                "end_time": user_role.day6_end_time,
             }
-        
+
         return None
 
 

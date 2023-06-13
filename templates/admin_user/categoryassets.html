@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} 
 
 {% block content %} 
 
@@ -9,7 +9,7 @@
     <h1>Lab assets categories</h1>
   </div>
   <!-- End Page Title -->
-  <a href="{% url 'admin post assets' request.user.account.organization.organization_uuid %}">
+  <a href="{% url 'admin post assets' request.user.account.Lab.Lab_uuid %}">
     <button
       style="margin-bottom: 15px"
       type="button"
@@ -54,7 +54,7 @@
                       </td>
                       <td>
                         <a
-                          href="{% url 'admin assets details' request.user.account.organization.organization_uuid item.pk %}"
+                          href="{% url 'admin assets details' request.user.account.Lab.Lab_uuid item.pk %}"
                         >
                           {{item.category}}
                         </a>
@@ -103,7 +103,7 @@
               </div>
             </div>
             {% else %}
-            <h3>No assets found for {{organizationName}}</h3>
+            <h3>No assets found for {{LabName}}</h3>
             {% endif %}
           </div>
           <!-- End Top Selling -->

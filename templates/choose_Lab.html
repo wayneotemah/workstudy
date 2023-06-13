@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<main>
+  <div class="container">
+
+    <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-5 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+            <div class="d-flex justify-content-center py-4">
+              <a href="index.html" class="logo d-flex align-items-center w-auto">
+                <img src="assets/img/logo.png" alt="">
+                <span class="d-none d-lg-block">NiceAdmin</span>
+              </a>
+            </div><!-- End Logo -->
+
+            <div class="card mb-3">
+
+              <div class="card-body">
+
+                <div class="pt-4 pb-2">
+                  <h5 class="card-title text-center pb-0 fs-4">Your Lab</h5>
+                </div>
+                <form class="row g-3 needs-validation" method = 'GET' action = {% url 'dashboard redirect' %} validate>
+                  <div class="col-12">
+                      <label class="col-form-label text-center">
+                        {% if Lab_name and Lab_uuid  %}
+                          Select the Lab you want to login to
+                        {% else %}
+                          No Labs to list
+                        {% endif %}
+                      </label>
+                        <select class="form-select" name = "orgSelected" aria-label="Default select example">
+                          <option selected></option>
+                          {% comment %} {% for  Lab in Lab_list %} {% endcomment %}
+                          <option value="{{Lab_uuid}}">{{Lab_name}}</option>
+                          {% comment %} {% endfor %} {% endcomment %}
+                        </select>
+                  </div>
+                  <div class="col-12">
+                    <button class="btn btn-primary w-100" type="submit">Open</button>
+                  </div>
+                </form> 
+
+                  <h4 class="card-title text-center pb-0 fs-4">OR</h4>
+                <div class="pt-4 pb-2">               
+                  <h5 class="card-title text-center pb-0 fs-4"><a href="{% url 'create Lab' %}"  >Create a new Lab</a></h5>                    
+                  <p class="text-center small">to help you manage and stream line your work process</p>
+                </div>
+              </div>
+            </div>
+
+
+
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+</main><!-- End #main -->
+
+{% endblock content %}
+
+
