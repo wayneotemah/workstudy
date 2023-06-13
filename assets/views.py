@@ -20,7 +20,7 @@ def assets(request, uuid):
     if request.GET.get("page"):
         page_number = request.GET.get("page")
 
-    helper = AssetsHelper(user=request.user, |=uuid)
+    helper = AssetsHelper(user=request.user, uuid=uuid)
     context = helper.get_nav_details()
     assets = helper.getAssetCategoryList()
     paginator = Paginator(assets, 5)
@@ -217,14 +217,12 @@ def return_asset(request, borrowedasset_id, uuid):
     now = datetime.datetime.now()
     try:
         # try geting the item borrowd by it index
-        borrowed_item = Borrowed_Asset.getSingleBorrowedAssets(
-                                        borrowedasset_id
-                                        )
+        borrowed_item = Borrowed_Asset.getSingleBorrowedAssets(borrowedasset_id)
         borrowed_item.returned = True  # turn returned to true
         borrowed_item.returned_on = now  # set time returned to now
         borrowed_item.received_by = request.user.account
         borrowed_item.save()  # save
-        
+
     except Exception as e:
         # if savig fails, show error page it message
         context = {
