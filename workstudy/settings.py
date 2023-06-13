@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv  # type: ignore
-import dj_database_url
+
 
 import logging
 from django.utils.log import DEFAULT_LOGGING
@@ -17,7 +17,7 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", "192.168.12.120"]
+ALLOWED_HOSTS = ["127.0.0.1", "192.168.29.290"]
 
 
 # Application definition
