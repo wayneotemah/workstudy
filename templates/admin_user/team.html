@@ -17,7 +17,7 @@
   </div>
   <!-- End Page Title -->
 
-  <a href="{% url 'new_member_list' request.user.account.organization.organization_uuid %}">
+  <a href="{% url 'new_member_list' request.user.account.Lab.Lab_uuid %}">
     <button
       style="margin-bottom: 15px"
       type="button"
@@ -50,7 +50,7 @@
               <th scope="row">{{member.assigned_to.account_uuid}}</th>
               <th>
                 <a
-                  href="{% url 'admin_member_profile' request.user.account.organization.organization_uuid member.assigned_to.account_uuid %}"
+                  href="{% url 'admin_member_profile' request.user.account.Lab.Lab_uuid member.assigned_to.account_uuid %}"
                   >{{member.assigned_to.first_name}} {{member.assigned_to.last_name}}</a
                 >
               </th>

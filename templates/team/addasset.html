@@ -9,7 +9,7 @@
         <h5 class="card-title"> Add an asset</h5>
 
         <!-- Vertical Form -->
-            <form  method = "post" action = "{% url 'add asset' organizationUUID category_pk %}" enctype="multipart/form-data" validate >
+            <form  method = "post" action = "{% url 'add asset' LabUUID category_pk %}" enctype="multipart/form-data" validate >
               {% csrf_token %}
 
 
@@ -68,7 +68,7 @@
               </div>
               <div class="modal-footer">
                 <button type="submit" class="btn btn-primary rounded-pill" style="margin:0 10px;">Submit Form</button>
-                <a href="{% url 'asset category details' organizationUUID category_pk %}">
+                <a href="{% url 'asset category details' LabUUID category_pk %}">
                   <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
                 </a>
                 </div>

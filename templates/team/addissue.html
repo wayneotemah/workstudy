@@ -10,7 +10,7 @@
         <h5 class="card-title"> Raise an issue</h5>
 
         <!-- Vertical Form -->
-        <form class="row g-3" action ="{% url 'raiseIssue' organizationUUID%}" method = "post" validate>
+        <form class="row g-3" action ="{% url 'raiseIssue' LabUUID%}" method = "post" validate>
             {% csrf_token %}
             <div class="col-12">
                 <label for="inputAddress" class="form-label">Descriptive title (100 characters max)</label>
@@ -38,7 +38,7 @@
             <div class="text-center">
                 <button type="submit" class="btn btn-primary rounded-pill">Submit</button>
                 <button type="reset" class="btn btn-secondary rounded-pill">Reset</button>
-                <a href = {% url "issues" organizationUUID %}>
+                <a href = {% url "issues" LabUUID %}>
                     <button type="button" class="btn btn-light rounded-pill">Cancel</button>
                 </a>
 

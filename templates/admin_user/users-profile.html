@@ -1,9 +1,6 @@
 {% extends 'base.html' %}
-
-{% block content %} 
-
+{% block content %}
 {% include 'admin_user\navigation.html' %}
-
 
 <main id="main" class="main">
   <div class="pagetitle">
@@ -100,8 +97,8 @@
                 </div>
 
                 <div class="row">
-                  <div class="col-lg-3 col-md-4 label">Organization/lab</div>
-                  <div class="col-lg-9 col-md-8">{{ organizationName}}</div>
+                  <div class="col-lg-3 col-md-4 label">Lab/lab</div>
+                  <div class="col-lg-9 col-md-8">{{ LabName}}</div>
                 </div>
 
                 <div class="row">
@@ -187,7 +184,7 @@
                     <label
                       for="company"
                       class="col-md-4 col-lg-3 col-form-label"
-                      >Organization/lab</label
+                      >Lab/lab</label
                     >
                     <div class="col-md-8 col-lg-9">
                       <input
@@ -195,7 +192,7 @@
                         type="text"
                         class="form-control"
                         id="company"
-                        value="{{organizationName}}"
+                        value="{{LabName}}"
                       />
                     </div>
                   </div>

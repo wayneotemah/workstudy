@@ -1,10 +1,6 @@
 {% extends 'base.html' %}
 
-
-
-
 {% block content %} 
-
 
 {% include 'admin_user\navigation.html' %}
 
@@ -37,7 +33,7 @@
                     Add to team
                     <i class="bi bi-person-plus-fill"></i>
                   </button>
-                    {% comment %} href="{% url 'admin_add_to_team' request.user.account.organization.organization_uuid account.account_uuid %}" {% endcomment %}
+                    {% comment %} href="{% url 'admin_add_to_team' request.user.account.Lab.Lab_uuid account.account_uuid %}" {% endcomment %}
                 </th>
                 <td>{{member.assigned_to.user.date_joined}}</td>
               </tr>
@@ -67,7 +63,7 @@
           </div>
           <div class="modal-body">
             <p>Add <span id="team-member-name"></span> to your team</p>
-            <form id="add-to-team-form" method="POST" action="{% url 'new_member_list' request.user.account.organization.organization_uuid %}">
+            <form id="add-to-team-form" method="POST" action="{% url 'new_member_list' request.user.account.Lab.Lab_uuid %}">
               {% csrf_token %}
               <input type = "hidden" name="account_uuid" id="account-uuid-input">
               <div class="modal-body">

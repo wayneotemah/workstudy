@@ -1,5 +1,5 @@
-from organizations.helper import UserDetailsHelper
-from assets.models import Asset, Borrowd_Asset, AssetCategory
+from Labs.helper import UserDetailsHelper
+from assets.models import Asset, Borrowed_Asset, AssetCategory
 
 
 class AssetsHelper(UserDetailsHelper):
@@ -10,17 +10,17 @@ class AssetsHelper(UserDetailsHelper):
         return Asset.getAssets(self.companyUUID)
 
     def getAssetDetails(self, x):
-        '''
+        """
         return the one assets details
         x -> item primary key
-        '''
+        """
         return Asset.getSingleAsset(x)
 
     def getAssetCategoryList(self):
-        return AssetCategory.getCategoryListByOrganization(self.companyUUID)
+        return AssetCategory.getCategoryListByLab(self.companyUUID)
 
     def getBorrowesAssets(self):
-        return Borrowd_Asset.getBorrowedAssets(self.companyUUID)
+        return Borrowed_Asset.getBorrowedAssets(self.companyUUID)
 
     def getAvailbleAssets(self):
         return Asset.getAvailbleAssets(self.companyUUID)

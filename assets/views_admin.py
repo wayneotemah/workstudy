@@ -8,10 +8,10 @@ from assets.helper import AssetsHelper
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 
-from assets.models import *
+from assets.models import AssetCategory, Asset, Borrowed_Asset
 
 from workstudy.globalsettings import LOGIN_URL
-from organizations.models import Organization
+from Labs.models import Lab
 
 
 @login_required(login_url=LOGIN_URL)
@@ -31,13 +31,13 @@ def admin_assets_catrgory(request, uuid):
         return render(request, "admin_user/categoryassets.html", context=context)
     elif request.method == "POST":
         category = request.POST["category_type"]
-        # pic = request.FILES["asset_category_pic"]
+        pic = request.FILES["asset_category_pic"]
         try:
             categoryItem = AssetCategory(
-                category=category, organization_id=uuid
+                category=category, Lab_id=uuid, category_pic=pic
             )
             categoryItem.save()
-            messages.success(request, f"Added new catrogy of asset 👍")
+            messages.success(request, "Added new catrogy of asset 👍")
             return redirect(admin_assets_catrgory, uuid=uuid)
 
         except IntegrityError as e:
@@ -46,9 +46,10 @@ def admin_assets_catrgory(request, uuid):
 
         except Exception as e:
             # if anything fails, show error page wtth message
-            context = {
-                "message": f"Please contact the devs and notify them of the error \nerror is: \n{e}"
-            }
+            message = f"""
+                        Please contact the devs and notify them of the error:{e}
+                        """
+            context = {"message": message}
             messages.warning(request, "Unexpected Exception error has risen")
             return render(request, "errorpage.html", context=context)
 
@@ -70,67 +71,70 @@ def admin_category_Details(request, uuid, category_pk):
     show details of asset category and list of assets under the catregory
     """
     if request.method == "GET":
-        helper = AssetsHelper(user=request.user, uuid=uuid)
         context = {}
-        category = AssetCategory.getCategory(category_pk, uuid)
+        category = AssetCategory.objects.get(id=category_pk)
         if category:
             context["item_category"] = category
             context["items"] = Asset.getOrgAssetsByCategory(category_pk, uuid)
 
-            return render(
-                request, "admin_user/category_asset_details.html", context=context
-            )
+        return render(
+            request, "admin_user/category_asset_details.html", context=context
+        )
 
 
 @login_required(login_url=LOGIN_URL)
 def admin_post_asset(request, uuid, category_pk):
     # get asset posting page
     if request.method == "GET":
-        helper = AssetsHelper(user=request.user, uuid=uuid)
         context = {}
         context["category_pk"] = category_pk
         context["category"] = AssetCategory.objects.get(id=category_pk)
         return render(request, "admin_user/addasset.html", context=context)
     if request.method == "POST":
         # adding asset
-        now = datetime.datetime.now()
-
         name = request.POST["asset_name"]
         condition = request.POST["condition"]
         status = request.POST["status"]
         pic = request.FILES["asset_pic"]
         try:
-            # try to save
-            # category = AssetCategory.getCategoryByName(
-            #     category_type)  # get the asset instance
-            # organization = Organization.get_organizations_from_uuid(
-            #     uuid)  # get organization instance for saving
             asset = Asset(
                 category_type_id=category_pk,
                 name=name,
                 condition=condition,
                 status=status,
                 pic=pic,
-                organization_id=uuid,
+                Lab_id=uuid,
             )
             asset.save()
+
+            category = AssetCategory.objects.get(id=category_pk)
+            count = Asset.objects.filter(
+                category_type_id=category_pk, Lab_id=uuid
+            ).count()
+            category.quantity = count + 1
+            category.save()
+            print(category, count, category.quantity)
         except Exception as e:
             # if anything fails, show error page wtth message
             context = {
-                "message": f"Please contact the devs and notify them of the error \nerror is: \n{e}"
+                "message": f"Please contact the devs and notify them of the error <div>{e}</div>"
             }
             messages.warning(request, "Unexpected Exception error has risen")
             return render(request, "errorpage.html", context=context)
         else:
             # everthing was successful
-            messages.success(request, f"{name} Added successfully")
-            return redirect(admin_post_asset, uuid=uuid, category_pk=category_pk)
+            messages.success(request, f"{name} Added successfully 👍")
+            return redirect(
+                admin_post_asset,
+                uuid=uuid,
+                category_pk=category_pk,
+            )
 
 
 @login_required(login_url=LOGIN_URL)
 def admin_borrowed_assets(request, uuid):
     if request.method == "GET":
-        # get list of all borrowed item in that organization
+        # get list of all borrowed item in that Lab
         page_number = 1
         if request.GET.get("page"):
             page_number = request.GET.get("page")
@@ -145,21 +149,20 @@ def admin_borrowed_assets(request, uuid):
         # posting borrowed item
         now = datetime.datetime.now()
 
-        organization = Organization.get_organizations_from_uuid(
-            uuid
-        )  # get organization instance from uuil
-        # get asset instance from asset pk
-        asset = Asset.getSingleAsset(request.POST["Item_id"])
+        lab_instace = Lab.get_Labs_from_uuid(uuid)
+        asset = Asset.getSingleAsset(
+            request.POST["Item_id"]
+        )  # get asset instance from asset pk
 
         try:
-            organization_id = organization
+            lab_instace
             person = request.POST["persons_name"]
             contacts = request.POST["persons_contacts"]
             location_of_use = request.POST["location_of_use"]
 
-            borroweditem = Borrowd_Asset(
+            borroweditem = Borrowed_Asset(
                 asset=asset,
-                organization_id=organization_id,
+                lab_id=uuid,
                 person=person,
                 contacts=contacts,
                 location_of_use=location_of_use,
@@ -178,6 +181,7 @@ def admin_borrowed_assets(request, uuid):
             # successfully added item on
             asset.status = "Borrowed"
             asset.save()
+            AssetCategory.add_borrowed_assets(asset, uuid)
             messages.success(request, f"{asset.name} borrowed successfully")
             return redirect(admin_borrowed_assets, uuid=uuid)
 
@@ -201,7 +205,7 @@ def admin_assetDetails(request, uuid, item_pk):
         context = {}
         item = helper.getAssetDetails(item_pk)
         if item.status == "Borrowed":
-            item_borrowed_details = Borrowd_Asset.objects.get(asset=item)
+            item_borrowed_details = Borrowed_Asset.objects.get(asset=item)
             context["item"] = item
             context["borrowed_item"] = item_borrowed_details
         else:
@@ -216,14 +220,18 @@ def admin_return_asset(request, uuid, borrowedasset_id):
     now = datetime.datetime.now()
     try:
         # try geting the item borrowd by it index
-        borrowed_item = Borrowd_Asset.getSingleBorrowedAssets(borrowedasset_id)
+        borrowed_item = Borrowed_Asset.getSingleBorrowedAssets(borrowedasset_id)
         borrowed_item.returned = True  # turn returned to true
         borrowed_item.returned_on = now  # set time returned to now
-        borrowed_item.save()  # save
+        borrowed_item.received_by = request.user.account
+        borrowed_item.save()  # save the borrowed item
     except Exception as e:
         # if savig fails, show error page it message
         context = {
-            "message": f"Please contact the devs and notify them of the error \nerror is: \n{e}"
+            "message": f"""
+                        Please contact the devs and notify them of the error
+                        <div>{e}</div>
+                        """
         }
         messages.warning(request, "Unexpected Exception error has risen")
         return render(request, "errorpage.html", context=context)
@@ -233,5 +241,9 @@ def admin_return_asset(request, uuid, borrowedasset_id):
         asset = borrowed_item.asset  # get the asset instance
         asset.status = "Available"  # Turn status to availbe
         asset.save()  # save the asset instance
-        messages.info(request, f"{borrowed_item.asset.name} returned successfully")
+        AssetCategory.reduce_borrowed_assets(borrowed_item.asset, uuid)
+        messages.info(
+            request,
+            f"{borrowed_item.asset.name} returned successfully",
+        )
         return redirect("admin borrow asset", uuid=uuid)

@@ -9,7 +9,7 @@
         <div class="card-body">
         <h5 class="card-title"> Lend out an item</h5>
 
-        <form  method = "post" action = "{% url 'borrowed assets' organizationUUID %}" validate >
+        <form  method = "post" action = "{% url 'borrowed assets' LabUUID %}" validate >
             {% csrf_token %}
             <div class="row mb-3">
             <div class="row mb-3">
@@ -51,7 +51,7 @@
             <div class="modal-footer">
             <button type="submit" class="btn btn-primary rounded-pill">Submit Form</button>
 
-            <a href={% url 'borrowed assets' organizationUUID %}>
+            <a href={% url 'borrowed assets' LabUUID %}>
                 <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </a>

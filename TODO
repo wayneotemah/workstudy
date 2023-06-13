@@ -2,7 +2,7 @@
     reports and reiviews
     key and room  -->
 
-XXX add user permission to detemin if to render pages or not. ie create_organization
+XXX add user permission to detemin if to render pages or not. ie create_Lab
 XXX protect create-org page from non supervisors
 XXX create redirect for supervisors
 XXX fix dashboard

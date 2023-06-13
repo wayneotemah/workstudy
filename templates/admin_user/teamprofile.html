@@ -91,8 +91,8 @@
                 </div>
 
                 <div class="row">
-                  <div class="col-lg-3 col-md-4 label">Organization/lab</div>
-                  <div class="col-lg-9 col-md-8">{{ member_profile.organizationName}}</div>
+                  <div class="col-lg-3 col-md-4 label">Lab/lab</div>
+                  <div class="col-lg-9 col-md-8">{{ member_profile.LabName}}</div>
                 </div>
 
                 <div class="row">
@@ -178,7 +178,7 @@
                     <label
                       for="company"
                       class="col-md-4 col-lg-3 col-form-label"
-                      >Organization/lab</label
+                      >Lab/lab</label
                     >
                     <div class="col-md-8 col-lg-9">
                       <input
@@ -186,7 +186,7 @@
                         type="text"
                         class="form-control"
                         id="company"
-                        value="{{member_profile.organizationName}}"
+                        value="{{member_profile.LabName}}"
                       />
                     </div>
                   </div>
@@ -248,7 +248,7 @@
 
               <div class="tab-pane fade pt-3" id="profile-settings">
                 <!-- Settings Form -->
-                <form method = "post" action = {% url 'admin_member_profile' request.user.account.organization.organization_uuid  member_profile.account_uuid %}>
+                <form method = "post" action = {% url 'admin_member_profile' request.user.account.Lab.Lab_uuid  member_profile.account_uuid %}>
                   {% csrf_token %}
                   <div class="row mb-3">
                     <label

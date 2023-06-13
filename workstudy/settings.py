@@ -32,7 +32,7 @@ INSTALLED_APPS = [
     "phonenumber_field",
     # my apps
     "accounts",
-    "organizations",
+    "Labs",
     "roles",
     "assets",
 ]

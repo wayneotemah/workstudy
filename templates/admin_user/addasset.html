@@ -11,20 +11,15 @@
         <h5 class="card-title"> Add an asset</h5>
 
         <!-- Vertical Form -->
-            <form  method = "post" action = "{% url 'add asset' request.user.account.organization.organization_uuid category_pk %}" enctype="multipart/form-data" validate >
+            <form  method = "post" action = "{% url 'admin add assets' request.user.account.Lab.Lab_uuid category_pk %}" enctype="multipart/form-data" validate required >
               {% csrf_token %}
 
 
               <div class="row mb-3">
                 <label class="col-sm-2 col-form-label">Category Type</label>
                 <div class="col-sm-10">
-                  <select name = "category_type" class="form-select" aria-label="Default select example">
+                  <select name = "category_type" class="form-select" aria-label="Default select example" disabled>
                     <option selected>{{category.category}}</option>
-                    {% comment %} <option value="Projector">Projector</option>
-                    <option value="VGA Cables">VGA Cables</option>
-                    <option value="HDMI Cables">HDMI Cables</option>
-                    <option value="VGA-HDMI Converters">VGA-HDMI Converters</option>
-                    <option value="Others">Others</option> {% endcomment %}
                  </select>
                 </div>
               </div>
@@ -33,7 +28,7 @@
               <div class="row mb-3">
                 <label for="inputText" class="col-sm-2 col-form-label">Asset Name</label>
                 <div class="col-sm-10">
-                  <input  name ="asset_name"type="text" class="form-control">
+                  <input  name ="asset_name"type="text" class="form-control" required>
                 </div>
               </div>
 
@@ -42,7 +37,7 @@
               <div class="row mb-3">
                 <label for="inputNumber" class="col-sm-2 col-form-label">File Upload</label>
                 <div class="col-sm-10">
-                  <input name ="asset_pic" class="form-control" type="file" id="formFile">
+                  <input name ="asset_pic" class="form-control" type="file" id="formFile" required>
                 </div>
               </div>
               <div class="row mb-3">
@@ -70,7 +65,7 @@
               </div>
               <div class="modal-footer">
                 <button type="submit" class="btn btn-primary rounded-pill" style="margin:0 10px;">Submit Form</button>
-                <a href="{% url 'asset category details' request.user.account.organization.organization_uuid category_pk %}">
+                <a href="{% url 'admin assets details' request.user.account.Lab.Lab_uuid category_pk %}">
                   <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
                 </a>
                 </div>

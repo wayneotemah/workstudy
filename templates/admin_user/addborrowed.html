@@ -1,10 +1,6 @@
 {% extends 'base.html' %}
 
-
-
-
-{% block content %} 
-
+{% block content %}
 
 {% include 'admin_user\navigation.html' %}
 
@@ -14,7 +10,7 @@
         <div class="card-body">
         <h5 class="card-title"> Lend out an item</h5>
 
-        <form  method = "post" action = "{% url 'admin borrow asset' request.user.account.organization.organization_uuid %}" validate >
+        <form  method = "post" action = "{% url 'admin borrow asset' request.user.account.Lab.Lab_uuid %}" validate >
             {% csrf_token %}
             <div class="row mb-3">
             <div class="row mb-3">
@@ -56,7 +52,7 @@
             <div class="modal-footer">
             <button type="submit" class="btn btn-primary rounded-pill">Submit Form</button>
 
-            <a href={% url 'borrowed assets' request.user.account.organization.organization_uuid %}>
+            <a href={% url 'borrowed assets' request.user.account.Lab.Lab_uuid %}>
                 <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </a>

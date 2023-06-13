@@ -1,96 +1,156 @@
 {% extends 'base.html' %}
-
-
-
-
-{% block content %} 
-
-
+{% block content %}
 {% include 'admin_user\navigation.html' %}
 
-
 <main id="main" class="main">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Add role to your Lab</h5>
 
-
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">Add role to your organization</h5>
-
-        <!-- Role form -->
-        <form class="row g-3"  method = "post" action = "{% url 'admin_rolesfrom' request.user.account.organization.organization_uuid %}" enctype="multipart/form-data" validate >
-          {% csrf_token %}
-          <div class="col-md-6">
-            <div class="form-floating">
-              <input type="text" name = "roleTitle" class="form-control" id="floatingTitle" placeholder="Role Title" required>
-              <label for="floatingTitle">Role title</label>
-            </div>
+      <!-- Role form -->
+      <form
+        class="row g-3"
+        method="post"
+        action="{% url 'admin_rolesfrom' request.user.account.Lab.Lab_uuid %}"
+        enctype="multipart/form-data"
+        validate
+      >
+        {% csrf_token %}
+        <div class="col-md-6">
+          <div class="form-floating">
+            <input
+              type="text"
+              name="roleTitle"
+              class="form-control"
+              id="floatingTitle"
+              placeholder="Role Title"
+              required
+            />
+            <label for="floatingTitle">Role title</label>
           </div>
-          <div class="col-md-6">
-            <div class="form-floating">
-              <input type="text" name = "organization" class="form-control" id="floatingLab" placeholder="Organization/Lab" value = "{{organizationName }}" required>
-              <label for="floatingOrganization">Organization</label>
-            </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-floating">
+            <input
+              type="text"
+              name="Lab"
+              class="form-control"
+              id="floatingLab"
+              placeholder="Lab/Lab"
+              value="{{LabName }}"
+              disabled
+            />
+            <label for="floatingLab">Lab</label>
           </div>
-          <div class="col-12">
-            <div class="form-floating">
-              <textarea class="form-control" name = "description" placeholder="Description(250 words)" id="floatingTextarea" style="height: 100px;" required></textarea>
-              <label for="floatingDescription">Description</label>
-            </div>
+        </div>
+        <div class="col-12">
+          <div class="form-floating">
+            <textarea
+              class="form-control"
+              name="description"
+              placeholder="Description(250 words)"
+              id="floatingTextarea"
+              style="height: 100px"
+              required
+            ></textarea>
+            <label for="floatingDescription">Description</label>
           </div>
+        </div>
 
-          <div class="col-12">
-            <h6 class="card-title">Task to be performed</h6>
-          </div>
+        <div class="col-12">
+          <h6 class="card-title">Task to be performed</h6>
+        </div>
 
-          <div class="col-12">
-            <label for="text" class="form-label">TasK 1</label>
-            <input type="text" name = "task1" class="form-control" id="inputAddress2" placeholder="(Optional)">
-          </div>
+        <div class="col-12">
+          <label for="text" class="form-label">TasK 1</label>
+          <input
+            type="text"
+            name="task1"
+            class="form-control"
+            id="inputAddress2"
+            placeholder="(Optional)"
+          />
+        </div>
 
-          <div class="col-12">
-            <label for="text" class="form-label">TasK 2</label>
-            <input type="text" name = "task2" class="form-control" id="inputAddress2" placeholder="(Optional)">
-          </div>
+        <div class="col-12">
+          <label for="text" class="form-label">TasK 2</label>
+          <input
+            type="text"
+            name="task2"
+            class="form-control"
+            id="inputAddress2"
+            placeholder="(Optional)"
+          />
+        </div>
 
-          <div class="col-12">
-            <label for="text" class="form-label">TasK 3</label>
-            <input type="text" name = "task3" class="form-control" id="inputAddress2" placeholder="(Optional)">
-          </div>
+        <div class="col-12">
+          <label for="text" class="form-label">TasK 3</label>
+          <input
+            type="text"
+            name="task3"
+            class="form-control"
+            id="inputAddress2"
+            placeholder="(Optional)"
+          />
+        </div>
 
-          <div class="col-12">
-            <label for="text" class="form-label">TasK 4</label>
-            <input type="text" name = "task4" class="form-control" id="inputAddress2" placeholder="(Optional)">
-          </div>
+        <div class="col-12">
+          <label for="text" class="form-label">TasK 4</label>
+          <input
+            type="text"
+            name="task4"
+            class="form-control"
+            id="inputAddress2"
+            placeholder="(Optional)"
+          />
+        </div>
 
-          <div class="col-12">
-            <label for="text" class="form-label">TasK 5</label>
-            <input type="text" name = "task5" class="form-control" id="inputAddress2" placeholder="(Optional)">
-          </div>
+        <div class="col-12">
+          <label for="text" class="form-label">TasK 5</label>
+          <input
+            type="text"
+            name="task5"
+            class="form-control"
+            id="inputAddress2"
+            placeholder="(Optional)"
+          />
+        </div>
 
-          <div class="col-12">
-            <label for="text" class="form-label">TasK 6</label>
-            <input type="text" name = "task6" class="form-control" id="inputAddress2" placeholder="(Optional)">
-          </div>
+        <div class="col-12">
+          <label for="text" class="form-label">TasK 6</label>
+          <input
+            type="text"
+            name="task6"
+            class="form-control"
+            id="inputAddress2"
+            placeholder="(Optional)"
+          />
+        </div>
 
-
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-primary rounded-pill" style="margin:0 10px;">Submit Form</button>
-            <a href="{% url 'category assets' request.user.account.organization.organization_uuid %}">
-              <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
-            </a>
-            </div>
-
-        </form><!-- End floating Labels Form -->
-
-      </div>
+        <div class="modal-footer">
+          <button
+            type="submit"
+            class="btn btn-primary rounded-pill"
+            style="margin: 0 10px"
+          >
+            Submit Form
+          </button>
+          <a
+            href="{% url 'category assets' request.user.account.Lab.Lab_uuid %}"
+          >
+            <button
+              type="button"
+              class="btn btn-secondary rounded-pill"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+          </a>
+        </div>
+      </form>
+      <!-- End floating Labels Form -->
     </div>
-
-
-
-
-
-
+  </div>
 </main>
-
 
 {% endblock content %}
