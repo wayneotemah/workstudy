@@ -1,19 +1,11 @@
 import os
 from pathlib import Path
-from dotenv import load_dotenv  # type: ignore
-
-
-import logging
-from django.utils.log import DEFAULT_LOGGING
-
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-load_dotenv(os.path.join(BASE_DIR, ".env"))
 
+SECRET_KEY = "@@#h@a(c31nuh)75o_4-w8jj&9=!nm=8(zzu-7=-@6c9=f_q*("
 
-SECRET_KEY = os.getenv("SECRET_KEY")
-DATABASE_URL = os.getenv("DATABASE_URL")
 
 DEBUG = True
 
@@ -73,9 +65,9 @@ TEMPLATES = [
 WSGI_APPLICATION = "workstudy.wsgi.application"
 
 DATABASES = {
-    'default':{
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
