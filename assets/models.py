@@ -3,8 +3,6 @@ import uuid
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from Labs.models import Lab
-from django.db.models.signals import post_save, post_delete
-from django.dispatch import receiver
 
 from accounts.models import Account
 
@@ -237,9 +235,13 @@ class Borrowed_Asset(models.Model):
     person = models.CharField(
         _("borrowers name(one)"), max_length=50, blank=False, null=False
     )
+    student_id = models.CharField(
+        _("student id"), max_length=50, blank=False, null=False
+    )
     contacts = models.CharField(
         _("borrowers contact"), max_length=50, blank=False, null=False
     )
+
     location_of_use = models.CharField(
         _("Class/Hall"), max_length=50, blank=False, null=False
     )

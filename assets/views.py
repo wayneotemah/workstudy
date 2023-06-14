@@ -53,6 +53,7 @@ def borrowed_assets(request, uuid):
             person = request.POST["persons_name"]
             contacts = request.POST["persons_contacts"]
             location_of_use = request.POST["location_of_use"]
+            student_id = request.POST["student_id_number"]
 
             borroweditem = Borrowed_Asset(
                 asset=asset,
@@ -62,6 +63,7 @@ def borrowed_assets(request, uuid):
                 location_of_use=location_of_use,
                 picked_on=now,
                 issued_out_by=request.user.account,
+                student_id=student_id
             )
             borroweditem.returned = False
             borroweditem.save()
@@ -201,12 +203,11 @@ def assetDetails(request, uuid, item_pk):
         helper = AssetsHelper(user=request.user, uuid=uuid)
         context = helper.get_nav_details()
         item = helper.getAssetDetails(item_pk)
-        if item.status == "Borrowed":
-            item_borrowed_details = Borrowed_Asset.objects.get(asset=item)
-            context["item"] = item
+        item_borrowed_details = Borrowed_Asset.objects.filter(asset=item).last()
+        context["item"] = item
+
+        if item_borrowed_details is not None:
             context["borrowed_item"] = item_borrowed_details
-        else:
-            context["item"] = item
 
         return render(request, "team/item_asset_details.html", context=context)
 
