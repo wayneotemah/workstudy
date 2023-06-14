@@ -227,7 +227,7 @@ def return_asset(request, borrowedasset_id, uuid):
     except Exception as e:
         # if savig fails, show error page it message
         context = {
-            "message": f"Please contact the devs and notify them of the error \nerror is: \n{e}"
+            "message": f"Please contact the devs and notify them of the error ---\n{e}"
         }
         messages.warning(request, "Unexpected Exception error has risen")
         return render(request, "errorpage.html", context=context)

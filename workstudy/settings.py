@@ -1,23 +1,15 @@
 import os
 from pathlib import Path
-from dotenv import load_dotenv  # type: ignore
-import dj_database_url
-
-import logging
-from django.utils.log import DEFAULT_LOGGING
-
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-load_dotenv(os.path.join(BASE_DIR, ".env"))
 
+SECRET_KEY = "@@#h@a(c31nuh)75o_4-w8jj&9=!nm=8(zzu-7=-@6c9=f_q*("
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-thto$3)-08zd&px1k!zm)7x(22c%owia6ovarfy*vy-2@#!)c7"
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", "192.168.12.120"]
+ALLOWED_HOSTS = ["127.0.0.1", "192.168.29.190"]
 
 
 # Application definition
