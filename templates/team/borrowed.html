@@ -42,6 +42,7 @@
                         <th scope="col">Picked by</th>
                         <th scope="col">Picked on</th>
                         <th scope="col">Returned</th>
+                        <th scope="col">Recieved by</th>
                         <th scope="col">Action</th>
                       </tr>
                     </thead>
@@ -58,6 +59,7 @@
                         <td>{{item.person}}</td>
                         <td>{{item.picked_on}}</td>
                         <td class="fw-bold">{{item.returned}}</td>
+                        <td class="fw-bold">{{item.received_by}}</td>
                         {% if not item.returned %}
                         <td><a href = {% url 'return assets' LabUUID item.pk %}>Mark as Returned</a></td>
                         {% endif %}
