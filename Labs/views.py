@@ -93,9 +93,9 @@ def raiseIssue(request, uuid):
         now = datetime.datetime.now()
         try:
             reported_by = Account.get_account(request.user)
-            Lab = Lab.get_Labs_from_uuid(uuid)
+            lab = Lab.get_Labs_from_uuid(uuid)
             issue = Issue(
-                Lab=Lab,
+                Lab=lab,
                 status=status,
                 details=details,
                 reported_on=now,

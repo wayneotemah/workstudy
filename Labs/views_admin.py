@@ -1,19 +1,17 @@
-import datetime
 from django.shortcuts import redirect, render
 from django.core.paginator import Paginator
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from roles.models import UserRole, Role
 from assets.models import Borrowed_Asset
+from datetime import datetime
 from Labs.helper_admin import (
     TeamAdminHelper,
     IssuessAdminHelper,
     RolesAdminHelper,
     UserAdminDetailsHelper,
 )
-
 from Labs.models import Issue
-
 from workstudy.globalsettings import LOGIN_URL
 import logging
 
@@ -149,16 +147,17 @@ def admin_issues(request, uuid):
     return render(request, "admin_user/issues.html", context=context)
 
 
-from datetime import datetime
-
-
 @login_required(login_url=LOGIN_URL)
 def admin_IssueDetails(request, uuid, issue_pk):
     try:
         if request.method == "GET":
             context = {}
             context["issue"] = Issue.getIssueByPk(issue_pk)
-            return render(request, "admin_user/issuedetails.html", context=context)
+            return render(
+                request,
+                "admin_user/issuedetails.html",
+                context=context,
+            )
         elif request.method == "POST":
             issue = Issue.getIssueByPk(issue_pk)
             issue.status = request.POST["issue_status"]
