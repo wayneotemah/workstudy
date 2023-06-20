@@ -39,6 +39,7 @@ class AssetCategory(models.Model):
         ("HDMI Cables", "HDMI Cables"),
         ("VGA-HDMI Converters", " VGA-HDMI Converters"),
         ("Remote", "Remote"),
+        ("Extension/Power Cables", "Extension/Power Cables"),
         ("Others", "Others"),
     }
     category = models.TextField(
