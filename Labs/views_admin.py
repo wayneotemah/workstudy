@@ -12,6 +12,7 @@ from Labs.helper_admin import (
     UserAdminDetailsHelper,
 )
 from Labs.models import Issue
+from accounts.models import CustomUser
 from workstudy.globalsettings import LOGIN_URL
 import logging
 
@@ -50,14 +51,18 @@ def new_members(request, uuid):
         context = {}
         context["accounts"] = helper.get_unassigned_user()
         context["roles"] = Role.objects.filter(Lab__Lab_uuid=uuid)
-        return render(request, "admin_user/addteammember.html", context=context)
+        return render(
+            request,
+            "admin_user/addteammember.html",
+            context=context,
+        )
     if request.method == "POST":
         account_id = request.POST["account_uuid"]
         role_id = request.POST["role_id"]
         print(role_id)
         userrole = UserRole(role_id=role_id, assigned_to_id=account_id)
         userrole.save()
-        messages.success(request, f"Added new team member👍")
+        messages.success(request, "Added new team member👍")
         return redirect(admin_myteam, uuid)
 
 

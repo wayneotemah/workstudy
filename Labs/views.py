@@ -4,7 +4,6 @@ from django.core.paginator import Paginator
 from django.contrib import messages
 from accounts.models import Account
 from django.contrib.auth.decorators import login_required
-from accounts.views import Lab
 from Labs.helper import (
     IssuessHelper,
     DashBoardHelper,
@@ -14,7 +13,7 @@ from Labs.helper import (
 )
 from roles.models import UserRole
 from assets.models import Borrowed_Asset
-
+from accounts.views import Labview
 from workstudy.globalsettings import LOGIN_URL
 from Labs.models import Issue, Lab
 
@@ -35,7 +34,7 @@ def dashboard_redirect(request):
             return redirect("pick my schedule", uuid=orgSelectedUUID)
         else:
             messages.info(request, "You did not select a workstudy location")
-            return redirect(Lab)
+            return redirect(Labview)
     else:
         return redirect("admin_dashboard", uuid=orgSelectedUUID)
 
