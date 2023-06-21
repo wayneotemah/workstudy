@@ -41,9 +41,6 @@ def dashboard_redirect(request):
 
 @login_required(login_url=LOGIN_URL)
 def dashboard(request, uuid):
-    page_number = 1
-    if request.GET.get("page"):
-        page_number = request.GET.get("page")
     helper = DashBoardHelper(user=request.user, uuid=uuid)
     context = helper.get_nav_details()
     context["my_schedule"] = helper.latestSchdule()
