@@ -22,6 +22,7 @@ from accounts.views import logout_view
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path('accounts/', include('allauth.urls')),
     path("logout/", logout_view, name="log out"),
     path("org/", include("Labs.url")),
     path("assets/", include("assets.url")),

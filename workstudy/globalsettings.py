@@ -1,2 +1,1 @@
-
-LOGIN_URL = '/sign-in/'
+LOGIN_URL = "/accounts/login/"

@@ -19,7 +19,11 @@ class CustomUserManager(BaseUserManager):
         if not phone_number:
             raise ValueError(_("The phone number must be set"))
         email = self.normalize_email(email)
-        user = self.model(email=email, phone_number=phone_number, **extra_fields)
+        user = self.model(
+            email=email,
+            phone_number=phone_number,
+            **extra_fields,
+        )
         user.set_password(password)
         user.save()
         return user
@@ -51,10 +55,19 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         max_length=255,
         unique=True,
     )
+    username = models.CharField(
+        _("username"),
+        max_length=255,
+        blank=True,
+        null=True,
+    )
     phone_number = PhoneNumberField(
         _("phone number"), blank=True, null=False, unique=True
     )
-    date_joined = models.DateTimeField(verbose_name="date joined", auto_now_add=True)
+    date_joined = models.DateTimeField(
+        verbose_name="date joined",
+        auto_now_add=True,
+    )
     last_login = models.DateTimeField(verbose_name="last login", auto_now=True)
     is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)

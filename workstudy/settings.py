@@ -9,7 +9,7 @@ SECRET_KEY = "@@#h@a(c31nuh)75o_4-w8jj&9=!nm=8(zzu-7=-@6c9=f_q*("
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", "192.168.29.190"]
+ALLOWED_HOSTS = ["127.0.0.1", "192.168.29.190", "*"]
 
 
 # Application definition
@@ -21,7 +21,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",
     "phonenumber_field",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
     # my apps
     "accounts",
     "Labs",
@@ -42,6 +46,8 @@ MIDDLEWARE = [
     "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
+SITE_ID = 1
+
 ROOT_URLCONF = "workstudy.urls"
 
 TEMPLATES = [
@@ -61,6 +67,29 @@ TEMPLATES = [
         },
     },
 ]
+
+# django-allauth settings
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
+ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 86400  # 24 hours
+# Redirect to home URL after login (Default redirects to /accounts/profile/)
+LOGIN_REDIRECT_URL = "/"
+
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"  # replace this with your SMTP server hostname
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "workstudy.daystar@gmail.com"  # replace this with your email address
+EMAIL_HOST_PASSWORD = "vexemhmabfrbgiyi"  # replace this with your email password
+
 
 WSGI_APPLICATION = "workstudy.wsgi.application"
 

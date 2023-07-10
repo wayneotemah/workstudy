@@ -32,10 +32,12 @@
                           No Labs to list
                         {% endif %}
                       </label>
-                        <select class="form-select" name = "orgSelected" aria-label="Default select example">
+                        <select class="form-select" name = "orgSelected" aria-label="Default select example" required>
                           <option selected></option>
                           {% comment %} {% for  Lab in Lab_list %} {% endcomment %}
-                          <option value="{{Lab_uuid}}">{{Lab_name}}</option>
+                          {% if Lab_uuid %}
+                            <option value="{{Lab_uuid}}">{{Lab_name}}</option>
+                          {% endif %}
                           {% comment %} {% endfor %} {% endcomment %}
                         </select>
                   </div>

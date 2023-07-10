@@ -1,8 +1,7 @@
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login
-from accounts.models import Account, CustomUser
+from accounts.models import Account
 from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import logout
@@ -15,65 +14,6 @@ import logging
 logger = logging.getLogger("django")
 
 # Create your views here.
-
-
-def sign_in(request):
-    if request.method == "POST":
-        email = request.POST["email"]
-        password = request.POST["password"]
-
-        user = authenticate(request, email=email, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect(Labview)
-        else:
-            messages.error(request, "Wrong email or password.")
-            return render(request, "pages-login.html")
-
-    elif request.method == "GET":
-        return render(request, "pages-login.html")
-
-
-def sign_up(request):
-    if request.method == "POST":
-        email = request.POST["email"]
-        if CustomUser.user_exists(email):
-            messages.info(request, "Your account already exists, please login")
-            return render(request, "pages-login.html")
-
-        else:
-            """
-            if user does not exist, save detail
-            """
-
-            phone_number = request.POST["phone_number"]
-            password = request.POST["password"]
-            confirm_password = request.POST["confirm_password"]
-            if password != confirm_password:
-                messages.error(request, "Password and confirm password do not match.😟")
-                return render(request, "pages-register.html")
-            try:
-                user = CustomUser(email=email, phone_number=phone_number)
-                user.set_password(password)
-                user.save()
-                if user is not None:
-                    messages.info(request, "Account created please login")
-                    return render(request, "pages-login.html")
-            except IntegrityError:
-                messages.error(request, "Phone number already exists.")
-                return render(request, "pages-register.html")
-            else:
-                """
-                something went wront.
-                """
-                messages.warning(
-                    request,
-                    "Something went wrong while creating you account, Please inform the admin or devs",
-                )
-                return render(request, "pages-register.html")
-
-    elif request.method == "GET":
-        return render(request, "pages-register.html")
 
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
@@ -103,8 +43,7 @@ def Labview(request):
         # get the users account profile details
         user = Account.get_account(request.user)
     except ObjectDoesNotExist:
-        messages.info(request,
-                      "It seems you dont have a profile, lets get that.")
+        messages.info(request, "It seems you dont have a profile, lets get that.")
         return render(request, "team/createprofile.html")
 
     logger.info(f"{request.user} is supervisor: {user.is_supervisor}")
@@ -115,8 +54,7 @@ def Labview(request):
             # use the user to get the Lab
 
             user_lab = UserRole.getLab(user)
-            context = {"Lab_name": user_lab.name,
-                       "Lab_uuid": user_lab.Lab_uuid}
+            context = {"Lab_name": user_lab.name, "Lab_uuid": user_lab.Lab_uuid}
             return render(request, "choose_Lab.html", context=context)
 
         else:
@@ -125,13 +63,16 @@ def Labview(request):
             context = {
                 "message": """It seems you dont have a workstudy location.Please contact you supervisor
                             to add you to his/her location, then refresh the page.
-                            If you want to create an Lab, contact the platform developers"""
+                            If you want to create an Lab, contact the platform developers, <div><a href="/accounts/logout/"
+                            >logout</a></div>"""
             }
             return render(request, "errorpage.html", context=context)
     if user.is_supervisor:  # user is supervisour
         if supervisor_lab:
-            context = {"Lab_name": supervisor_lab.name,
-                       "Lab_uuid": supervisor_lab.Lab_uuid}
+            context = {
+                "Lab_name": supervisor_lab.name,
+                "Lab_uuid": supervisor_lab.Lab_uuid,
+            }
         else:
             messages.info(request, "No Lab, create one")
             context = {}
