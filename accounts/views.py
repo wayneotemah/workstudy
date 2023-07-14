@@ -1,6 +1,7 @@
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from allauth.socialaccount.models import SocialAccount
 from accounts.models import Account
 from django.db import IntegrityError
 from django.core.exceptions import ObjectDoesNotExist
@@ -34,17 +35,40 @@ def createprofile(request):
             )
 
     elif request.method == "GET":
-        return render(request, "team/createprofile.html")
+        user = request.user
+        account_exists = SocialAccount.objects.filter(user=user).exists()
+        if account_exists:
+            name = SocialAccount.objects.get(user=user).extra_data["name"]
+            firstName = name.split(" ")[0]
+            lastName = name.split(" ")[1]
+            Account.objects.create(user=user, first_name=firstName, last_name=lastName)
+            return redirect(Labview)
+        else:
+            messages.info(request, "It seems you dont have a profile, lets get that.")
+            return render(request, "team/createprofile.html")
+
+        """
+        if account_exists:
+            # Account already exists, skip the prompt
+            return redirect(Labview)
+        else:
+            social_account = SocialAccount.objects.get(user=user, provider='google').extra_data
+            firstName = social_account['first_name']
+            lastName = social_account['last_name']
+            Account.objects.create(user=user, first_name=firstName, last_name=lastName)
+            return redirect(Labview)###
 
 
-@login_required(login_url=LOGIN_URL)
+            return render(request, "team/createprofile.html", {'firstName': firstName, 'lastName': lastName})
+        """
+
+@login_required(login_url=LOGIN_URL)# type: ignore
 def Labview(request):
     try:
         # get the users account profile details
         user = Account.get_account(request.user)
     except ObjectDoesNotExist:
-        messages.info(request, "It seems you dont have a profile, lets get that.")
-        return render(request, "team/createprofile.html")
+        return redirect("createprofile")
 
     logger.info(f"{request.user} is supervisor: {user.is_supervisor}")
     supervisor_lab = Lab.get_Labs(user)  # check if users is a supervisor
@@ -155,4 +179,4 @@ def schedule(request, uuid):
 
 def logout_view(request):
     logout(request)
-    return redirect("sign in")
+    return redirect("account")
