@@ -1,8 +1,18 @@
 {% extends 'base.html' %}
 
-{% block content %} 
+{% block content %}
+{% load custom_filters %}
+
+
+{% with 'admin_user\navigation.html' as template_path %}
+{% include template_path|os_path %}
+{% endwith %}
+{% comment %} {% custom_include 'admin_user\navigation.html' %} {% endcomment %}
+
+
 
 {% include 'admin_user/navigation.html' %}
+
 
   <main id="main" class="main">
 
