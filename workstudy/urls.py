@@ -26,5 +26,6 @@ urlpatterns = [
     path("logout/", logout_view, name="log out"),
     path("org/", include("Labs.url")),
     path("assets/", include("assets.url")),
+    path("services/", include("lab_services.url"), name="services"),
     path("", include("accounts.url")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -62,7 +62,7 @@ def createprofile(request):
             return render(request, "team/createprofile.html", {'firstName': firstName, 'lastName': lastName})
         """
 
-@login_required(login_url=LOGIN_URL)# type: ignore
+@login_required(login_url=LOGIN_URL)
 def Labview(request):
     try:
         # get the users account profile details

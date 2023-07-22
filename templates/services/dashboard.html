@@ -1,0 +1,265 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% include 'services/navigation.html' %}
+
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Lad services</h1>
+  </div>
+  <!-- End Page Title -->
+
+  <section class="section dashboard">
+
+      <button
+        style="margin-bottom: 15px"
+        type="button"
+        class="btn btn-primary rounded-pill"
+        data-bs-toggle="modal" data-bs-target="#largeModal"
+      >
+        Borrow Asset
+      </button>
+
+    <div class="row">
+      <!-- Left side columns -->
+      <div class="col-lg-8">
+        <div class="row">
+          <!-- working-hours Card -->
+          
+          <div class="col-xxl-4 col-md-6">
+            <div class="card info-card working-hours">
+
+              <div class="card-body">
+                <h5 class="card-title">My hours<span> | Total</span></h5>
+
+                <div class="d-flex align-items-center">
+                  <div
+                    class="card-icon rounded-circle d-flex align-items-center justify-content-center"
+                  >
+                    <i class="bi bi-hourglass-split"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6>61 Hrs</h6>
+                    <!-- <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End working-hours Card -->
+ 
+
+          <!-- My schedule Card -->
+          <div class="col-xxl-4 col-md-6">
+            <div class="card info-card schedule">
+              <div class="filter">
+                <a class="icon" href="#" data-bs-toggle="dropdown"
+                  ><i class="bi bi-three-dots"></i
+                ></a>
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                  <li class="dropdown-header text-start">
+                    <h6>Filter</h6>
+                  </li>
+                  <li><a class="dropdown-item" href="#">This Week</a></li>
+                  <li><a class="dropdown-item" href="#">This Month</a></li>
+                </ul>
+              </div>
+
+              <div class="card-body">
+                <h5 class="card-title">
+                  Active Shift 
+                </h5>
+
+                <div class="d-flex align-items-center">
+                  <div class="ps-3">
+                    <span class="text-success small pt-1 fw-bold"
+                      >{{schedule.assigned_to}}</span
+                    >
+                    <h6>{{schedule.start_time}} - {{schedule.end_time}}</h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End My schedule Card -->
+
+          <!-- Task list report -->
+          <div class="col-12">
+            <div class="card recent-sales overflow-auto">
+              <div class="card-body">
+                <h5 class="card-title">Issues</h5>
+                {% if issues %}
+
+                <table class="table table-borderless">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Task</th>
+                      <th scope="col">reported by</th>
+                      <th scope="col">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for issue in issues %}
+                    <tr>
+                      <th scope="row"><a href="#">{{issue.pk}}</a></th>
+                      <td>{{issue.details}}</td>
+                      <td>{{issue.reported_by}}</td>
+                      {% if issue.status == 'Done' %}
+                      <td>
+                        <span class="badge bg-success">{{issue.status}}</span>
+                      </td>
+                      {% endif %} {% if issue.status == 'Addressing' %}
+                      <td>
+                        <span class="badge bg-primary">{{issue.status}}</span>
+                      </td>
+                      {% endif %} {% if issue.status == 'Noted pending address' %}
+                      <td><span class="badge bg-info">{{issue.status}}</span></td>
+                      {% endif %}{% if issue.status == 'Urgent attention' %}
+                      <td><span class="badge bg-danger">{{issue.status}}</span></td>
+                      {% endif %}{% if issue.status == 'Medium attention' %}
+                      <td><span class="badge bg-warning text-dark">{{issue.status}}</span></td>
+                      {% endif %}{% if issue.status == 'Low attention' %}
+                      <td><span class="badge bg-light text-dark">{{issue.status}}</span></td>
+                      {% endif %}
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+
+                {% else %}
+                <div class="ps-3">
+                  <span class="text-danger small pt-1 fw-bold"
+                    >No issue has been repoted by you</span
+                  >
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <!-- End Borrowed items report -->
+
+          <!-- Borrowed items report -->
+          <div class="col-12">
+            <div class="card recent-sales overflow-auto">
+              <div class="card-body">
+                <h5 class="card-title">Borrowed Items <span>| Today</span></h5>
+
+                <table class="table table-borderless">
+                  <thead>
+                    <tr>
+                      <th scope="col">Location</th>
+                      <th scope="col">Item</th>
+                      <th scope="col">Time</th>
+                      <th scope="col">Picker</th>
+                      <th scope="col">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for item in borrowedItems %}
+                    <tr>
+                      <th scope="row">
+                        <a href="#">{{item.location_of_use}}</a>
+                      </th>
+                      <td>{{item.asset.name}}</td>
+                      <td>
+                        <a href="#" class="text-primary">{{item.picked_on}}</a>
+                      </td>
+                      <td>{{item.person}}</td>
+                      <td>
+                        {% if not item.returned %}
+                        <span class="badge bg-warning">Borrowed</span>
+                        {% else %}
+                        <span class="badge bg-success">Returned</span>
+                        {% endif %}
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- End Borrowed items report -->
+        </div>
+      </div>
+      <!-- End Left side columns -->
+    </div>
+  </section>
+</main>
+<!-- End #main -->
+
+<div class="modal fade" id="largeModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+          <div class="card-body">
+            <h5 class="card-title">Request Asset form</h5>
+
+            <!-- Multi Columns Form -->
+            <form class="row g-3" action = {% url 'service dashbaord' %} method = "POST">
+              {% csrf_token %}
+              <div class="col-md-12">
+                <label for="inputName5" class="form-label">Your Name</label>
+                <input type="text" name="name" value ="{% if name %}{{name}}{% endif %}" class="form-control" id="inputName5">
+              </div>
+              <div class="col-md-6">
+                <label for="inputEmail5" class="form-label">Your phone number</label>
+                <input type="number" name="phone_number" value="{% if phone_number %} {{phone_number}} {% endif %}" class="form-control" id="inputEmail5">
+              </div>
+              <div class="col-md-6">
+                <label for="Admission" class="form-label">Admission Number</label>
+                <input name = "addmission_number" value="{% if admission_number %} {{admission_number}} {% endif %}" class="form-control" id="inputPassword5">
+              </div>
+              <div class="col-12">
+                <label for="Asset" class="form-label">Asset your requesting</label>
+                <select id="inputState" class="form-select">
+                  <option selected>Choose...</option>
+                  <option>...</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label for="Location" class="form-label">Location or use</label>
+                <input type="text" class="form-control" id="inputAddress2" placeholder="SBE 004">
+              </div>
+              <div class="col-md-6">
+                <label for="inputTime" class="form-label">Time of use</label>
+                  <input type="time" class="form-control">
+              </div>
+              {% comment %} <div class="col-md-4">
+                <label for="inputState" class="form-label">State</label>
+                <select id="inputState" class="form-select">
+                  <option selected>Choose...</option>
+                  <option>...</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <label for="inputZip" class="form-label">Zip</label>
+                <input type="text" class="form-control" id="inputZip">
+              </div> {% endcomment %}
+              <div class="col-12">
+                <div class="form-check">
+                  <input name="remeber_me" class="form-check-input" type="checkbox" id="gridCheck">
+                  <label class="form-check-label" for="gridCheck">
+                    Remeber my details for next time
+                  </label>
+                </div>
+              </div>
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+            </form><!-- End Multi Columns Form -->
+
+          </div>
+    </div>
+  </div>
+</div><!-- End Large Modal -->
+
+
+
+
+{% endblock content %}
+
+
+

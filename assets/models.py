@@ -144,6 +144,7 @@ class Asset(models.Model):
     asset_status = {
         ("Borrowed", "Borrowed"),
         ("Available", "Available"),
+        
         ("Not available", " Not available"),
     }
     asset_condition = {
