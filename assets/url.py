@@ -18,11 +18,11 @@ admin_urls = [
         views_admin.admin_borrowed_assets,
         name="admin borrow asset",
     ),
-    path(
-        "admin/add_borrowed_asset/",
-        views_admin.admin_borrowed_assets_page,
-        name="admin add borrow asset",
-    ),
+    # path(
+    #     "admin/add_borrowed_asset/",
+    #     views_admin.admin_borrowed_assets_page,
+    #     name="admin add borrow asset",
+    # ),
     path(
         "admin/asset_details/<str:item_pk>/",
         views_admin.admin_assetDetails,

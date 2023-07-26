@@ -100,25 +100,22 @@ class AssetCategory(models.Model):
         return AssetCategory.objects.filter(Lab=x).order_by("id")
 
     @staticmethod
-    def add_borrowed_assets(asset, uuid):
+    def add_borrowed_assets(asset):
         """
         asset -> asset category instance
-        uuid -> lab uuid
         adds 1 to the borrowed assets
         """
         count = Asset.objects.filter(
             category_type_id=asset.category_type_id,
-            Lab_id=uuid,
             status="Borrowed",
         ).count()
         category = AssetCategory.objects.get(asset=asset)
         category.borrowed_assets = count
-        print(count)
-        print(category.borrowed_assets)
+        print(count, category.borrowed_assets, category)
         category.save()
 
     @staticmethod
-    def reduce_borrowed_assets(asset, uuid):
+    def reduce_borrowed_assets(asset):
         """
         asset -> asset category instance
         uuid -> lab uuid
@@ -126,7 +123,6 @@ class AssetCategory(models.Model):
         """
         count = Asset.objects.filter(
             category_type_id=asset.category_type_id,
-            Lab_id=uuid,
             status="Borrowed",
         ).count()
         category = AssetCategory.objects.get(asset=asset)
@@ -215,7 +211,9 @@ class Asset(models.Model):
         get list of objects by category type and Lab ID
         x-> category item id
         """
-        return Asset.objects.filter(category_type_id=x,)
+        return Asset.objects.filter(
+            category_type_id=x,
+        )
 
     @staticmethod
     def getAvailbleAssets(x):

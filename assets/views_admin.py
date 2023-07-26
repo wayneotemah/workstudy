@@ -116,70 +116,6 @@ def admin_category_Details(request, category_pk, uuid=None):
 
 
 @login_required(login_url=LOGIN_URL)
-def admin_borrowed_assets(request, uuid):
-    if request.method == "GET":
-        # get list of all borrowed item in that Lab
-        page_number = 1
-        if request.GET.get("page"):
-            page_number = request.GET.get("page")
-        helper = AssetsHelper(user=request.user, uuid=uuid)
-        context = {}
-        borrowed_assets = helper.getBorrowesAssets()
-        paginator = Paginator(borrowed_assets, 5)
-        page_obj = paginator.get_page(page_number)
-        context["borrowed_assets"] = page_obj
-        return render(request, "admin_user/borrowed.html", context=context)
-    if request.method == "POST":
-        # posting borrowed item
-        now = datetime.datetime.now()
-
-        lab_instace = Lab.get_Labs_from_uuid(uuid)
-        asset = Asset.getSingleAsset(
-            request.POST["Item_id"]
-        )  # get asset instance from asset pk
-
-        try:
-            lab_instace
-            person = request.POST["persons_name"]
-            contacts = request.POST["persons_contacts"]
-            location_of_use = request.POST["location_of_use"]
-
-            borroweditem = Borrowed_Asset(
-                asset=asset,
-                lab_id=uuid,
-                person=person,
-                contacts=contacts,
-                location_of_use=location_of_use,
-                picked_on=now,
-            )
-            borroweditem.returned = False
-            borroweditem.save()
-        except Exception as e:
-            # unexpected error failing to save borrowed item and asset tables
-            context = {
-                "message": f"Please contact the devs and notify them of the error \nerror is: \n{e}"
-            }
-            messages.warning(request, "Unexpected Exception error has risen")
-            return render(request, "errorpage.html", context=context)
-        else:
-            # successfully added item on
-            asset.status = "Borrowed"
-            asset.save()
-            AssetCategory.add_borrowed_assets(asset, uuid)
-            messages.success(request, f"{asset.name} borrowed successfully")
-            return redirect(admin_borrowed_assets, uuid=uuid)
-
-
-@login_required(login_url=LOGIN_URL)
-def admin_borrowed_assets_page(request, uuid):
-    if request.method == "GET":
-        helper = AssetsHelper(user=request.user, uuid=uuid)
-        context = {}
-        context["assets"] = helper.getAvailbleAssets()
-        return render(request, "admin_user/addborrowed.html", context=context)
-
-
-@login_required(login_url=LOGIN_URL)
 def admin_assetDetails(request, item_pk):
     """
     show detils assets
@@ -198,7 +134,67 @@ def admin_assetDetails(request, item_pk):
 
 
 @login_required(login_url=LOGIN_URL)
-def admin_return_asset(request, uuid, borrowedasset_id):
+def admin_borrowed_assets(request, uuid=None):
+    if request.method == "GET":
+        # get list of all borrowed item in that Lab
+        page_number = 1
+        if request.GET.get("page"):
+            page_number = request.GET.get("page")
+        context = {}
+        borrowed_assets = Borrowed_Asset.objects.filter(
+            lab__supervisor=request.user.account
+        )
+        paginator = Paginator(borrowed_assets, 5)
+        page_obj = paginator.get_page(page_number)
+        context["borrowed_assets"] = page_obj
+        context["availabe_assets"] = Asset.objects.filter(
+            Lab__supervisor=request.user.account,
+            status="Available",
+        )
+        return render(request, "admin_user/borrowed.html", context=context)
+    if request.method == "POST":
+        # posting borrowed item
+        now = datetime.datetime.now()
+
+        asset = Asset.getSingleAsset(
+            request.POST["Item_id"]
+        )  # get asset instance from asset pk
+
+        try:
+            person = request.POST["persons_name"]
+            contacts = request.POST["persons_contacts"]
+            location_of_use = request.POST["location_of_use"]
+
+            borroweditem = Borrowed_Asset(
+                asset=asset,
+                lab=asset.Lab,
+                person=person,
+                contacts=contacts,
+                location_of_use=location_of_use,
+                issued_out_by=request.user.account,
+                picked_on=now,
+            )
+            borroweditem.returned = False
+            borroweditem.save()
+
+        except Exception as e:
+            # unexpected error failing to save borrowed item and asset tables
+            context = {
+                "message": f"Please contact the devs and notify them of the error \nerror is: \n{e}"
+            }
+            messages.warning(request, "Unexpected Exception error has risen")
+            return render(request, "errorpage.html", context=context)
+        else:
+            # successfully added item on
+            asset.status = "Borrowed"
+            asset.save()
+            AssetCategory.add_borrowed_assets(asset)
+            messages.success(request, f"{asset.name} borrowed successfully")
+            return redirect(admin_borrowed_assets)
+
+
+@login_required(login_url=LOGIN_URL)
+def admin_return_asset(request, borrowedasset_id):
     # returning the assets borrowed
     now = datetime.datetime.now()
     try:
@@ -224,9 +220,9 @@ def admin_return_asset(request, uuid, borrowedasset_id):
         asset = borrowed_item.asset  # get the asset instance
         asset.status = "Available"  # Turn status to availbe
         asset.save()  # save the asset instance
-        AssetCategory.reduce_borrowed_assets(borrowed_item.asset, uuid)
+        AssetCategory.reduce_borrowed_assets(borrowed_item.asset)
         messages.info(
             request,
             f"{borrowed_item.asset.name} returned successfully",
         )
-        return redirect("admin borrow asset", uuid=uuid)
+        return redirect("admin borrow asset")
