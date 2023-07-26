@@ -44,6 +44,7 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
+
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     """
     priamry table to authentication with email/phone number
@@ -104,12 +105,14 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         result = CustomUser.objects.filter(email=x)
         return False if not result else True
 
+
 class AccountManager(models.Manager):
     def get_account(self, user):
         """
         Retrieeve the account instance associated with the given user
         """
         return self.get(user=user)
+
 
 class Account(models.Model):
     """

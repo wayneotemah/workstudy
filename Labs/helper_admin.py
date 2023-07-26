@@ -47,7 +47,7 @@ class TeamAdminHelper(UserAdminDetailsHelper):
         it also returns admin pannel nav bar details
         """
         # team member details
-        userinstance = CustomUser.objects.get(account=self.account_uuid)
+        userinstance = CustomUser.objects.get(account__account_uuid=self.account_uuid)
         teamMemberAccount = Account.objects.get(account_uuid=self.account_uuid)
         email_address = userinstance.get_email_address()
         phone_number = userinstance.get_phone_number()

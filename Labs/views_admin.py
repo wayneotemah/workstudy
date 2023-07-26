@@ -57,19 +57,19 @@ def admin_labs(request, uuid=None):
 
 
 @login_required(login_url=LOGIN_URL)
-def admin_myteam(request, uuid):
+def admin_myteam(request, uuid=None):
     """
     list of user accounts who work in the Lab
     """
-    helper = TeamAdminHelper(user=request.user, uuid=uuid)
     context = {}
-    context["profile"] = helper.get_profile()
-    context["team"] = helper.get_members()
-    return render(request, "admin_user/team.html", context=context)
+    context["team"] = UserRole.objects.filter(
+        role__Lab__supervisor=request.user.account
+    )
+    return render(request, "admin_user/team.html", context)
 
 
 @login_required(login_url=LOGIN_URL)
-def new_members(request, uuid):
+def new_members(request, uuid=None):
     """
     add a team to supervisors Lab
     """
@@ -78,7 +78,7 @@ def new_members(request, uuid):
         context = {}
         context["profile"] = helper.get_profile()
         context["accounts"] = helper.get_unassigned_user()
-        context["roles"] = Role.objects.filter(Lab__Lab_uuid=uuid)
+        context["roles"] = Role.objects.filter(Lab__supervisor=request.user.account)
         return render(
             request,
             "admin_user/addteammember.html",
@@ -91,17 +91,16 @@ def new_members(request, uuid):
         userrole = UserRole(role_id=role_id, assigned_to_id=account_id)
         userrole.save()
         messages.success(request, "Added new team member👍")
-        return redirect(admin_myteam, uuid)
+        return redirect(admin_myteam)
 
 
 @login_required(login_url=LOGIN_URL)
-def admin_member_profile(request, uuid, account_uuid):
+def admin_member_profile(request, account_uuid, uuid=None):
     if request.method == "GET":
         helper = TeamAdminHelper(
             user=request.user, uuid=uuid, account_uuid=account_uuid
         )
         context = {}
-        context["profile"] = helper.get_profile()
         context["member_profile"] = helper.get_member_profile()
         return render(request, "admin_user/teamprofile.html", context=context)
     if request.method == "POST":
@@ -115,30 +114,23 @@ def admin_member_profile(request, uuid, account_uuid):
         member_Custom_instance.save()
         state = "active" if active else "inactive"
         messages.success(request, f"User has been made {state}")
-        return redirect(admin_member_profile, uuid, account_uuid)
+        return redirect(admin_member_profile, account_uuid, uuid)
 
 
 @login_required(login_url=LOGIN_URL)
-def admin_roles(request, uuid):
-    helper = RolesAdminHelper(user=request.user, uuid=uuid)
-    context = {}
-    context["profile"] = helper.get_profile()
-    context["roles"] = helper.get_roles()
-    return render(request, "admin_user/roles.html", context=context)
-
-
-@login_required(login_url=LOGIN_URL)
-def admin_roles_form(request, uuid):
+def admin_roles(request, uuid=None):
     if request.method == "GET":
         helper = RolesAdminHelper(user=request.user, uuid=uuid)
         context = {}
         context["profile"] = helper.get_profile()
-        context["roles"] = helper.get_roles()
-        return render(request, "admin_user/roleform.html", context=context)
+        context["roles"] = Role.objects.filter(
+            Lab__supervisor=request.user.account,
+        )
+        return render(request, "admin_user/roles.html", context=context)
     if request.method == "POST":
         try:
             roleTitle = request.POST["roleTitle"]
-            Lab_uuid = uuid
+            Lab_uuid = request.POST["lab_id"]
             description = request.POST["description"]
             task1 = request.POST["task1"]
             task2 = request.POST["task2"]
@@ -160,7 +152,7 @@ def admin_roles_form(request, uuid):
             )
             new_role.save()
             messages.success(request, f"{roleTitle} has been created. 👍")
-            return redirect(admin_roles_form, uuid)
+            return redirect(admin_roles)
         except Exception as e:
             context = {
                 "message": f"Please contact the devs and notify them of the error \nerror is: \n{e}"
@@ -170,14 +162,16 @@ def admin_roles_form(request, uuid):
 
 
 @login_required(login_url=LOGIN_URL)
-def admin_issues(request, uuid):
+def admin_issues(request, uuid=None):
     page_number = 1
     if request.GET.get("page"):
         page_number = request.GET.get("page")
     helper = IssuessAdminHelper(user=request.user, uuid=uuid)
     context = {}
     context["profile"] = helper.get_profile()
-    issues = helper.getAllIssuesList()
+    issues = Issue.objects.filter(
+        Lab__supervisor=request.user.account,
+    )
     paginator = Paginator(issues, 5)
     page_obj = paginator.get_page(page_number)
     context["issues"] = page_obj
@@ -185,7 +179,7 @@ def admin_issues(request, uuid):
 
 
 @login_required(login_url=LOGIN_URL)
-def admin_IssueDetails(request, uuid, issue_pk):
+def admin_IssueDetails(request, issue_pk, uuid=None):
     try:
         if request.method == "GET":
             helper = IssuessAdminHelper(user=request.user, uuid=uuid)
@@ -195,7 +189,7 @@ def admin_IssueDetails(request, uuid, issue_pk):
             return render(
                 request,
                 "admin_user/issuedetails.html",
-                context=context,
+                context,
             )
         elif request.method == "POST":
             issue = Issue.getIssueByPk(issue_pk)
@@ -205,7 +199,7 @@ def admin_IssueDetails(request, uuid, issue_pk):
                 issue.addressed_on = datetime.now()
 
             issue.save()
-            return redirect(admin_IssueDetails, uuid, issue_pk)
+            return redirect(admin_IssueDetails, issue_pk)
     except Exception as e:
         context = {
             "message": f"Please contact the devs and notify them of the error \nerror is: \n{e}"

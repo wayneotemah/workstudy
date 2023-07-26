@@ -11,7 +11,7 @@
   </div>
   <!-- End Page Title -->
 
-  <a href="{% url 'new_member_list' request.user.account.Lab.Lab_uuid %}">
+  <a href="{% url 'new_member_list' %}">
     <button
       style="margin-bottom: 15px"
       type="button"
@@ -41,10 +41,10 @@
           <tbody>
             {% for member in team %}
             <tr>
-              <th scope="row">{{member.assigned_to.account_uuid}}</th>
+              <th scope="row">{{member.role.Lab.name}}</th>
               <th>
                 <a
-                  href="{% url 'admin_member_profile' request.user.account.Lab.Lab_uuid member.assigned_to.account_uuid %}"
+                  href="{% url 'admin_member_profile' member.assigned_to.account_uuid member.role.Lab.Lab_uuid %}"
                   >{{member.assigned_to.first_name}} {{member.assigned_to.last_name}}</a
                 >
               </th>

@@ -5,16 +5,10 @@
 <main id="main" class="main">
   <div class="pagetitle">
     <h1>Issues that might need your attention</h1>
-    <nav>
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item">Workplace</li>
-        <li class="breadcrumb-item active">Issues</li>
-      </ol>
-    </nav>
   </div>
   <!-- End Page Title -->
 
-  <a href="{% url 'raiseIssue' request.user.account.Lab.Lab_uuid %}">
+  <a href="#">
     <button
       style="margin-bottom: 15px"
       type="button"
@@ -38,6 +32,7 @@
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">Issues</th>
+                  <th scope="col">Lab</th>
                   <th scope="col">Date reported</th>
 
                   <th scope="col">Status</th>
@@ -46,13 +41,14 @@
               <tbody>
                 {% for issue in issues %}
                 <tr>
-                  <th scope="row">#{{issue.pk}}</th>
+                  <th scope="row">{{issue.pk}}</th>
                   <th>
                     <a
-                      href="{% url 'admin_issues_details' request.user.account.Lab.Lab_uuid issue.pk %}"
+                      href="{% url 'admin_issues_details' issue.pk %}"
                       >{{issue.title}}</a
                     >
                   </th>
+                  <td>{{issue.Lab.name}}</td>
                   <td>{{issue.reported_on}}</td>
                   {% if issue.status == 'Done' %}
                   <td>

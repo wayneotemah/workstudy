@@ -16,17 +16,12 @@ admin_urls = [
         name="new_member_list",
     ),
     path(
-        "admin_team/profile/<str:account_uuid>",
+        "admin_team/profile/<str:account_uuid>/<str:uuid>/",
         views_admin.admin_member_profile,
         name="admin_member_profile",
     ),
     path("admin_profile/", views_admin.admin_profile, name="admin profile"),
     path("admin_roles/", views_admin.admin_roles, name="admin_roles"),
-    path(
-        "admin_rolesform/",
-        views_admin.admin_roles_form,
-        name="admin_rolesfrom",
-    ),
     path(
         "admin_issuesdetails/<int:issue_pk>/",
         views_admin.admin_IssueDetails,
