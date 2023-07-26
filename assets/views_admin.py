@@ -37,12 +37,10 @@ def admin_assets_catrgory(request, uuid=None):
         )
     elif request.method == "POST":
         category = request.POST["category_type"]
-        lab_uuid = request.POST["lab_id"]
+        lab = Lab.get_Labs_from_uuid(request.POST["lab_id"])
         pic = request.FILES["asset_category_pic"]
         try:
-            categoryItem = AssetCategory(
-                category=category, Lab_uuid=lab_uuid, category_pic=pic
-            )
+            categoryItem = AssetCategory(category=category, Lab=lab, category_pic=pic)
             categoryItem.save()
             messages.success(request, "Added new catrogy of asset 👍")
             return redirect(admin_assets_catrgory)
@@ -94,12 +92,13 @@ def admin_category_Details(request, category_pk, uuid=None):
             asset.save()
 
             category = AssetCategory.objects.get(id=category_pk)
-            count = Asset.objects.filter(
-                category_type_id=category_pk, Lab_id=uuid
+            asset_count = category.asset.count()
+            working_asset_count = Asset.objects.filter(
+                condition="Good", category_type=category_pk
             ).count()
-            category.quantity = count
+            category.quantity = asset_count
+            category.working_quantity = working_asset_count
             category.save()
-            print(category, count, category.quantity)
         except Exception as e:
             # if anything fails, show error page wtth message
             context = {
@@ -112,55 +111,6 @@ def admin_category_Details(request, category_pk, uuid=None):
             messages.success(request, f"{name} Added successfully 👍")
             return redirect(
                 admin_category_Details,
-                category_pk=category_pk,
-            )
-
-
-@login_required(login_url=LOGIN_URL)
-def admin_post_asset(request, uuid, category_pk):
-    # get asset posting page
-    if request.method == "GET":
-        context = {}
-        context["category_pk"] = category_pk
-        context["category"] = AssetCategory.objects.get(id=category_pk)
-        return render(request, "admin_user/addasset.html", context=context)
-    if request.method == "POST":
-        # adding asset
-        name = request.POST["asset_name"]
-        condition = request.POST["condition"]
-        status = request.POST["status"]
-        pic = request.FILES["asset_pic"]
-        try:
-            asset = Asset(
-                category_type_id=category_pk,
-                name=name,
-                condition=condition,
-                status=status,
-                pic=pic,
-                Lab_id=uuid,
-            )
-            asset.save()
-
-            category = AssetCategory.objects.get(id=category_pk)
-            count = Asset.objects.filter(
-                category_type_id=category_pk, Lab_id=uuid
-            ).count()
-            category.quantity = count
-            category.save()
-            print(category, count, category.quantity)
-        except Exception as e:
-            # if anything fails, show error page wtth message
-            context = {
-                "message": f"Please contact the devs and notify them of the error <div>{e}</div>"
-            }
-            messages.warning(request, "Unexpected Exception error has risen")
-            return render(request, "errorpage.html", context=context)
-        else:
-            # everthing was successful
-            messages.success(request, f"{name} Added successfully 👍")
-            return redirect(
-                admin_post_asset,
-                uuid=uuid,
                 category_pk=category_pk,
             )
 
@@ -230,14 +180,13 @@ def admin_borrowed_assets_page(request, uuid):
 
 
 @login_required(login_url=LOGIN_URL)
-def admin_assetDetails(request, uuid, item_pk):
+def admin_assetDetails(request, item_pk):
     """
     show detils assets
     """
     if request.method == "GET":
-        helper = AssetsHelper(user=request.user, uuid=uuid)
         context = {}
-        item = helper.getAssetDetails(item_pk)
+        item = Asset.objects.get(id=item_pk)
         if item.status == "Borrowed":
             item_borrowed_details = Borrowed_Asset.objects.get(asset=item)
             context["item"] = item
@@ -245,7 +194,7 @@ def admin_assetDetails(request, uuid, item_pk):
         else:
             context["item"] = item
 
-        return render(request, "admin_user/item_asset_details.html", context=context)
+        return render(request, "admin_user/item_asset_details.html", context)
 
 
 @login_required(login_url=LOGIN_URL)

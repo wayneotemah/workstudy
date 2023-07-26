@@ -6,17 +6,12 @@ admin_urls = [
     path(
         "admin/",
         views_admin.admin_assets_catrgory,
-        name="admin assets",
+        name="admin assets category",
     ),
     path(
         "admin/category_details/<int:category_pk>/",
         views_admin.admin_category_Details,
         name="admin assets category details",
-    ),
-    path(
-        "admin/add_asset/<int:category_pk>/",
-        views_admin.admin_post_asset,
-        name="admin add assets",
     ),
     path(
         "admin/borrowed_assets/",
@@ -29,9 +24,9 @@ admin_urls = [
         name="admin add borrow asset",
     ),
     path(
-        "admin/borrowed_asset_details/<str:item_pk>/",
+        "admin/asset_details/<str:item_pk>/",
         views_admin.admin_assetDetails,
-        name="admin borrowed asset details",
+        name="admin asset details",
     ),
     path(
         "admin/return_asset/<int:borrowedasset_id>/",
