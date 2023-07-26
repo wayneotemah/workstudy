@@ -1,7 +1,5 @@
 {% extends 'base.html' %} 
-
 {% block content %} 
-
 {% include 'admin_user/navigation.html' %}
 
 <main id="main" class="main">
@@ -9,17 +7,15 @@
     <h1>Lab assets categories</h1>
   </div>
   <!-- End Page Title -->
-  <a href="{% url 'admin post assets' request.user.account.Lab.Lab_uuid %}">
-    <button
-      style="margin-bottom: 15px"
-      type="button"
-      class="btn btn-primary rounded-pill"
-      data-bs-toggle="modal"
-      data-bs-target="#fullscreenModal"
-    >
-      Add an asset category
-    </button>
-  </a>
+  <button
+    style="margin-bottom: 15px"
+    type="button"
+    class="btn btn-primary rounded-pill"
+    data-bs-toggle="modal"
+    data-bs-target="#largeModal"
+  >
+    Add an asset category
+  </button>
 
   <section class="section dashboard">
     <div class="row">
@@ -38,6 +34,7 @@
                     <tr>
                       <th scope="col">Image</th>
                       <th scope="col">Name</th>
+                      <th scope="col">Lab</th>
                       <th scope="col">Borrowed</th>
                       <th scope="col">Quanity</th>
                     </tr>
@@ -54,11 +51,12 @@
                       </td>
                       <td>
                         <a
-                          href="{% url 'admin assets details' request.user.account.Lab.Lab_uuid item.pk %}"
+                          href="{% url 'admin assets category details' item.pk %}"
                         >
                           {{item.category}}
                         </a>
                       </td>
+                      <td>{{item.Lab}}</td>
                       <td>{{item.borrowed_assets}}</td>
                       <td class="fw-bold">{{item.quantity}}</td>
                     </tr>
@@ -115,4 +113,94 @@
 </main>
 <!-- End #main -->
 
-{% endblock content %}
+<div class="modal fade" id="largeModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        |
+        <div class="card-body">
+          <h5 class="card-title">New asset category form</h5>
+
+          <!-- Multi Columns Form -->
+          <form
+            class="row g-3"
+            method="post"
+            action="{% url 'admin assets' %}"
+            enctype="multipart/form-data"
+            x
+            validate
+          >
+            {% csrf_token %}
+
+            <div class="col-md-6">
+              <label class="col-12 col-form-label">Lab</label>
+              <div class="col-12">
+                <select
+                  name="lab_id"
+                  class="form-select"
+                  aria-label="Default select example"
+                  required
+                >
+                  {% for lab in request.user.account.Lab.all %}
+                  <option value="{{lab.Lab_uuid}}">{{lab.name}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="col-12 col-form-label">Category Type</label>
+              <div class="col-12">
+                <select
+                  name="category_type"
+                  class="form-select"
+                  aria-label="Default select example"
+                  required
+                >
+                  <option value="Projector">Projector</option>
+                  <option value="VGA Cables">VGA Cables</option>
+                  <option value="HDMI Cables">HDMI Cables</option>
+                  <option value="VGA-HDMI Converters">
+                    VGA-HDMI Converters
+                  </option>
+                  <option value="Remote">Remote</option>
+                  <option value="Extension/Power Cables">
+                    Extension/Power Cables
+                  </option>
+                  <option value="Others">Others</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label for="inputNumber" class="col-sm-2 col-form-label"
+                >File Upload</label
+              >
+              <input
+                name="asset_category_pic"
+                class="form-control"
+                type="file"
+                id="formFile"
+                required
+              />
+            </div>
+
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary">Submit</button>
+              <button
+                type="reset"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Large Modal -->
+
+  {% endblock content %}
+</div>

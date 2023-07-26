@@ -4,41 +4,48 @@ from django.contrib import messages
 from django.db import IntegrityError
 
 from django.shortcuts import render, redirect
-from assets.helper import AssetsHelper
+from assets.helper import AssetsHelper, AssetsAdminHelper
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 
 from assets.models import AssetCategory, Asset, Borrowed_Asset
+
 
 from workstudy.globalsettings import LOGIN_URL
 from Labs.models import Lab
 
 
 @login_required(login_url=LOGIN_URL)
-def admin_assets_catrgory(request, uuid):
+def admin_assets_catrgory(request, uuid=None):
     # get all assets for the organisation/lab
     if request.method == "GET":
         page_number = 1
         if request.GET.get("page"):
             page_number = request.GET.get("page")
 
-        helper = AssetsHelper(user=request.user, uuid=uuid)
-        context = helper.get_nav_details()
-        assets = helper.getAssetCategoryList()
+        helper = AssetsAdminHelper(user=request.user, uuid=uuid)
+        context = helper.get_profile()
+        assets = helper.getAssetByLabSupervisor()
+        print(assets)
         paginator = Paginator(assets, 5)
         page_obj = paginator.get_page(page_number)
         context["assets"] = page_obj
-        return render(request, "admin_user/categoryassets.html", context=context)
+        return render(
+            request,
+            "admin_user/categoryassets.html",
+            context=context,
+        )
     elif request.method == "POST":
         category = request.POST["category_type"]
+        lab_uuid = request.POST["lab_id"]
         pic = request.FILES["asset_category_pic"]
         try:
             categoryItem = AssetCategory(
-                category=category, Lab_id=uuid, category_pic=pic
+                category=category, Lab_uuid=lab_uuid, category_pic=pic
             )
             categoryItem.save()
             messages.success(request, "Added new catrogy of asset 👍")
-            return redirect(admin_assets_catrgory, uuid=uuid)
+            return redirect(admin_assets_catrgory)
 
         except IntegrityError as e:
             messages.warning(request, e)
@@ -55,31 +62,58 @@ def admin_assets_catrgory(request, uuid):
 
 
 @login_required(login_url=LOGIN_URL)
-def admin_postassetCategory(request, uuid):
-    """
-    returns page with post asset form
-    """
-    if request.method == "GET":
-        # helper = AssetsHelper(user=request.user, uuid=uuid)
-        # context = helper.get_nav_details()
-        return render(request, "admin_user/addassetcategory.html")
-
-
-@login_required(login_url=LOGIN_URL)
-def admin_category_Details(request, uuid, category_pk):
+def admin_category_Details(request, category_pk, uuid=None):
     """
     show details of asset category and list of assets under the catregory
     """
+    category = AssetCategory.objects.get(id=category_pk)
     if request.method == "GET":
         context = {}
-        category = AssetCategory.objects.get(id=category_pk)
         if category:
             context["item_category"] = category
-            context["items"] = Asset.getOrgAssetsByCategory(category_pk, uuid)
+            context["assets"] = Asset.getAssetsByCategory(category_pk)
 
         return render(
             request, "admin_user/category_asset_details.html", context=context
         )
+    if request.method == "POST":
+        name = request.POST["asset_name"]
+        condition = request.POST["condition"]
+        status = request.POST["status"]
+        pic = request.FILES["asset_pic"]
+
+        try:
+            asset = Asset(
+                category_type_id=category_pk,
+                name=name,
+                condition=condition,
+                status=status,
+                pic=pic,
+                Lab=category.Lab,
+            )
+            asset.save()
+
+            category = AssetCategory.objects.get(id=category_pk)
+            count = Asset.objects.filter(
+                category_type_id=category_pk, Lab_id=uuid
+            ).count()
+            category.quantity = count
+            category.save()
+            print(category, count, category.quantity)
+        except Exception as e:
+            # if anything fails, show error page wtth message
+            context = {
+                "message": f"Please contact the devs and notify them of the error <div>{e}</div>"
+            }
+            messages.warning(request, "Unexpected Exception error has risen")
+            return render(request, "errorpage.html", context=context)
+        else:
+            # everthing was successful
+            messages.success(request, f"{name} Added successfully 👍")
+            return redirect(
+                admin_category_Details,
+                category_pk=category_pk,
+            )
 
 
 @login_required(login_url=LOGIN_URL)
@@ -111,7 +145,7 @@ def admin_post_asset(request, uuid, category_pk):
             count = Asset.objects.filter(
                 category_type_id=category_pk, Lab_id=uuid
             ).count()
-            category.quantity = count + 1
+            category.quantity = count
             category.save()
             print(category, count, category.quantity)
         except Exception as e:

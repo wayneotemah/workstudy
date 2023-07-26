@@ -15,7 +15,7 @@ class Lab(models.Model):
         editable=False,
     )
     name = models.CharField(
-        _("Lab name"), blank=True, null=True, max_length=100
+        _("Lab name"), unique=True, blank=True, null=True, max_length=100
     )
     supervisor = models.ForeignKey(
         Account,

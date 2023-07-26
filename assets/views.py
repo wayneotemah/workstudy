@@ -108,11 +108,6 @@ def post_asset(request, uuid, category_pk):
         status = request.POST["status"]
         pic = request.FILES["asset_pic"]
         try:
-            # try to save
-            # category = AssetCategory.getCategoryByName(
-            #     category_type)  # get the asset instance
-            # Lab = Lab.get_Labs_from_uuid(
-            #     uuid)  # get Lab instance for saving
             asset = Asset(
                 category_type_id=category_pk,
                 name=name,

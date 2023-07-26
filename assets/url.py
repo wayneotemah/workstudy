@@ -9,14 +9,9 @@ admin_urls = [
         name="admin assets",
     ),
     path(
-        "admin/addcategory/",
-        views_admin.admin_postassetCategory,
-        name="admin post assets",
-    ),
-    path(
         "admin/category_details/<int:category_pk>/",
         views_admin.admin_category_Details,
-        name="admin assets details",
+        name="admin assets category details",
     ),
     path(
         "admin/add_asset/<int:category_pk>/",
@@ -46,7 +41,11 @@ admin_urls = [
 ]
 
 urlpatterns = [
-    path("<str:uuid>/", views.assetCategory, name="category assets"),
+    path(
+        "lab_assets/<str:uuid>/",
+        views.assetCategory,
+        name="category assets",
+    ),
     path(
         "add_item/<str:uuid>/<str:category_pk>",
         views.post_asset,

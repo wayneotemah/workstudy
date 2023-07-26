@@ -1,7 +1,6 @@
 from Labs.models import Issue, Lab
 from accounts.models import Account, CustomUser
 from roles.models import Role, UserRole
-from datetime import datetime, timedelta
 
 
 class UserDetailsHelper:
@@ -14,7 +13,7 @@ class UserDetailsHelper:
         userAccount = Account.get_account(self.user)
         try:
             role = UserRole.getUserLabRoles(userAccount).role.title
-        except AttributeError as e:
+        except AttributeError:
             role = "Admin"
 
         context = {

@@ -135,6 +135,14 @@ class AssetCategory(models.Model):
         print(count)
         category.save()
 
+    @staticmethod
+    def getAssetByLabSupervisor(x):
+        """
+        get list of assets by lab supervisor
+        x = lab supervisor
+        """
+        return AssetCategory.objects.filter(Lab__supervisor=x)
+
 
 class Asset(models.Model):
     """
@@ -144,7 +152,6 @@ class Asset(models.Model):
     asset_status = {
         ("Borrowed", "Borrowed"),
         ("Available", "Available"),
-        
         ("Not available", " Not available"),
     }
     asset_condition = {
@@ -203,13 +210,12 @@ class Asset(models.Model):
         return Asset.objects.get(pk=x)
 
     @staticmethod
-    def getOrgAssetsByCategory(x, y):
+    def getAssetsByCategory(x):
         """
         get list of objects by category type and Lab ID
         x-> category item id
-        y -> org id
         """
-        return Asset.objects.filter(category_type_id=x, Lab_id=y)
+        return Asset.objects.filter(category_type_id=x,)
 
     @staticmethod
     def getAvailbleAssets(x):
