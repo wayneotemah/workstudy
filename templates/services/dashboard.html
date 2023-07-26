@@ -26,7 +26,7 @@
         <div class="row">
           <!-- working-hours Card -->
           
-          <div class="col-xxl-4 col-md-6">
+          {% comment %} <div class="col-xxl-4 col-md-6">
             <div class="card info-card working-hours">
 
               <div class="card-body">
@@ -45,12 +45,12 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> {% endcomment %}
           <!-- End working-hours Card -->
  
 
           <!-- My schedule Card -->
-          <div class="col-xxl-4 col-md-6">
+          {% comment %} <div class="col-xxl-4 col-md-6">
             <div class="card info-card schedule">
               <div class="filter">
                 <a class="icon" href="#" data-bs-toggle="dropdown"
@@ -80,67 +80,13 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> {% endcomment %}
           <!-- End My schedule Card -->
 
-          <!-- Task list report -->
-          <div class="col-12">
-            <div class="card recent-sales overflow-auto">
-              <div class="card-body">
-                <h5 class="card-title">Issues</h5>
-                {% if issues %}
-
-                <table class="table table-borderless">
-                  <thead>
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">Task</th>
-                      <th scope="col">reported by</th>
-                      <th scope="col">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for issue in issues %}
-                    <tr>
-                      <th scope="row"><a href="#">{{issue.pk}}</a></th>
-                      <td>{{issue.details}}</td>
-                      <td>{{issue.reported_by}}</td>
-                      {% if issue.status == 'Done' %}
-                      <td>
-                        <span class="badge bg-success">{{issue.status}}</span>
-                      </td>
-                      {% endif %} {% if issue.status == 'Addressing' %}
-                      <td>
-                        <span class="badge bg-primary">{{issue.status}}</span>
-                      </td>
-                      {% endif %} {% if issue.status == 'Noted pending address' %}
-                      <td><span class="badge bg-info">{{issue.status}}</span></td>
-                      {% endif %}{% if issue.status == 'Urgent attention' %}
-                      <td><span class="badge bg-danger">{{issue.status}}</span></td>
-                      {% endif %}{% if issue.status == 'Medium attention' %}
-                      <td><span class="badge bg-warning text-dark">{{issue.status}}</span></td>
-                      {% endif %}{% if issue.status == 'Low attention' %}
-                      <td><span class="badge bg-light text-dark">{{issue.status}}</span></td>
-                      {% endif %}
-                    </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
-
-                {% else %}
-                <div class="ps-3">
-                  <span class="text-danger small pt-1 fw-bold"
-                    >No issue has been repoted by you</span
-                  >
-                </div>
-                {% endif %}
-              </div>
-            </div>
-          </div>
           <!-- End Borrowed items report -->
 
           <!-- Borrowed items report -->
-          <div class="col-12">
+          {% comment %} <div class="col-12">
             <div class="card recent-sales overflow-auto">
               <div class="card-body">
                 <h5 class="card-title">Borrowed Items <span>| Today</span></h5>
@@ -179,7 +125,7 @@
                 </table>
               </div>
             </div>
-          </div>
+          </div> {% endcomment %}
           <!-- End Borrowed items report -->
         </div>
       </div>
@@ -192,7 +138,7 @@
 <div class="modal fade" id="largeModal" tabindex="-1">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header">|
           <div class="card-body">
             <h5 class="card-title">Request Asset form</h5>
 

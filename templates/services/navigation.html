@@ -43,22 +43,13 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
-                <i class="bi bi-person"></i>
-                <span>My Profile</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-            <li>
               <hr class="dropdown-divider">
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
+              <a class="dropdown-item d-flex align-items-center" href="{% url 'account_login' %}">
                 <i class="bi bi-box-arrow-right"></i>
-                <span>Sign Out</span>
+                <span>Login</span>
               </a>
             </li>
 
@@ -78,7 +69,7 @@
       <li class="nav-item">
         <a class="nav-link " href="">
           <i class="bi bi-grid"></i>
-          <span>My Dashboard</span>
+          <span>Lab News</span>
         </a>
       </li><!-- End Dashboard Nav -->
 
@@ -89,7 +80,7 @@
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#components-nav" href="#">
-          <i class="bi bi-stack"></i><span>Workplace</span>
+          <i class="bi bi-stack"></i><span>Borrow Asset</span>
         </a>
       </li>
       <!-- End Components Nav -->
@@ -98,8 +89,15 @@
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="">
-          <i class="bi bi-list-task"></i>
-          <span>Roles</span>
+          <i class="bi bi-binoculars-fill"></i>
+          <span>Lost and Found</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="">
+          <i class="bi bi-chat-fill"></i>
+          <span>Feed back and report</span>
         </a>
       </li><!-- End Dashboard Nav -->
 

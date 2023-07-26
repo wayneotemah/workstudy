@@ -62,6 +62,7 @@ def createprofile(request):
             return render(request, "team/createprofile.html", {'firstName': firstName, 'lastName': lastName})
         """
 
+
 @login_required(login_url=LOGIN_URL)
 def Labview(request):
     try:
@@ -71,7 +72,7 @@ def Labview(request):
         return redirect("createprofile")
 
     logger.info(f"{request.user} is supervisor: {user.is_supervisor}")
-    supervisor_lab = Lab.get_Labs(user)  # check if users is a supervisor
+    # supervisor_lab = Lab.get_Labs(user)  # check if users is a supervisor
     if not user.is_supervisor:  # user is not supervisor
         role = UserRole.getUserLabRoles(user)  # check if user has a role
         if role:
@@ -92,53 +93,7 @@ def Labview(request):
             }
             return render(request, "errorpage.html", context=context)
     if user.is_supervisor:  # user is supervisour
-        if supervisor_lab:
-            context = {
-                "Lab_name": supervisor_lab.name,
-                "Lab_uuid": supervisor_lab.Lab_uuid,
-            }
-        else:
-            messages.info(request, "No Lab, create one")
-            context = {}
-        return render(request, "choose_Lab.html", context=context)
-
-
-@login_required(login_url=LOGIN_URL)  # type: ignore
-def create_Lab(request):
-    if request.method == "POST":
-        LabName = request.POST["Labname"]
-        try:
-            user = Account.get_account(request.user)
-            newLab = Lab(name=LabName, supervisor=user)
-            newLab.save()
-            return redirect(Labview)
-        except ObjectDoesNotExist:
-            return render(
-                request,
-                "createprofile.html",
-                {"message": "You do not have a profile, please create one"},
-            )
-        except IntegrityError as e:
-            print(e)
-            messages.info(request, "You already created A lab")
-            return render(request, "create_Lab.html")
-    elif request.method == "GET":
-        try:
-            # get the users account profile details
-            user = Account.get_account(request.user)
-            if user.is_supervisor:
-                # chech if user is a supervisor the allow them to create the Lab
-
-                return render(request, "create_Lab.html")
-            elif not user.is_supervisor:
-                messages.info(
-                    request, "No system privileges to create an ornanizations"
-                )
-                return redirect(Lab)
-
-        except ObjectDoesNotExist:
-            messages.info(request, "It seems you dont have a profile, lets get that.")
-            return render(request, "team/createprofile.html")
+        return redirect("admin_dashboard")
 
 
 @login_required(login_url=LOGIN_URL)  # type: ignore

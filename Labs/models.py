@@ -14,11 +14,10 @@ class Lab(models.Model):
         default=uuid.uuid4,
         editable=False,
     )
-    name = models.CharField(_("Lab name"),
-                            blank=True,
-                            null=True,
-                            max_length=100)
-    supervisor = models.OneToOneField(
+    name = models.CharField(
+        _("Lab name"), blank=True, null=True, max_length=100
+    )
+    supervisor = models.ForeignKey(
         Account,
         verbose_name=_("Lab's creater"),
         related_name="Lab",
@@ -38,7 +37,7 @@ class Lab(models.Model):
         x -> customUser instance
         """
         try:
-            return Lab.objects.get(supervisor=x)
+            return Lab.objects.filter(supervisor=x)
         except ObjectDoesNotExist:
             return None
 

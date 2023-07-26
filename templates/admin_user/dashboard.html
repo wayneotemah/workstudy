@@ -54,37 +54,46 @@
           {% endcomment %}
 
           <!-- My schedule Card -->
+          {% for lab in request.user.account.Lab.all  %}
+
           <div class="col-xxl-4 col-md-6">
             <div class="card info-card schedule">
-              <div class="filter">
-                <a class="icon" href="#" data-bs-toggle="dropdown"
-                  ><i class="bi bi-three-dots"></i
-                ></a>
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                  <li class="dropdown-header text-start">
-                    <h6>Filter</h6>
-                  </li>
-                  <li><a class="dropdown-item" href="#">This Week</a></li>
-                  <li><a class="dropdown-item" href="#">This Month</a></li>
-                </ul>
-              </div>
-
+                   
               <div class="card-body">
                 <h5 class="card-title">
-                  Active Shift 
+                  {{lab.name}} <span> | Active shift </span>
                 </h5>
-
-                <div class="d-flex align-items-center">
-                  <div class="ps-3">
-                    <span class="text-success small pt-1 fw-bold"
-                      >{{schedule.assigned_to}}</span
+                {% if lab_schedule %}
+                {% for schedule in lab_schedule %}
+                 {% if schedule.lab == lab.name %}
+                  <div class="d-flex align-items-center">
+                    <div
+                      class="card-icon rounded-circle d-flex align-items-center justify-content-center"
                     >
-                    <h6>{{schedule.start_time}} - {{schedule.end_time}}</h6>
+                      <i class="bi bi-calendar3"></i>
+                    </div>
+                    <div class="ps-3">
+                      <span class="text-primary medium pt-1 fw-bold"
+                      >{{schedule.assigned_to}}</span
+                      >
+                      <h6>{{schedule.start_time}} - {{schedule.end_time}}</h6>
+                    </div>
                   </div>
+                  {% endif%}
+                {% endfor %}
+                {% else %}
+                <div class="ps-3">
+                  <span class="text-primary small pt-1 fw-bold"
+                    >No schedule has been set for this lab</span
+                  >
                 </div>
+                 {% endif %}
+                
               </div>
             </div>
           </div>
+          {% endfor %}
+
           <!-- End My schedule Card -->
 
           <!-- pending-tasks Card -->

@@ -4,35 +4,35 @@ from . import views, views_admin
 
 admin_urls = [
     path(
-        "admin_dashboard/<str:uuid>/",
+        "admin_dashboard/",
         views_admin.admin_dashboard,
         name="admin_dashboard",
     ),
-    path("admin_myteam/<str:uuid>/", views_admin.admin_myteam,
-         name="admin_myTeam"),
+    path("admin_labs/", views_admin.admin_labs, name="admin labs"),
+    path("admin_myteam/", views_admin.admin_myteam, name="admin_myTeam"),
     path(
-        "admin_new_members/<str:uuid>/",
+        "admin_new_members/",
         views_admin.new_members,
         name="new_member_list",
     ),
     path(
-        "admin_team/profile/<str:uuid>/<str:account_uuid>",
+        "admin_team/profile/<str:account_uuid>",
         views_admin.admin_member_profile,
         name="admin_member_profile",
     ),
-    path("admin_profile/<str:uuid>/", views_admin.admin_profile,
-         name="admin profile"),
-    path("admin_roles/<str:uuid>/", views_admin.admin_roles,
-         name="admin_roles"),
+    path("admin_profile/", views_admin.admin_profile, name="admin profile"),
+    path("admin_roles/", views_admin.admin_roles, name="admin_roles"),
     path(
-        "admin_rolesform/<str:uuid>/",
+        "admin_rolesform/",
         views_admin.admin_roles_form,
         name="admin_rolesfrom",
     ),
-    path("admin_issuesdetails/<str:uuid>/<int:issue_pk>",
-         views_admin.admin_IssueDetails, name="admin_issues_details"),
-    path("admin_issues/<str:uuid>/", views_admin.admin_issues,
-         name="admin_issues"),
+    path(
+        "admin_issuesdetails/<int:issue_pk>/",
+        views_admin.admin_IssueDetails,
+        name="admin_issues_details",
+    ),
+    path("admin_issues/", views_admin.admin_issues, name="admin_issues"),
 ]
 
 
@@ -49,6 +49,5 @@ urlpatterns = [
         name="issues details",
     ),
     path("raiseIssue/<str:uuid>/", views.raiseIssue, name="raiseIssue"),
-    path("redirect/dashboard", views.dashboard_redirect,
-         name="dashboard redirect"),
+    path("redirect/dashboard", views.dashboard_redirect, name="dashboard redirect"),
 ] + admin_urls

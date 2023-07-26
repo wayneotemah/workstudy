@@ -13,6 +13,7 @@ from Labs.helper_admin import (
 )
 from Labs.models import Issue
 from accounts.models import CustomUser
+from Labs.models import Lab
 from workstudy.globalsettings import LOGIN_URL
 import logging
 
@@ -21,13 +22,38 @@ logger = logging.getLogger("django")
 
 
 @login_required(login_url=LOGIN_URL)
-def admin_dashboard(request, uuid):
+def admin_dashboard(request, uuid=None):
     context = {}
-    context["schedule"] = UserRole.get_current_shift_assignment()
+    helper = UserAdminDetailsHelper(user=request.user, uuid=uuid)
+    context["profile"] = helper.get_profile()
+    context["lab_schedule"] = UserRole.get_current_shift_assignment()
     context["issues"] = Issue.objects.all()
-    context["borrowedItems"] = Borrowed_Asset.getBorrowedAssets(uuid)
+    context["borrowedItems"] = Borrowed_Asset.objects.all()
+    print(request.user.account.Lab.all())
 
     return render(request, "admin_user/dashboard.html", context=context)
+
+
+@login_required(login_url=LOGIN_URL)
+def admin_labs(request, uuid=None):
+    if request.method == "GET":
+        context = {}
+        helper = UserAdminDetailsHelper(user=request.user, uuid=uuid)
+        context["profile"] = helper.get_profile()
+        return render(request, "admin_user/lab.html", context=context)
+    if request.method == "POST":
+        LabName = request.POST["Labname"]
+
+        newLab, created = Lab.objects.get_or_create(
+            name=LabName, supervisor=request.user.account
+        )
+        if created:
+            newLab.save()
+            messages.success(request, "Lab has been created👍")
+            return redirect(admin_labs)
+        else:
+            messages.info(request, "You already created this lab")
+            return redirect(admin_labs)
 
 
 @login_required(login_url=LOGIN_URL)
@@ -37,6 +63,7 @@ def admin_myteam(request, uuid):
     """
     helper = TeamAdminHelper(user=request.user, uuid=uuid)
     context = {}
+    context["profile"] = helper.get_profile()
     context["team"] = helper.get_members()
     return render(request, "admin_user/team.html", context=context)
 
@@ -49,6 +76,7 @@ def new_members(request, uuid):
     if request.method == "GET":
         helper = TeamAdminHelper(user=request.user, uuid=uuid)
         context = {}
+        context["profile"] = helper.get_profile()
         context["accounts"] = helper.get_unassigned_user()
         context["roles"] = Role.objects.filter(Lab__Lab_uuid=uuid)
         return render(
@@ -73,6 +101,7 @@ def admin_member_profile(request, uuid, account_uuid):
             user=request.user, uuid=uuid, account_uuid=account_uuid
         )
         context = {}
+        context["profile"] = helper.get_profile()
         context["member_profile"] = helper.get_member_profile()
         return render(request, "admin_user/teamprofile.html", context=context)
     if request.method == "POST":
@@ -93,6 +122,7 @@ def admin_member_profile(request, uuid, account_uuid):
 def admin_roles(request, uuid):
     helper = RolesAdminHelper(user=request.user, uuid=uuid)
     context = {}
+    context["profile"] = helper.get_profile()
     context["roles"] = helper.get_roles()
     return render(request, "admin_user/roles.html", context=context)
 
@@ -102,6 +132,7 @@ def admin_roles_form(request, uuid):
     if request.method == "GET":
         helper = RolesAdminHelper(user=request.user, uuid=uuid)
         context = {}
+        context["profile"] = helper.get_profile()
         context["roles"] = helper.get_roles()
         return render(request, "admin_user/roleform.html", context=context)
     if request.method == "POST":
@@ -145,6 +176,7 @@ def admin_issues(request, uuid):
         page_number = request.GET.get("page")
     helper = IssuessAdminHelper(user=request.user, uuid=uuid)
     context = {}
+    context["profile"] = helper.get_profile()
     issues = helper.getAllIssuesList()
     paginator = Paginator(issues, 5)
     page_obj = paginator.get_page(page_number)
@@ -156,7 +188,9 @@ def admin_issues(request, uuid):
 def admin_IssueDetails(request, uuid, issue_pk):
     try:
         if request.method == "GET":
+            helper = IssuessAdminHelper(user=request.user, uuid=uuid)
             context = {}
+            context["profile"] = helper.get_profile()
             context["issue"] = Issue.getIssueByPk(issue_pk)
             return render(
                 request,
@@ -185,4 +219,5 @@ def admin_profile(request, uuid):
     if request.method == "GET":
         helper = UserAdminDetailsHelper(user=request.user, uuid=uuid)
         context = helper.get_profile()
-        return render(request, "admin_user/users-profile.html", context=context)
+        context["profile"] = helper.get_profile()
+        return render(request, "admin_user/users-profile.html", context)

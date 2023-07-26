@@ -10,7 +10,10 @@ def servicedashboard(request):
         context = {}
         context["name"] = request.COOKIES.get("name", "")
         context["phone_number"] = request.COOKIES.get("phone_number", "")
-        context["admission_number"] = request.COOKIES.get("admission_number", "")
+        context["admission_number"] = request.COOKIES.get(
+            "admission_number",
+            "",
+        )
         return render(request, "services/dashboard.html", context)
 
     if request.method == "POST":

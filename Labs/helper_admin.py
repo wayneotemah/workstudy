@@ -13,7 +13,7 @@ class UserAdminDetailsHelper:
         email_address = userinstance.get_email_address()
         phone_number = userinstance.get_phone_number()
 
-        LabName = Lab.objects.get(Lab_uuid=self.companyUUID)
+        # LabName = Lab.objects.get(Lab_uuid=self.companyUUID)
         userAccount = Account.get_account(self.user)
         firstname = userAccount.first_name
         lastname = userAccount.last_name
@@ -25,8 +25,8 @@ class UserAdminDetailsHelper:
 
         context = {
             "username": username,
-            "LabName": LabName,
-            "LabUUID": self.companyUUID,
+            # "LabName": LabName,
+            # "LabUUID": "2",
             "role": role,
             "email_address": email_address,
             "phone_number": phone_number,

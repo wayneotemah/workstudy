@@ -381,6 +381,8 @@ class UserRole(models.Model):
         current_day = timezone.now().strftime("%A")
         current_time = timezone.now().time()
 
+        results = []
+
         try:
             user_role = UserRole.objects.get(
                 day1=current_day,
@@ -390,11 +392,13 @@ class UserRole(models.Model):
         except UserRole.DoesNotExist:
             pass
         else:
-            return {
+            results.append({
+                "lab": user_role.role.Lab,
+                "role": user_role.role,
                 "assigned_to": user_role.assigned_to,
                 "start_time": user_role.day1_start_time,
                 "end_time": user_role.day1_end_time,
-            }
+            })
 
         try:
             user_role = UserRole.objects.get(
@@ -405,11 +409,13 @@ class UserRole(models.Model):
         except UserRole.DoesNotExist:
             pass
         else:
-            return {
+            results.append({
+                "lab": user_role.role.Lab,
+                "role": user_role.role,
                 "assigned_to": user_role.assigned_to,
                 "start_time": user_role.day2_start_time,
                 "end_time": user_role.day2_end_time,
-            }
+            })
 
         try:
             user_role = UserRole.objects.get(
@@ -420,11 +426,13 @@ class UserRole(models.Model):
         except UserRole.DoesNotExist:
             pass
         else:
-            return {
+            results.append({
+                "lab": user_role.role.Lab,
+                "role": user_role.role,
                 "assigned_to": user_role.assigned_to,
                 "start_time": user_role.day3_start_time,
                 "end_time": user_role.day3_end_time,
-            }
+            })
 
         try:
             user_role = UserRole.objects.get(
@@ -435,11 +443,13 @@ class UserRole(models.Model):
         except UserRole.DoesNotExist:
             pass
         else:
-            return {
+            results.append({
+                "lab": user_role.role.Lab,
+                "role": user_role.role,
                 "assigned_to": user_role.assigned_to,
                 "start_time": user_role.day4_start_time,
                 "end_time": user_role.day4_end_time,
-            }
+            })
 
         try:
             user_role = UserRole.objects.get(
@@ -450,11 +460,13 @@ class UserRole(models.Model):
         except UserRole.DoesNotExist:
             pass
         else:
-            return {
+            results.append({
+                "lab": user_role.role.Lab,
+                "role": user_role.role,
                 "assigned_to": user_role.assigned_to,
                 "start_time": user_role.day5_start_time,
                 "end_time": user_role.day5_end_time,
-            }
+            })
 
         try:
             user_role = UserRole.objects.get(
@@ -465,13 +477,15 @@ class UserRole(models.Model):
         except UserRole.DoesNotExist:
             pass
         else:
-            return {
+            results.append({
+                "lab": user_role.role.Lab,
+                "role": user_role.role,
                 "assigned_to": user_role.assigned_to,
                 "start_time": user_role.day6_start_time,
                 "end_time": user_role.day6_end_time,
-            }
+            })
 
-        return None
+        return results
 
 
 class Task(models.Model):

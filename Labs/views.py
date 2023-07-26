@@ -36,7 +36,7 @@ def dashboard_redirect(request):
             messages.info(request, "You did not select a workstudy location")
             return redirect(Labview)
     else:
-        return redirect("admin_dashboard", uuid=orgSelectedUUID)
+        return redirect("admin_dashboard")
 
 
 @login_required(login_url=LOGIN_URL)

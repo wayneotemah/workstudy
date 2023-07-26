@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block content %} 
+
+
+{% include 'admin_user/navigation.html' %}
+
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Labs under you supervision</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">Workplace</li>
+        <li class="breadcrumb-item active">Issues</li>
+      </ol>
+    </nav>
+  </div>
+  <!-- End Page Title -->
+
+  <button
+  style="margin-bottom: 15px"
+  type="button"
+  class="btn btn-primary rounded-pill"
+  data-bs-toggle="modal" data-bs-target="#largeModal"
+>
+  New Lab
+</button>
+<section class="section dashboard">
+  <div class="row">
+    <!-- Left side columns -->
+    <div class="col-lg-8">
+      <div class="row">
+
+
+        <!-- My schedule Card -->
+        {% for lab in request.user.account.Lab.all  %}
+
+        <div class="col-xxl-4 col-md-6">
+          <div class="card info-card schedule">
+                 
+            <div class="card-body">
+              <h5 class="card-title">
+                {{lab.name}} <span> | Active shift </span>
+              </h5>
+              {% if lab_schedule %}
+              {% for schedule in lab_schedule %}
+               {% if schedule.lab == lab.name %}
+                <div class="d-flex align-items-center">
+                  <div
+                    class="card-icon rounded-circle d-flex align-items-center justify-content-center"
+                  >
+                    <i class="bi bi-calendar3"></i>
+                  </div>
+                  <div class="ps-3">
+                    <span class="text-primary medium pt-1 fw-bold"
+                    >{{schedule.assigned_to}}</span
+                    >
+                    <h6>{{schedule.start_time}} - {{schedule.end_time}}</h6>
+                  </div>
+                </div>
+                {% endif%}
+              {% endfor %}
+              {% else %}
+              <div class="ps-3">
+                <span class="text-primary small pt-1 fw-bold"
+                  >No schedule has been set for this lab</span
+                >
+              </div>
+               {% endif %}
+              
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+</main>
+
+
+
+
+<div class="modal fade" id="largeModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">|
+          <div class="card-body">
+            <h5 class="card-title">New Lab form</h5>
+
+            <!-- Multi Columns Form -->
+            <form class="row g-3" action = {% url 'admin labs' %} method = "POST">
+              {% csrf_token %}
+              <div class="col-md-12">
+                <label for="inputName5" class="form-label">Lab Name</label>
+                <input type="text" name="Labname" value ="" class="form-control" id="inputName5" required>
+              </div>
+              <p>Remeber to create roles for the new lab before assigning students to it </p>
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+            </form><!-- End Multi Columns Form -->
+
+          </div>
+    </div>
+  </div>
+</div><!-- End Large Modal -->
+
+
+
+{% endblock content %}
