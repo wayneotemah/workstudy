@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+
+{% block content %} 
+
+
+{% include 'admin_user/navigation.html' %}
+
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Labs under you supervision</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">Workplace</li>
+        <li class="breadcrumb-item active">Issues</li>
+      </ol>
+    </nav>
+  </div>
+  <!-- End Page Title -->
+
+  <button
+  style="margin-bottom: 15px"
+  type="button"
+  class="btn btn-primary rounded-pill"
+  data-bs-toggle="modal" data-bs-target="#largeModal"
+>
+  New Lost and Found Item
+</button>
+<section class="section dashboard">
+  <div class="row">
+    <!-- Left side columns -->
+    <div class="col-lg-8">
+      <div class="row">
+        {% for item in found_items_data %}
+          <div class="col-xxl-4 col-md-6">
+              <div class="card info-card schedule" style="width: 200px;">
+                  <div class="card">
+                      {% if item.item_photo %}
+                      <img src="{{ item.item_photo.url }}" class="card-img-top" alt="..." style="height: 150px; object-fit: cover;">
+                      {% else %}
+                      <!-- Replace 'assets/img/card.jpg' with the path to your default image -->
+                      <img src="/static/assets/img/card.jpg" class="card-img-top" alt="..." style="height: 150px; object-fit: cover;">
+                      {% endif %}
+                      <div class="card-body">
+                          <h5 class="card-title">{{ item.item_name }}</h5>
+                          <p class="card-text">{{ item.item_description }}</p>
+                          <p class="card-text">Date Found: {{ item.date_found }}</p>
+                          <p class="card-text">Time Found: {{ item.time_found }}</p>
+                          <p class="card-text">Lab: {{ item.lab }}</p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        {% endfor %}
+        </div>
+    </div>
+</section>
+
+</main>
+
+
+
+
+<div class="modal fade" id="largeModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">|
+          <div class="card-body">
+            <h5 class="card-title">New Lab form</h5>
+
+            <!-- Multi Columns Form -->
+            <form
+              class="row g-3"
+              method="post"
+              action="{% url 'admin lost and found' %}"
+              enctype="multipart/form-data"
+              x
+              validate
+            >
+              {% csrf_token %}
+
+              <div class="col-md-6">
+                <label class="col-12 col-form-label">Lab</label>
+                <div class="col-12">
+                  <select
+                    name="lab"
+                    class="form-select"
+                    aria-label="Default select example"
+                    required
+                  >
+                    {% for lab in request.user.account.Lab.all %}
+                    <option value="{{ lab.Lab_uuid }}">{{ lab.name }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="col-12 col-form-label">Item name</label>
+                <div class="col-12">
+                  <input
+                    type="text"
+                    name="item_name"
+                    class="form-control"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="inputNumber" class="col-12 col-form-label">Item Image</label>
+                <input
+                  name="item_photo"
+                  class="form-control"
+                  type="file"
+                  accept="image/*"
+                  id="formFile"
+                  required
+                />
+              </div>
+
+              <div class="col-md-6">
+                <label class="col-12 col-form-label">Time today the item was wound</label>
+                <div class="col-12">
+                  <input
+                    type="time"
+                    name="item_name"
+                    class="form-control"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="col-12">
+                <label for="inputPassword" class="col-sm-2 col-form-label">Item Description</label>
+                  <textarea name = "item_description" class="form-control" style="height: 100px" required></textarea>
+              </div>
+
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button
+                  type="reset"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+              </div>
+            </form>
+
+
+          </div>
+    </div>
+  </div>
+</div><!-- End Large Modal -->
+
+
+
+{% endblock content %}

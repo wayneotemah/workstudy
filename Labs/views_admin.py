@@ -16,6 +16,7 @@ from accounts.models import CustomUser
 from Labs.models import Lab
 from workstudy.globalsettings import LOGIN_URL
 import logging
+from lab_services.models import Found_Item
 
 
 logger = logging.getLogger("django")
@@ -215,3 +216,38 @@ def admin_profile(request, uuid=None):
         context = helper.get_profile()
         context["profile"] = helper.get_profile()
         return render(request, "admin_user/users-profile.html", context)
+
+
+@login_required(login_url=LOGIN_URL)
+def admin_lost_and_found(request):
+    """
+    get the list of lost and found assets for the supervisor view
+    """
+    if request.method == "GET":
+        found_items = Found_Item.objects.all()
+
+        # Include the found items data in the template context
+        context = {
+            "found_items_data": found_items,
+        }
+
+        return render(request, "admin_user/lost_and_found.html", context)
+    if request.method == "POST":
+        lab_id = request.POST.get("lab")
+        item_name = request.POST.get("item_name")
+        item_description = request.POST.get("item_description")
+        time_found = request.POST.get("time_found")
+        item_photo = request.FILES.get("item_photo")
+
+        lab = Lab.objects.get(pk=lab_id)
+
+        Found_Item.objects.create(
+            lab=lab,
+            item_name=item_name,
+            item_description=item_description,
+            time_found=time_found,
+            item_photo=item_photo,
+        )
+        return redirect(
+            "admin lost and found"
+        )  # Redirect to a success page after successful form submission
