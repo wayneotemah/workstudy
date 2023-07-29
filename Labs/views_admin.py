@@ -209,7 +209,7 @@ def admin_IssueDetails(request, issue_pk, uuid=None):
 
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
-def admin_profile(request, uuid):
+def admin_profile(request, uuid=None):
     if request.method == "GET":
         helper = UserAdminDetailsHelper(user=request.user, uuid=uuid)
         context = helper.get_profile()

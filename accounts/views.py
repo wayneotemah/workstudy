@@ -23,14 +23,21 @@ def createprofile(request):
         user = request.user
         firstName = request.POST["firstName"]
         lastName = request.POST["lastName"]
+        phone = request.POST["phone"]
         try:
-            newAccount = Account(last_name=lastName, first_name=firstName, user=user)
+            newAccount = Account(
+                last_name=lastName,
+                first_name=firstName,
+                user=user,
+            )
             newAccount.save()
+            user.phone_number = phone
+            user.save()
             return redirect(Labview)
         except IntegrityError:
             return render(
                 request,
-                "team/createprofile.html",
+                "createprofile.html",
                 {"message": "Your account already exists."},
             )
 
@@ -41,26 +48,18 @@ def createprofile(request):
             name = SocialAccount.objects.get(user=user).extra_data["name"]
             firstName = name.split(" ")[0]
             lastName = name.split(" ")[1]
-            Account.objects.create(user=user, first_name=firstName, last_name=lastName)
+            Account.objects.create(
+                user=user,
+                first_name=firstName,
+                last_name=lastName,
+            )
             return redirect(Labview)
         else:
-            messages.info(request, "It seems you dont have a profile, lets get that.")
-            return render(request, "team/createprofile.html")
-
-        """
-        if account_exists:
-            # Account already exists, skip the prompt
-            return redirect(Labview)
-        else:
-            social_account = SocialAccount.objects.get(user=user, provider='google').extra_data
-            firstName = social_account['first_name']
-            lastName = social_account['last_name']
-            Account.objects.create(user=user, first_name=firstName, last_name=lastName)
-            return redirect(Labview)###
-
-
-            return render(request, "team/createprofile.html", {'firstName': firstName, 'lastName': lastName})
-        """
+            messages.info(
+                request,
+                "It seems you dont have a profile, lets get that.",
+            )
+            return render(request, "createprofile.html")
 
 
 @login_required(login_url=LOGIN_URL)
