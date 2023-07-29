@@ -21,12 +21,27 @@
                     <h5 class="card-title">{{role.title}} tasks</h5>  
                     <!-- List group with active and disabled items -->
                     <ul class="list-group list-group-flush">
+                      {% if role.task_1 %}
                       <li class="list-group-item">{{ role.task_1 }}</li>
+                      {% endif %}
+                      {% if role.task_2 %}
                       <li class="list-group-item">{{ role.task_2 }}</li>
+                      {% endif %}
+                      {% if role.task_3 %}
                       <li class="list-group-item">{{ role.task_3 }}</li>
+                      {% endif %}
+                      {% if role.task_1 %}
+                      <li class="list-group-item">{{ role.task_1 }}</li>
+                      {% endif %}
+                      {% if role.task_4 %}
                       <li class="list-group-item">{{ role.task_4 }}</li>
+                      {% endif %}
+                      {% if role.task_5 %}
                       <li class="list-group-item">{{ role.task_5 }}</li>
-                      <li class="list-group-item">{{ role.task_6 }}</li>
+                      {% endif %}
+                      {% if role.task_6 %}
+                      <li class="list-group-item">{{ role.task_5 }}</li>
+                      {% endif %}
                     </ul><!-- End Clean list group -->
       
                   </div>
