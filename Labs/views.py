@@ -131,8 +131,3 @@ def profile(request, uuid):
         helper = UserDetailsHelper(user=request.user, uuid=uuid)
         context = helper.get_profile()
         return render(request, "team/users-profile.html", context=context)
-
-
-@login_required(login_url=LOGIN_URL)  # type: ignore
-def reports(request, uuid):
-    pass

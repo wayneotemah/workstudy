@@ -28,6 +28,11 @@ admin_urls = [
         name="admin_issues_details",
     ),
     path("admin_issues/", views_admin.admin_issues, name="admin_issues"),
+    path(
+        "admin/lost_and_found/",
+        views_admin.admin_lost_and_found,
+        name="admin lost and found",
+    ),
 ]
 
 
@@ -35,7 +40,6 @@ urlpatterns = [
     path("dashboard/<str:uuid>/", views.dashboard, name="dashboard"),
     path("roles/<str:uuid>/", views.roles, name="roles"),
     path("myteam/<str:uuid>/", views.myteam, name="my_team"),
-    path("reports/<str:uuid>/", views.reports, name="reports"),
     path("profile/<str:uuid>/", views.profile, name="profile"),
     path("issues/<str:uuid>/", views.issues, name="issues"),
     path(

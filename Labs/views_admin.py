@@ -215,3 +215,27 @@ def admin_profile(request, uuid=None):
         context = helper.get_profile()
         context["profile"] = helper.get_profile()
         return render(request, "admin_user/users-profile.html", context)
+
+
+@login_required(login_url=LOGIN_URL)
+def admin_lost_and_found(request):
+    """
+    get the list of lost and found assets for the supervisor view
+    """
+    if request.method == "GET":
+        return render(request, "admin_user/lost_and_found.html")
+    if request.method == "POST":
+        # lab_id = request.POST.get("lab_id")
+        # item_name = request.POST.get("item_name")
+        # item_description = request.POST.get("item_description")
+        # time_found = request.POST.get("time_found")
+        # item_photo = request.FILES.get("item_photo")
+
+        # Found_Item.objects.create(
+        #     lab_id=lab_id,
+        #     item_name=item_name,
+        #     item_description=item_description,
+        #     time_found=time_found,
+        #     item_photo=item_photo
+        # )
+        return redirect('admin lost and found')  # Redirect to a success page after successful form submission

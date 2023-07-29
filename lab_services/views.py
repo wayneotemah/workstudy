@@ -1,4 +1,8 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+
+from workstudy.globalsettings import LOGIN_URL
+
 
 # Create your views here.
 
@@ -59,5 +63,12 @@ def serviceborrowasset(request):
         return render(request, "services/borrow_asset.html", context)
 
 
-def servicesFeedBack(request):
+@login_required(login_url=LOGIN_URL)
+def admin_lost_and_found(request):
+    """
+        get the list of lost and found assets for the supervisor view
+    """
+    if request.method == "GET":
+        return render(request, "admin_user/lost_and_found.html")
+    pass
     pass
