@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from workstudy.globalsettings import LOGIN_URL
 
@@ -40,6 +41,8 @@ def serviceborrowasset(request):
         phone_number = request.session.get("phone_number")
         admission_number = request.session.get("admission_number")
 
+        requested_asset = Borrowed_Asset.objects.filter(student_id=admission_number)
+        print(requested_asset)
         # gets available assets
         available_assets = Asset.getAllAvailableAssets()
 
@@ -47,7 +50,7 @@ def serviceborrowasset(request):
             "username": username,
             "phone_number": phone_number,
             "admission_number": admission_number,
-            "available_assets": available_assets
+            "available_assets": available_assets,
         }
         return render(request, "services/borrow_asset.html", context)
     if request.method == "POST":
@@ -61,7 +64,7 @@ def serviceborrowasset(request):
         request.session["phone_number"] = phone_number
         request.session["admission_number"] = admission_number
         request.session.save()  # Save the session explicitly
-        
+
         # getting user requires data to write to database
         person = request.POST.get("username")
         student_id = request.POST.get("admission_number")
@@ -81,13 +84,18 @@ def serviceborrowasset(request):
             contacts=contacts,
             location_of_use=location_of_use,
             time_picked_on=picked_on,
-            date_picked_on=date.today()
+            asset_status="Pending Approval",
+            date_picked_on=date.today(),
         )
         borrowed_asset.save()
-        
+
         # updates the asset status to Pending Approval
         asset.status = "Pending Approval"
         asset.save()
+
+        messages.success(
+            request, f"Your request has been made. Go by Lab 1 to pick uo the item"
+        )
 
         context = {
             "username": username,

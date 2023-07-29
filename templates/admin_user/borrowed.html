@@ -55,7 +55,7 @@
                         <div class="card-body pb-0">
                           <h5 class="card-title">Borrowed items</h5>
                           {% for item in borrowed_assets %}
-                            {% if not item.returned %}
+                            {% if item.asset_status == "Borrowed" %}
                               <table class="table table-borderless">
                                 <thead>
                                   <tr>
@@ -71,19 +71,21 @@
               
                                   <tr>
                                     <th scope="row">
-                                      <a href="{% url 'admin asset details' item.asset.pk %}">  
-                                        <img style = "max-width:150px;" src="{{item.asset.pic.url}}" alt="asset image">
-                                      </a>
+                                      <div class = "col">
+                                      {% comment %} <a href="{% url 'admin asset details' item.asset.pk %}">   {% endcomment %}
+                                        <img style = "max-width:100px;" src="{{item.asset.pic.url}}" alt="asset image">
+                                        <p>{{item.asset.name}}</p>
+                                      {% comment %} </a> {% endcomment %}
+                                      </div>
                                     </th>
                                     <td>{{item.location_of_use}}</td>
                                     <td>{{item.person}}</td>
-                                    <td>{{item.picked_on}}</td>
+                                    <td>{{item.time_picked_on}}</td>
                                     <td class="fw-bold">{{item.returned}}</td>
                                     {% if not item.returned %}
                                     <td><a href = {% url 'admin return asset' item.pk %}>Mark as Returned</a></td>
                                     {% endif %}
                                   </tr>
-                                    
                                     
                                 </tbody>
                               </table>
@@ -126,31 +128,32 @@
                         <h5 class="card-title">Items Pending Approval</h5>
       
                         {% for item in borrowed_assets %}
-                          {% if item.asset.status == "Pending Approval" %}
+                          {% if item.asset_status == "Pending Approval" %}
                             <table class="table table-borderless">
                               <thead>
                                 <tr>
                                   <th scope="col">Image</th>
                                   <th scope="col">Location of use</th>
-                                  <th scope="col">Picked by</th>
-                                  <th scope="col">Picked on</th>
-                                  <th scope="col">Returned</th>
+                                  <th scope="col">Requested by</th>
+                                  <th scope="col">To be picked on</th>
                                   <th scope="col">Action</th>
                                 </tr>
                               </thead>
                               <tbody>
                                 <tr>
                                   <th scope="row">
-                                    <a href="{% url 'admin asset details' item.asset.pk %}">  
-                                      <img style = "max-width:150px;" src="{{item.asset.pic.url}}" alt="asset image">
-                                    </a>
+                                    <div class = "col">
+                                    {% comment %} <a href="{% url 'admin asset details' item.asset.pk %}">   {% endcomment %}
+                                      <img style = "max-width:100px;" src="{{item.asset.pic.url}}" alt="asset image">
+                                      <p>{{item.asset.name}}</p>
+                                    {% comment %} </a> {% endcomment %}
+                                    </div>
                                   </th>
                                   <td>{{item.location_of_use}}</td>
-                                  <td>{{item.person}}</td>
-                                  <td>{{item.picked_on}}</td>
-                                  <td class="fw-bold">{{item.returned}}</td>
-                                  {% if not item.returned %}
-                                  <td><a href = {% url 'admin return asset' item.pk %}>Mark as Returned</a></td>
+                                  <td>{{item.person}} | {{item.student_id}}</td>
+                                  <td class="fw-bold">{{item.time_picked_on}}</td>
+                                  {% if item.asset.status == "Pending Approval" %}
+                                  <td><a href = {% url 'admin approve asset' item.pk %}>Approved</a></td>
                                   {% endif %}
                                 </tr> 
                               </tbody>
@@ -193,12 +196,12 @@
                         <h5 class="card-title">Items returned</h5>
       
                         {% for item in borrowed_assets %}
-                          {% if item.returned == True %}
+                          {% if item.asset_status == "Returned" %}
                             <table class="table table-borderless">
                               <thead>
                                 <tr>
                                   <th scope="col">Image</th>
-                                  <th scope="col">Location of use</th>
+                                  <th scope="col">Location</th>
                                   <th scope="col">Picked by</th>
                                   <th scope="col">Returned on</th>
                                   <th scope="col">Recieved by</th>
@@ -207,12 +210,15 @@
                               <tbody>
                                 <tr>
                                   <th scope="row">
-                                    <a href="{% url 'admin asset details' item.asset.pk %}">  
-                                      <img style = "max-width:150px;" src="{{item.asset.pic.url}}" alt="asset image">
-                                    </a>
+                                    <div class = "col">
+                                    {% comment %} <a href="{% url 'admin asset details' item.asset.pk %}">   {% endcomment %}
+                                      <img style = "max-width:100px;" src="{{item.asset.pic.url}}" alt="asset image">
+                                      <p>{{item.asset.name}}</p>
+                                    {% comment %} </a> {% endcomment %}
+                                    </div>
                                   </th>
                                   <td>{{item.location_of_use}}</td>
-                                  <td>{{item.person}}</td>
+                                  <td>{{item.person}} | {{item.student_id}}</td>
                                   <td>{{item.returned_on}}</td>
                                   <td>{{item.received_by}}</td>
                                 </tr> 

@@ -294,7 +294,6 @@
               <div class="col-12">
                 <label for="Asset" class="form-label">Asset your requesting</label>
                 <select name="borrowed_asset" id="inputState" class="form-select" required>
-                  <option selected>Choose item ...</option>
                   {%for item in available_assets%}
                   <option value={{item.pk}}> {{item.name}}</option>
                   {%endfor%}

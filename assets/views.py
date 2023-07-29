@@ -63,7 +63,8 @@ def borrowed_assets(request, uuid):
                 location_of_use=location_of_use,
                 picked_on=now,
                 issued_out_by=request.user.account,
-                student_id=student_id
+                student_id=student_id,
+                asset_status = "Borrowed"
             )
             borroweditem.returned = False
             borroweditem.save()

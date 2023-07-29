@@ -23,37 +23,21 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='userrole',
             name='day3',
-<<<<<<< HEAD
-            field=models.CharField(blank=True, choices=[('Friday', 'Friday'), ('Tuesday', 'Tuesday'), ('Saturday', 'Saturday'), ('Wednesday', 'Wednesday'), ('Monday', 'Monday'), ('Thurday', 'Thursday')], max_length=15, null=True),
-=======
             field=models.CharField(blank=True, choices=[('Saturday', 'Saturday'), ('Monday', 'Monday'), ('Friday', 'Friday'), ('Wednesday', 'Wednesday'), ('Thurday', 'Thursday'), ('Tuesday', 'Tuesday')], max_length=15, null=True),
->>>>>>> 76a24c3cb4c0e52ba96a0e3d1aa056cc359af091
         ),
         migrations.AlterField(
             model_name='userrole',
             name='day4',
-<<<<<<< HEAD
-            field=models.CharField(blank=True, choices=[('Friday', 'Friday'), ('Tuesday', 'Tuesday'), ('Saturday', 'Saturday'), ('Wednesday', 'Wednesday'), ('Monday', 'Monday'), ('Thurday', 'Thursday')], max_length=15, null=True),
-=======
             field=models.CharField(blank=True, choices=[('Saturday', 'Saturday'), ('Monday', 'Monday'), ('Friday', 'Friday'), ('Wednesday', 'Wednesday'), ('Thurday', 'Thursday'), ('Tuesday', 'Tuesday')], max_length=15, null=True),
->>>>>>> 76a24c3cb4c0e52ba96a0e3d1aa056cc359af091
         ),
         migrations.AlterField(
             model_name='userrole',
             name='day5',
-<<<<<<< HEAD
-            field=models.CharField(blank=True, choices=[('Friday', 'Friday'), ('Tuesday', 'Tuesday'), ('Saturday', 'Saturday'), ('Wednesday', 'Wednesday'), ('Monday', 'Monday'), ('Thurday', 'Thursday')], max_length=15, null=True),
-=======
             field=models.CharField(blank=True, choices=[('Saturday', 'Saturday'), ('Monday', 'Monday'), ('Friday', 'Friday'), ('Wednesday', 'Wednesday'), ('Thurday', 'Thursday'), ('Tuesday', 'Tuesday')], max_length=15, null=True),
->>>>>>> 76a24c3cb4c0e52ba96a0e3d1aa056cc359af091
         ),
         migrations.AlterField(
             model_name='userrole',
             name='day6',
-<<<<<<< HEAD
-            field=models.CharField(blank=True, choices=[('Friday', 'Friday'), ('Tuesday', 'Tuesday'), ('Saturday', 'Saturday'), ('Wednesday', 'Wednesday'), ('Monday', 'Monday'), ('Thurday', 'Thursday')], max_length=15, null=True),
-=======
             field=models.CharField(blank=True, choices=[('Saturday', 'Saturday'), ('Monday', 'Monday'), ('Friday', 'Friday'), ('Wednesday', 'Wednesday'), ('Thurday', 'Thursday'), ('Tuesday', 'Tuesday')], max_length=15, null=True),
->>>>>>> 76a24c3cb4c0e52ba96a0e3d1aa056cc359af091
         ),
     ]

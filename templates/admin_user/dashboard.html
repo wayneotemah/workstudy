@@ -14,44 +14,6 @@
       <!-- Left side columns -->
       <div class="col-lg-8">
         <div class="row">
-          <!-- working-hours Card -->
-          {% comment %}
-          <div class="col-xxl-4 col-md-6">
-            <div class="card info-card working-hours">
-              <div class="filter">
-                <a class="icon" href="#" data-bs-toggle="dropdown"
-                  ><i class="bi bi-three-dots"></i
-                ></a>
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                  <li class="dropdown-header text-start">
-                    <h6>Filter</h6>
-                  </li>
-
-                  <li><a class="dropdown-item" href="#">Total</a></li>
-                  <li><a class="dropdown-item" href="#">Today</a></li>
-                  <li><a class="dropdown-item" href="#">This Month</a></li>
-                </ul>
-              </div>
-
-              <div class="card-body">
-                <h5 class="card-title">My hours<span> | Total</span></h5>
-
-                <div class="d-flex align-items-center">
-                  <div
-                    class="card-icon rounded-circle d-flex align-items-center justify-content-center"
-                  >
-                    <i class="bi bi-hourglass-split"></i>
-                  </div>
-                  <div class="ps-3">
-                    <h6>61 Hrs</h6>
-                    <!-- <span class="text-success small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">increase</span> -->
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- End working-hours Card -->
-          {% endcomment %}
 
           <!-- My schedule Card -->
           {% for lab in request.user.account.Lab.all  %}
@@ -94,33 +56,6 @@
           </div>
           {% endfor %}
 
-          <!-- End My schedule Card -->
-
-          <!-- pending-tasks Card -->
-          {% comment %} <div class="col-xxl-4 col-xl-12">
-            <div class="card info-card pending-tasks">
-              <div class="card-body">
-                <h5 class="card-title">Pending activites today</h5>
-
-                <div class="d-flex align-items-center">
-                  <div
-                    class="card-icon rounded-circle d-flex align-items-center justify-content-center"
-                  >
-                    <i class="bi bi-list-task"></i>
-                  </div>
-                  <div class="ps-3">
-                    <h6>12 Tasks</h6>
-                    <span class="text-danger small pt-1 fw-bold">Note</span>
-                    <span class="text-muted small pt-2 ps-1">
-                      Perform tasks to reduce remove it from the list before end
-                      of the day.
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> {% endcomment %}
-          <!-- End pending-tasks Card -->
 
           <!-- Task list report -->
           <div class="col-12">
@@ -202,14 +137,16 @@
                       </th>
                       <td>{{item.asset.name}}</td>
                       <td>
-                        <a href="#" class="text-primary">{{item.picked_on}}</a>
+                        <a href="#" class="text-primary">{{item.time_picked_on}}</a>
                       </td>
                       <td>{{item.person}}</td>
                       <td>
-                        {% if not item.returned %}
-                        <span class="badge bg-warning">Borrowed</span>
-                        {% else %}
-                        <span class="badge bg-success">Returned</span>
+                        {% if not item.asset_status == "Borrowed" %}
+                        <span class="badge bg-success">Borrowed</span>
+                        {% elif item.asset_status == "Returned" %}
+                        <span class="badge bg-warning">Returned</span>
+                        {% elif item.asset_status == "Pending Approval" %}
+                        <span class="badge bg-info">Returned</span>
                         {% endif %}
                       </td>
                     </tr>

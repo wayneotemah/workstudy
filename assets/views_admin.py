@@ -172,7 +172,8 @@ def admin_borrowed_assets(request, uuid=None):
                 contacts=contacts,
                 location_of_use=location_of_use,
                 issued_out_by=request.user.account,
-                picked_on=now,
+                time_picked_on=now,
+                asset_status="Borrowed",
             )
             borroweditem.returned = False
             borroweditem.save()
@@ -203,6 +204,7 @@ def admin_return_asset(request, borrowedasset_id):
         borrowed_item.returned = True  # turn returned to true
         borrowed_item.returned_on = now  # set time returned to now
         borrowed_item.received_by = request.user.account
+        borrowed_item.asset_status = "Returned"
         borrowed_item.save()  # save the borrowed item
     except Exception as e:
         # if savig fails, show error page it message
@@ -224,5 +226,41 @@ def admin_return_asset(request, borrowedasset_id):
         messages.info(
             request,
             f"{borrowed_item.asset.name} returned successfully",
+        )
+        return redirect("admin borrow asset")
+
+
+@login_required(login_url=LOGIN_URL)
+def admin_approve_asset(request, borrowedasset_id):
+    # returning the assets borrowed
+    now = datetime.datetime.now()
+    try:
+        # try geting the item borrowd by it index
+        borrowed_item = Borrowed_Asset.getSingleBorrowedAssets(borrowedasset_id)
+        borrowed_item.returned = False  # turn returned to true
+        borrowed_item.time_picked_on = now  # set time returned to now
+        borrowed_item.issued_out_by = request.user.account
+        borrowed_item.asset_status = "Borrowed"
+        borrowed_item.save()  # save the borrowed item
+    except Exception as e:
+        # if savig fails, show error page it message
+        context = {
+            "message": f"""
+                        Please contact the devs and notify them of the error
+                        <div>{e}</div>
+                        """
+        }
+        messages.warning(request, "Unexpected Exception error has risen")
+        return render(request, "errorpage.html", context=context)
+
+    else:
+        # everthing worked out, the
+        asset = borrowed_item.asset  # get the asset instance
+        asset.status = "Borrowed"  # Turn status to availbe
+        asset.save()  # save the asset instance
+        AssetCategory.reduce_borrowed_assets(borrowed_item.asset)
+        messages.info(
+            request,
+            f"{borrowed_item.asset.name} has been lent out to {borrowed_item.person}",
         )
         return redirect("admin borrow asset")

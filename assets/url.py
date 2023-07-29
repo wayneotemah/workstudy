@@ -24,6 +24,11 @@ admin_urls = [
         name="admin asset details",
     ),
     path(
+        "admin/approve_asset/<int:borrowedasset_id>/",
+        views_admin.admin_approve_asset,
+        name="admin approve asset",
+    ),
+    path(
         "admin/return_asset/<int:borrowedasset_id>/",
         views_admin.admin_return_asset,
         name="admin return asset",

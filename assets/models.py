@@ -223,7 +223,7 @@ class Asset(models.Model):
         get the available assets of Lab x
         """
         return Asset.objects.filter(Lab=x, status="Available")
-    
+
     @staticmethod
     def getAllAvailableAssets():
         """
@@ -238,11 +238,24 @@ class Borrowed_Asset(models.Model):
     models for the assets dorrowed
     """
 
+    asset_status = {
+        ("Borrowed", "Borrowed"),
+        ("Pending Approval", "Pending Approval"),
+        ("Returned", " Returned"),
+    }
+
     asset = models.ForeignKey(
         Asset,
         verbose_name="borrowed item",
         on_delete=models.CASCADE,
         related_name="borrowed_asset",
+    )
+    asset_status = models.CharField(
+        _("state of the asset"),
+        choices=asset_status,
+        max_length=50,
+        blank=True,
+        null=True,
     )
     lab = models.ForeignKey(
         Lab,
@@ -256,16 +269,24 @@ class Borrowed_Asset(models.Model):
         _("student id"), max_length=50, blank=False, null=False
     )
     contacts = PhoneNumberField(
-        _("borrowers contact"), blank=False, null=False
+        _("borrowers contact"),
+        blank=False,
+        null=False,
     )
 
     location_of_use = models.CharField(
         _("Class/Hall"), max_length=50, blank=False, null=False
     )
-    date_picked_on = models.DateField(_("date picked"), editable=False)
+    date_picked_on = models.DateField(
+        _("date picked"),
+        editable=False,
+        auto_now=True,
+    )
     time_picked_on = models.TimeField(_("time picked"), editable=False)
     returned_on = models.TimeField(
-        _("date and time returned"), blank=True, null=True
+        _("date and time returned"),
+        blank=True,
+        null=True,
     )
     returned = models.BooleanField(default=False)
     received_by = models.ForeignKey(
