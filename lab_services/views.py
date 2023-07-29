@@ -1,19 +1,19 @@
-from django.http import HttpResponse
 from django.shortcuts import render
-from django.template import loader
 
 # Create your views here.
 
 
 def servicedashboard(request):
     if request.method == "GET":
-        context = {}
-        context["name"] = request.COOKIES.get("name", "")
-        context["phone_number"] = request.COOKIES.get("phone_number", "")
-        context["admission_number"] = request.COOKIES.get(
-            "admission_number",
-            "",
-        )
+        username = request.session.get("username")
+        phone_number = request.session.get("phone_number")
+        admission_number = request.session.get("admission_number")
+
+        context = {
+            "username": username,
+            "phone_number": phone_number,
+            "admission_number": admission_number,
+        }
         return render(request, "services/dashboard.html", context)
 
     if request.method == "POST":
@@ -27,5 +27,37 @@ def serviceborrowasset(request):
     post craete a new borrow request and mark the asset as borrowed pending approval
     """
     if request.method == "GET":
-        context = {}
+        # Try to retrieve user details from the session
+        username = request.session.get("username")
+        phone_number = request.session.get("phone_number")
+        admission_number = request.session.get("admission_number")
+
+        context = {
+            "username": username,
+            "phone_number": phone_number,
+            "admission_number": admission_number,
+        }
         return render(request, "services/borrow_asset.html", context)
+    if request.method == "POST":
+        # Process the form data here and save the user details in the session
+        username = request.POST.get("username")
+        phone_number = request.POST.get("phone_number")
+        admission_number = request.POST.get("addmission_number")
+
+        # Save the user details in the session
+        request.session["username"] = username
+        request.session["phone_number"] = phone_number
+        request.session["admission_number"] = admission_number
+        request.session.save()  # Save the session explicitly
+
+        context = {
+            "username": username,
+            "phone_number": phone_number,
+            "admission_number": admission_number,
+        }
+
+        return render(request, "services/borrow_asset.html", context)
+
+
+def servicesFeedBack(request):
+    pass
