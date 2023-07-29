@@ -13,16 +13,16 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='asset',
             name='condition',
-            field=models.CharField(choices=[('Good', 'Good'), ('Faulty', 'Faulty'), ('Not Woking', 'Not Working')], max_length=50, verbose_name='asset condition'),
+            field=models.CharField(choices=[('Not Woking', 'Not Working'), ('Good', 'Good'), ('Faulty', 'Faulty')], max_length=50, verbose_name='asset condition'),
         ),
         migrations.AlterField(
             model_name='asset',
             name='status',
-            field=models.CharField(choices=[('Available', 'Available'), ('Not available', ' Not available'), ('Borrowed', 'Borrowed'), ('Pending Approval', 'Pending Approval')], max_length=50, verbose_name='asset status'),
+            field=models.CharField(choices=[('Not available', ' Not available'), ('Borrowed', 'Borrowed'), ('Available', 'Available'), ('Pending Approval', 'Pending Approval')], max_length=50, verbose_name='asset status'),
         ),
         migrations.AlterField(
             model_name='assetcategory',
             name='category',
-            field=models.TextField(choices=[('HDMI Cables', 'HDMI Cables'), ('Remote', 'Remote'), ('Others', 'Others'), ('Extension/Power Cables', 'Extension/Power Cables'), ('VGA-HDMI Converters', ' VGA-HDMI Converters'), ('Projector', 'Projector'), ('VGA Cables', 'VGA Cables')], max_length=50, verbose_name='Asset category name'),
+            field=models.TextField(choices=[('VGA Cables', 'VGA Cables'), ('HDMI Cables', 'HDMI Cables'), ('Projector', 'Projector'), ('Others', 'Others'), ('Extension/Power Cables', 'Extension/Power Cables'), ('VGA-HDMI Converters', ' VGA-HDMI Converters'), ('Remote', 'Remote')], max_length=50, verbose_name='Asset category name'),
         ),
     ]

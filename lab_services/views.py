@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from lab_services.models import Found_Item
 
 from assets.models import Asset, Borrowed_Asset
 from datetime import date
@@ -95,3 +96,17 @@ def serviceborrowasset(request):
 
 def servicesFeedBack(request):
     pass
+
+def servicesFoundAsset(request):
+    """
+    get request return the list of found assets by the user in found assets page
+    """
+    if request.method == "GET":
+        found_items = Found_Item.objects.all()
+
+        # Include the found items data in the template context
+        context = {
+            "found_items_data": found_items,
+        }
+
+        return render(request, "services/Lost_and_found.html", context)
