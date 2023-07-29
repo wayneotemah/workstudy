@@ -18,25 +18,14 @@ def servicedashboard(request):
 
     if request.method == "POST":
         context = {}
-        if request.POST.get("remeber_me"):
-            template = loader.get_template("services/dashboard.html")
-            context["name"] = request.POST.get("name")
-            context["phone_number"] = request.POST.get("phone_number")
-            context["admission_number"] = request.POST.get("admission_number")
-            response = HttpResponse(template.render(context, request))
-            response.set_cookie(
-                "username",
-                request.POST.get("username"),
-                max_age=604800,
-            )
-            response.set_cookie(
-                "phone_number",
-                request.POST.get("phone_number"),
-                max_age=604800,
-            )
-            response.set_cookie(
-                "admission_number",
-                request.POST.get("admission_number"),
-                max_age=604800,
-            )
-            return response
+        return render(request, "services/dashboard.html", context)
+
+
+def serviceborrowasset(request):
+    """
+    get request return the listt of borrowed assets by the user in borrowe asets page
+    post craete a new borrow request and mark the asset as borrowed pending approval
+    """
+    if request.method == "GET":
+        context = {}
+        return render(request, "services/borrow_asset.html", context)

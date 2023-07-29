@@ -149,6 +149,7 @@ class Asset(models.Model):
     asset_status = {
         ("Borrowed", "Borrowed"),
         ("Available", "Available"),
+        ("Pending Approval", "Pending Approval"),
         ("Not available", " Not available"),
     }
     asset_condition = {
