@@ -66,141 +66,140 @@
         <div class="modal-header">
           |
           <div class="card-body">
-            <h5 class="card-title">New asset category form</h5>
+            <h5 class="card-title">New role form</h5>
   
             <!-- Multi Columns Form -->
             <form
-        class="row g-3"
-        method="post"
-        action="{% url 'admin_roles' %}"
-        enctype="multipart/form-data"
-        validate
-      >
-        {% csrf_token %}
-        <div class="col-md-6">
-          <div class="form-floating">
-            <input
-              type="text"
-              name="roleTitle"
-              class="form-control"
-              id="floatingTitle"
-              placeholder="Role Title"
-              required
-            />
-            <label for="floatingTitle">Role title</label>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-floating">
-            <select
-            name="lab_id"
-            class="form-select"
-            aria-label="Default select example"
-            required
-          >
-            {% for lab in request.user.account.Lab.all %}
-            <option value="{{lab.Lab_uuid}}">{{lab.name}}</option>
-            {% endfor %}
-          </select>
-            <label for="floatingLab">Lab</label>
-          </div>
-        </div>
-        <div class="col-12">
-          <div class="form-floating">
-            <textarea
-              class="form-control"
-              name="description"
-              placeholder="Description(250 words)"
-              id="floatingTextarea"
-              style="height: 100px"
-              required
-            ></textarea>
-            <label for="floatingDescription">Description</label>
-          </div>
-        </div>
+              class="row g-3"
+              method="post"
+              action="{% url 'admin_roles' %}"
+              enctype="multipart/form-data"
+              validate
+            >
+              {% csrf_token %}
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    name="roleTitle"
+                    class="form-control"
+                    id="floatingTitle"
+                    placeholder="Role Title"
+                    required
+                  />
+                  <label for="floatingTitle">Role title</label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <select
+                  name="lab_id"
+                  class="form-select"
+                  aria-label="Default select example"
+                  required
+                >
+                  {% for lab in request.user.account.Lab.all %}
+                  <option value="{{lab.Lab_uuid}}">{{lab.name}}</option>
+                  {% endfor %}
+                </select>
+                  <label for="floatingLab">Lab</label>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-floating">
+                  <textarea
+                    class="form-control"
+                    name="description"
+                    placeholder="Description(250 words)"
+                    id="floatingTextarea"
+                    style="height: 100px"
+                    required
+                  ></textarea>
+                  <label for="floatingDescription">Description</label>
+                </div>
+              </div>
 
-        <div class="col-12">
-          <h6 class="card-title">Task to be performed</h6>
-        </div>
+              <div class="col-12">
+                <h6 class="card-title">Task to be performed</h6>
+              </div>
 
-        <div class="col-12">
-          <label for="text" class="form-label">TasK 1</label>
-          <input
-            type="text"
-            name="task1"
-            class="form-control"
-            id="inputAddress2"
-            placeholder="(Optional)"
-          />
-        </div>
+              <div class="col-12">
+                <label for="text" class="form-label">TasK 1</label>
+                <input
+                  type="text"
+                  name="task1"
+                  class="form-control"
+                  id="inputAddress2"
+                />
+              </div>
 
-        <div class="col-12">
-          <label for="text" class="form-label">TasK 2</label>
-          <input
-            type="text"
-            name="task2"
-            class="form-control"
-            id="inputAddress2"
-            placeholder="(Optional)"
-          />
-        </div>
+              <div class="col-12">
+                <label for="text" class="form-label">TasK 2</label>
+                <input
+                  type="text"
+                  name="task2"
+                  class="form-control"
+                  id="inputAddress2"
+                  placeholder="(Optional)"
+                />
+              </div>
 
-        <div class="col-12">
-          <label for="text" class="form-label">TasK 3</label>
-          <input
-            type="text"
-            name="task3"
-            class="form-control"
-            id="inputAddress2"
-            placeholder="(Optional)"
-          />
-        </div>
+              <div class="col-12">
+                <label for="text" class="form-label">TasK 3</label>
+                <input
+                  type="text"
+                  name="task3"
+                  class="form-control"
+                  id="inputAddress2"
+                  placeholder="(Optional)"
+                />
+              </div>
 
-        <div class="col-12">
-          <label for="text" class="form-label">TasK 4</label>
-          <input
-            type="text"
-            name="task4"
-            class="form-control"
-            id="inputAddress2"
-            placeholder="(Optional)"
-          />
-        </div>
+              <div class="col-12">
+                <label for="text" class="form-label">TasK 4</label>
+                <input
+                  type="text"
+                  name="task4"
+                  class="form-control"
+                  id="inputAddress2"
+                  placeholder="(Optional)"
+                />
+              </div>
 
-        <div class="col-12">
-          <label for="text" class="form-label">TasK 5</label>
-          <input
-            type="text"
-            name="task5"
-            class="form-control"
-            id="inputAddress2"
-            placeholder="(Optional)"
-          />
-        </div>
+              <div class="col-12">
+                <label for="text" class="form-label">TasK 5</label>
+                <input
+                  type="text"
+                  name="task5"
+                  class="form-control"
+                  id="inputAddress2"
+                  placeholder="(Optional)"
+                />
+              </div>
 
-        <div class="col-12">
-          <label for="text" class="form-label">TasK 6</label>
-          <input
-            type="text"
-            name="task6"
-            class="form-control"
-            id="inputAddress2"
-            placeholder="(Optional)"
-          />
-        </div>
+              <div class="col-12">
+                <label for="text" class="form-label">TasK 6</label>
+                <input
+                  type="text"
+                  name="task6"
+                  class="form-control"
+                  id="inputAddress2"
+                  placeholder="(Optional)"
+                />
+              </div>
 
-        <div class="text-center">
-          <button type="submit" class="btn btn-primary">Submit</button>
-          <button
-            type="reset"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
-            Close
-          </button>
-        </div>
-      </form>
-      <!-- End General Form Elements -->
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <button
+                  type="reset"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+              </div>
+            </form>
+            <!-- End General Form Elements -->
   
           </div>
         </div>

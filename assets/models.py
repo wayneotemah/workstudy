@@ -1,6 +1,7 @@
 import os
 import uuid
 from django.db import models
+from phonenumber_field.modelfields import PhoneNumberField
 from django.utils.translation import gettext_lazy as _
 from Labs.models import Lab
 
@@ -245,8 +246,8 @@ class Borrowed_Asset(models.Model):
     student_id = models.CharField(
         _("student id"), max_length=50, blank=False, null=False
     )
-    contacts = models.CharField(
-        _("borrowers contact"), max_length=50, blank=False, null=False
+    contacts = PhoneNumberField(
+        _("borrowers contact"), blank=False, null=False
     )
 
     location_of_use = models.CharField(
