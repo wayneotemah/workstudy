@@ -13,4 +13,5 @@ urlpatterns = [
         views.serviceborrowasset,
         name="service borrow asset",
     ),
+    path("found_item", views.servicesFoundAsset, name="service found item"),
 ]

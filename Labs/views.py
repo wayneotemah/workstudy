@@ -40,9 +40,10 @@ def dashboard_redirect(request):
 
 
 @login_required(login_url=LOGIN_URL)
-def dashboard(request, uuid):
+def dashboard(request, uuid=None):
     helper = DashBoardHelper(user=request.user, uuid=uuid)
     context = helper.get_nav_details()
+    print(context)
     context["my_schedule"] = helper.latestSchdule()
     context["issues"] = Issue.getUserList(request.user)
     context["borrowedItems"] = Borrowed_Asset.getBorrowedAssets(uuid)
@@ -126,8 +127,9 @@ def getIssueDetails(request, uuid, issue_pk):
 
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
-def profile(request, uuid):
+def profile(request, uuid=None):
     if request.method == "GET":
+        
         helper = UserDetailsHelper(user=request.user, uuid=uuid)
         context = helper.get_profile()
         return render(request, "team/users-profile.html", context=context)

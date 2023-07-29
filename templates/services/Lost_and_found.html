@@ -5,10 +5,45 @@
 
 <main id="main" class="main">
   <div class="pagetitle">
-    <h1>Lad services</h1>
+    <h1>Lost and found items</h1>
   </div>
   <!-- End Page Title -->
 
+    <section class="section dashboard"> 
+      <div class="row"> 
+        <!-- Left side columns --> 
+        <div class="col-lg-8"> 
+          <div class="row"> 
+     
+     
+            <!-- My schedule Card --> 
+            {% for item in found_items_data %}
+                <div class="col-xxl-4 col-md-6">
+                    <div class="card info-card schedule" style="width: 200px;">
+                        <div class="card">
+                            {% if item.item_photo %}
+                            <img src="{{ item.item_photo.url }}" class="card-img-top" alt="..." style="height: 150px; object-fit: cover;">
+                            {% else %}
+                            <!-- Replace 'assets/img/card.jpg' with the path to your default image -->
+                            <img src="/static/assets/img/card.jpg" class="card-img-top" alt="..." style="height: 150px; object-fit: cover;">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ item.item_name }}</h5>
+                                <p class="card-text">{{ item.item_description }}</p>
+                                <p class="card-text">Date Found: {{ item.date_found }}</p>
+                                <p class="card-text">Time Found: {{ item.time_found }}</p>
+                                <p class="card-text">Lab: {{ item.lab }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+
+ 
+          </div> 
+        </div> 
+      </section>
   <section class="section dashboard">
   <div class="row">
     <!-- Left side columns -->

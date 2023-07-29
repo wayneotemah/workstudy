@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 
 from workstudy.globalsettings import LOGIN_URL
 
+from lab_services.models import Found_Item
 
 # Create your views here.
 
@@ -72,3 +73,17 @@ def admin_lost_and_found(request):
         return render(request, "admin_user/lost_and_found.html")
     pass
     pass
+
+def servicesFoundAsset(request):
+    """
+    get request return the list of found assets by the user in found assets page
+    """
+    if request.method == "GET":
+        found_items = Found_Item.objects.all()
+
+        # Include the found items data in the template context
+        context = {
+            "found_items_data": found_items,
+        }
+
+        return render(request, "services/Lost_and_found.html", context)
