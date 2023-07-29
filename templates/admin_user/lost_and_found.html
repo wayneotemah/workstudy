@@ -30,26 +30,28 @@
     <!-- Left side columns -->
     <div class="col-lg-8">
       <div class="row">
-
-
-        <!-- My schedule Card -->
-        {% comment %} {% for  %} {% endcomment %}
-
-        <div class="col-xxl-4 col-md-6">
-          <div class="card info-card schedule">
-                 
-            <div class="card">
-              <img src="assets/img/card.jpg" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Card with an image on top</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        {% for item in found_items_data %}
+          <div class="col-xxl-4 col-md-6">
+              <div class="card info-card schedule" style="width: 200px;">
+                  <div class="card">
+                      {% if item.item_photo %}
+                      <img src="{{ item.item_photo.url }}" class="card-img-top" alt="..." style="height: 150px; object-fit: cover;">
+                      {% else %}
+                      <!-- Replace 'assets/img/card.jpg' with the path to your default image -->
+                      <img src="/static/assets/img/card.jpg" class="card-img-top" alt="..." style="height: 150px; object-fit: cover;">
+                      {% endif %}
+                      <div class="card-body">
+                          <h5 class="card-title">{{ item.item_name }}</h5>
+                          <p class="card-text">{{ item.item_description }}</p>
+                          <p class="card-text">Date Found: {{ item.date_found }}</p>
+                          <p class="card-text">Time Found: {{ item.time_found }}</p>
+                          <p class="card-text">Lab: {{ item.lab }}</p>
+                      </div>
+                  </div>
               </div>
-            </div>
-
           </div>
+        {% endfor %}
         </div>
-        {% comment %} {% endfor %} {% endcomment %}
-      </div>
     </div>
 </section>
 
@@ -86,7 +88,7 @@
                     required
                   >
                     {% for lab in request.user.account.Lab.all %}
-                    <option value="{{ lab.pk }}">{{ lab.name }}</option>
+                    <option value="{{ lab.Lab_uuid }}">{{ lab.name }}</option>
                     {% endfor %}
                   </select>
                 </div>
@@ -130,7 +132,7 @@
 
               <div class="col-12">
                 <label for="inputPassword" class="col-sm-2 col-form-label">Item Description</label>
-                  <textarea class="form-control" style="height: 100px"></textarea>
+                  <textarea name = "item_description" class="form-control" style="height: 100px" required></textarea>
               </div>
 
               <div class="text-center">

@@ -67,12 +67,13 @@ def serviceborrowasset(request):
 @login_required(login_url=LOGIN_URL)
 def admin_lost_and_found(request):
     """
-        get the list of lost and found assets for the supervisor view
+    get the list of lost and found assets for the supervisor view
     """
     if request.method == "GET":
         return render(request, "admin_user/lost_and_found.html")
     pass
     pass
+
 
 def servicesFoundAsset(request):
     """
