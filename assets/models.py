@@ -223,6 +223,14 @@ class Asset(models.Model):
         get the available assets of Lab x
         """
         return Asset.objects.filter(Lab=x, status="Available")
+    
+    @staticmethod
+    def getAllAvailableAssets():
+        """
+        Gets all the available assets in the lab
+        """
+
+        return Asset.objects.filter(status="Available")
 
 
 class Borrowed_Asset(models.Model):
@@ -254,11 +262,12 @@ class Borrowed_Asset(models.Model):
     location_of_use = models.CharField(
         _("Class/Hall"), max_length=50, blank=False, null=False
     )
-    picked_on = models.DateTimeField(_("date and time picked"), editable=False)
-    returned_on = models.DateTimeField(
+    date_picked_on = models.DateField(_("date picked"), editable=False)
+    time_picked_on = models.TimeField(_("time picked"), editable=False)
+    returned_on = models.TimeField(
         _("date and time returned"), blank=True, null=True
     )
-    returned = models.BooleanField()
+    returned = models.BooleanField(default=False)
     received_by = models.ForeignKey(
         Account,
         on_delete=models.CASCADE,

@@ -289,22 +289,24 @@
 
               <div class="col-md-6">
                 <label for="Admission" class="form-label">Admission Number</label>
-                <input name = "addmission_number" class="form-control" id="inputPassword5">
+                <input name = "admission_number" class="form-control" id="inputPassword5">
               </div>
               <div class="col-12">
                 <label for="Asset" class="form-label">Asset your requesting</label>
-                <select id="inputState" class="form-select" required>
-                  <option selected>Choose...</option>
-                  <option>...</option>
+                <select name="borrowed_asset" id="inputState" class="form-select" required>
+                  <option selected>Choose item ...</option>
+                  {%for item in available_assets%}
+                  <option value={{item.pk}}> {{item.name}}</option>
+                  {%endfor%}
                 </select>
               </div>
               <div class="col-12">
                 <label for="Location" class="form-label">Location or use</label>
-                <input type="text" class="form-control" id="inputAddress2" placeholder="SBE 004" required>
+                <input type="text" name="location_of_use" class="form-control" id="inputAddress2" placeholder="SBE 004" required>
               </div>
               <div class="col-md-6">
                 <label for="inputTime" class="form-label">Time of use</label>
-                  <input type="time" class="form-control" required>
+                  <input name="picked_on" type="time" class="form-control" required>
               </div>
               <div class="col-12">
                 <div class="form-check">
