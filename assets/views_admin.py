@@ -122,9 +122,9 @@ def admin_assetDetails(request, item_pk):
     """
     if request.method == "GET":
         context = {}
-        item = Asset.objects.get(id=item_pk)
+        item = Asset.objects.get(pk=item_pk)
         if item.status == "Borrowed":
-            item_borrowed_details = Borrowed_Asset.objects.get(asset=item)
+            item_borrowed_details = Borrowed_Asset.objects.filter(asset=item).first()
             context["item"] = item
             context["borrowed_item"] = item_borrowed_details
         else:
@@ -162,6 +162,7 @@ def admin_borrowed_assets(request, uuid=None):
 
         try:
             person = request.POST["persons_name"]
+            student_id = request.POST["student_id"]
             contacts = request.POST["persons_contacts"]
             location_of_use = request.POST["location_of_use"]
 
@@ -169,6 +170,7 @@ def admin_borrowed_assets(request, uuid=None):
                 asset=asset,
                 lab=asset.Lab,
                 person=person,
+                student_id=student_id,
                 contacts=contacts,
                 location_of_use=location_of_use,
                 issued_out_by=request.user.account,
