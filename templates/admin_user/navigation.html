@@ -113,32 +113,32 @@
 
 
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="{% url 'admin_roles'   %}">
-          <i class="bi bi-list-task"></i>
-          <span>Roles</span>
-        </a>
-      </li><!-- End Dashboard Nav -->
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="{% url 'admin_roles'   %}">
+        <i class="bi bi-list-task"></i>
+        <span>Roles</span>
+      </a>
+    </li><!-- End Dashboard Nav -->
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-people"></i><span>My Team</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="{% url 'admin_myTeam'   %}">
-              <i class="bi bi-circle"></i><span>Team Members</span>
-            </a>
-          </li>
-        </ul>
-      </li>
+    <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-people"></i><span>My Team</span><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <li>
+          <a href="{% url 'admin_myTeam' request.user.account.Lab.Lab_uuid %}">
+            <i class="bi bi-circle"></i><span>Team Members</span>
+          </a>
+        </li>
+      </ul>
+    </li>
 
-      {% comment %} <li class="nav-item">
-        <a class="nav-link collapsed" href="">
-          <i class="bi bi-list-columns-reverse"></i>
-          <span>Reports</span>
-        </a>
-      </li> {% endcomment %}
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="">
+        <i class="bi bi-list-columns-reverse"></i>
+        <span>Reports</span>
+      </a>
+    </li> 
         
 
       <li class="nav-item">
