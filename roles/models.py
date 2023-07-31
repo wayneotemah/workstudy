@@ -392,13 +392,15 @@ class UserRole(models.Model):
         except UserRole.DoesNotExist:
             pass
         else:
-            results.append({
-                "lab": user_role.role.Lab,
-                "role": user_role.role,
-                "assigned_to": user_role.assigned_to,
-                "start_time": user_role.day1_start_time,
-                "end_time": user_role.day1_end_time,
-            })
+            results.append(
+                {
+                    "lab": user_role.role.Lab,
+                    "role": user_role.role,
+                    "assigned_to": user_role.assigned_to,
+                    "start_time": user_role.day1_start_time,
+                    "end_time": user_role.day1_end_time,
+                }
+            )
 
         try:
             user_role = UserRole.objects.get(
@@ -409,13 +411,15 @@ class UserRole(models.Model):
         except UserRole.DoesNotExist:
             pass
         else:
-            results.append({
-                "lab": user_role.role.Lab,
-                "role": user_role.role,
-                "assigned_to": user_role.assigned_to,
-                "start_time": user_role.day2_start_time,
-                "end_time": user_role.day2_end_time,
-            })
+            results.append(
+                {
+                    "lab": user_role.role.Lab,
+                    "role": user_role.role,
+                    "assigned_to": user_role.assigned_to,
+                    "start_time": user_role.day2_start_time,
+                    "end_time": user_role.day2_end_time,
+                }
+            )
 
         try:
             user_role = UserRole.objects.get(
@@ -426,13 +430,15 @@ class UserRole(models.Model):
         except UserRole.DoesNotExist:
             pass
         else:
-            results.append({
-                "lab": user_role.role.Lab,
-                "role": user_role.role,
-                "assigned_to": user_role.assigned_to,
-                "start_time": user_role.day3_start_time,
-                "end_time": user_role.day3_end_time,
-            })
+            results.append(
+                {
+                    "lab": user_role.role.Lab,
+                    "role": user_role.role,
+                    "assigned_to": user_role.assigned_to,
+                    "start_time": user_role.day3_start_time,
+                    "end_time": user_role.day3_end_time,
+                }
+            )
 
         try:
             user_role = UserRole.objects.get(
@@ -443,13 +449,15 @@ class UserRole(models.Model):
         except UserRole.DoesNotExist:
             pass
         else:
-            results.append({
-                "lab": user_role.role.Lab,
-                "role": user_role.role,
-                "assigned_to": user_role.assigned_to,
-                "start_time": user_role.day4_start_time,
-                "end_time": user_role.day4_end_time,
-            })
+            results.append(
+                {
+                    "lab": user_role.role.Lab,
+                    "role": user_role.role,
+                    "assigned_to": user_role.assigned_to,
+                    "start_time": user_role.day4_start_time,
+                    "end_time": user_role.day4_end_time,
+                }
+            )
 
         try:
             user_role = UserRole.objects.get(
@@ -460,13 +468,15 @@ class UserRole(models.Model):
         except UserRole.DoesNotExist:
             pass
         else:
-            results.append({
-                "lab": user_role.role.Lab,
-                "role": user_role.role,
-                "assigned_to": user_role.assigned_to,
-                "start_time": user_role.day5_start_time,
-                "end_time": user_role.day5_end_time,
-            })
+            results.append(
+                {
+                    "lab": user_role.role.Lab,
+                    "role": user_role.role,
+                    "assigned_to": user_role.assigned_to,
+                    "start_time": user_role.day5_start_time,
+                    "end_time": user_role.day5_end_time,
+                }
+            )
 
         try:
             user_role = UserRole.objects.get(
@@ -477,25 +487,61 @@ class UserRole(models.Model):
         except UserRole.DoesNotExist:
             pass
         else:
-            results.append({
-                "lab": user_role.role.Lab,
-                "role": user_role.role,
-                "assigned_to": user_role.assigned_to,
-                "start_time": user_role.day6_start_time,
-                "end_time": user_role.day6_end_time,
-            })
+            results.append(
+                {
+                    "lab": user_role.role.Lab,
+                    "role": user_role.role,
+                    "assigned_to": user_role.assigned_to,
+                    "start_time": user_role.day6_start_time,
+                    "end_time": user_role.day6_end_time,
+                }
+            )
 
         return results
 
 
 class Task(models.Model):
-    role = models.ForeignKey(Role, verbose_name=_("Role"), on_delete=models.CASCADE)
-    task_1 = models.TextField(_("task 1"), blank=True, null=True, max_length=100)
-    task_2 = models.TextField(_("task 2"), blank=True, null=True, max_length=100)
-    task_3 = models.TextField(_("task 3"), blank=True, null=True, max_length=100)
-    task_4 = models.TextField(_("task 4"), blank=True, null=True, max_length=100)
-    task_5 = models.TextField(_("task 5"), blank=True, null=True, max_length=100)
-    task_6 = models.TextField(_("task 6"), blank=True, null=True, max_length=100)
+    role = models.ForeignKey(
+        Role,
+        verbose_name=_("Role"),
+        on_delete=models.CASCADE,
+    )
+    task_1 = models.TextField(
+        _("task 1"),
+        blank=True,
+        null=True,
+        max_length=100,
+    )
+    task_2 = models.TextField(
+        _("task 2"),
+        blank=True,
+        null=True,
+        max_length=100,
+    )
+    task_3 = models.TextField(
+        _("task 3"),
+        blank=True,
+        null=True,
+        max_length=100,
+    )
+    task_4 = models.TextField(
+        _("task 4"),
+        blank=True,
+        null=True,
+        max_length=100,
+    )
+    task_5 = models.TextField(
+        _("task 5"),
+        blank=True,
+        null=True,
+        max_length=100,
+    )
+    task_6 = models.TextField(
+        _("task 6"),
+        blank=True,
+        null=True,
+        max_length=100,
+    )
 
     class Meta:
         verbose_name = _("Task")

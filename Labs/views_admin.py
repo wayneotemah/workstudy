@@ -40,6 +40,7 @@ def admin_labs(request, uuid=None):
     if request.method == "GET":
         context = {}
         helper = UserAdminDetailsHelper(user=request.user, uuid=uuid)
+        context["lab_schedule"] = UserRole.get_current_shift_assignment()
         context["profile"] = helper.get_profile()
         return render(request, "admin_user/lab.html", context=context)
     if request.method == "POST":

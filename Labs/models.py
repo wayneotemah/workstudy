@@ -7,7 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 # Create your models here.
 
 
-class  Lab(models.Model):
+class Lab(models.Model):
     Lab_uuid = models.UUIDField(
         _("Lab's ID"),
         primary_key=True,

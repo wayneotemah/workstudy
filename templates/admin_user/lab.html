@@ -44,14 +44,9 @@
               </h5>
               {% if lab_schedule %}
               {% for schedule in lab_schedule %}
-               {% if schedule.lab == lab.name %}
+               {% if schedule.lab.name == lab.name %}
                 <div class="d-flex align-items-center">
-                  <div
-                    class="card-icon rounded-circle d-flex align-items-center justify-content-center"
-                  >
-                    <i class="bi bi-calendar3"></i>
-                  </div>
-                  <div class="ps-3">
+                  <div class="ps-2">
                     <span class="text-primary medium pt-1 fw-bold"
                     >{{schedule.assigned_to}}</span
                     >
