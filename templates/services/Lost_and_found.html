@@ -50,65 +50,6 @@
 </main>
 <!-- End #main -->
 
-<div class="modal fade" id="largeModal" tabindex="-1">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">|
-          <div class="card-body">
-            <h5 class="card-title">Request Asset form</h5>
-
-            <!-- Multi Columns Form -->
-            <form class="row g-3" action = {% url 'service dashbaord' %} method = "POST">
-              {% csrf_token %}
-              <div class="col-md-12">
-                <label for="inputName5" class="form-label">Your Name</label>
-                <input type="text" name="name" value ="{% if name %}{{name}}{% endif %}" class="form-control" id="inputName5">
-              </div>
-              <div class="col-md-6">
-                <label for="inputEmail5" class="form-label">Your phone number</label>
-                <input type="number" name="phone_number" value="{% if phone_number %} {{phone_number}} {% endif %}" class="form-control" id="inputEmail5">
-              </div>
-              <div class="col-md-6">
-                <label for="Admission" class="form-label">Admission Number</label>
-                <input name = "admission_number" value="{% if admission_number %} {{admission_number}} {% endif %}" class="form-control" id="inputPassword5">
-              </div>
-              <div class="col-12">
-                <label for="Asset" class="form-label">Asset your requesting</label>
-                <select id="inputState" class="form-select">
-                  <option selected>Choose...</option>
-                  <option>...</option>
-                </select>
-              </div>
-              <div class="col-12">
-                <label for="Location" class="form-label">Location or use</label>
-                <input type="text" class="form-control" id="inputAddress2" placeholder="SBE 004">
-              </div>
-              <div class="col-md-6">
-                <label for="inputTime" class="form-label">Time of use</label>
-                  <input type="time" class="form-control">
-              </div>
-              <div class="col-12">
-                <div class="form-check">
-                  <input name="remeber_me" class="form-check-input" type="checkbox" id="gridCheck">
-                  <label class="form-check-label" for="gridCheck">
-                    Remeber my details for next time
-                  </label>
-                </div>
-              </div>
-              <div class="text-center">
-                <button type="submit" class="btn btn-primary">Submit</button>
-                <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              </div>
-            </form><!-- End Multi Columns Form -->
-
-          </div>
-    </div>
-  </div>
-</div><!-- End Large Modal -->
-
-
-
-
 {% endblock content %}
 
 
