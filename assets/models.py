@@ -210,11 +210,23 @@ class Asset(models.Model):
     @staticmethod
     def getAssetsByCategory(x):
         """
-        get list of objects by category type and Lab ID
+        get list of objects by category type
         x-> category item id
         """
         return Asset.objects.filter(
             category_type_id=x,
+        )
+
+    @staticmethod
+    def getLabAssetsByCategory(x, y):
+        """
+        get list of objects by category type and Lab ID
+        x-> category item id
+        y -> lab uuid
+        """
+        return Asset.objects.filter(
+            category_type_id=x,
+            Lab__Lab_uuid=y,
         )
 
     @staticmethod

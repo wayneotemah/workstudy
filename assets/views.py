@@ -61,10 +61,10 @@ def borrowed_assets(request, uuid):
                 person=person,
                 contacts=contacts,
                 location_of_use=location_of_use,
-                picked_on=now,
+                time_picked_on=now,
                 issued_out_by=request.user.account,
                 student_id=student_id,
-                asset_status = "Borrowed"
+                asset_status="Borrowed",
             )
             borroweditem.returned = False
             borroweditem.save()
@@ -79,7 +79,7 @@ def borrowed_assets(request, uuid):
             # successfully added item on
             asset.status = "Borrowed"
             asset.save()
-            AssetCategory.add_borrowed_assets(asset, uuid)
+            AssetCategory.add_borrowed_assets(asset)
             messages.success(request, f"{asset.name} borrowed successfully")
             return redirect("borrowed assets", uuid=uuid)
 
@@ -249,7 +249,7 @@ def getAssetCategoryDetails(request, uuid, category_pk):
         category = AssetCategory.objects.get(id=category_pk)
         if category:
             context["item_category"] = category
-            context["items"] = Asset.getOrgAssetsByCategory(category_pk, uuid)
+            context["items"] = Asset.getLabAssetsByCategory(category_pk, uuid)
 
         return render(
             request,

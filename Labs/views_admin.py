@@ -181,7 +181,7 @@ def admin_issues(request, uuid=None):
 
 @login_required(login_url=LOGIN_URL)
 def admin_IssueDetails(request, issue_pk, uuid=None):
-    try:
+    # try:
         if request.method == "GET":
             helper = IssuessAdminHelper(user=request.user, uuid=uuid)
             context = {}
@@ -201,12 +201,12 @@ def admin_IssueDetails(request, issue_pk, uuid=None):
 
             issue.save()
             return redirect(admin_IssueDetails, issue_pk)
-    except Exception as e:
-        context = {
-            "message": f"Please contact the devs and notify them of the error \nerror is: \n{e}"
-        }
-        messages.warning(request, "Unexpected Exception error has risen")
-        return render(request, "errorpage.html", context=context)
+    # except Exception as e:
+    #     context = {
+    #         "message": f"Please contact the devs and notify them of the error \nerror is: \n{e}"
+    #     }
+    #     messages.warning(request, "Unexpected Exception error has risen")
+    #     return render(request, "errorpage.html", context=context)
 
 
 @login_required(login_url=LOGIN_URL)  # type: ignore
