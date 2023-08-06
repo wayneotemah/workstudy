@@ -25,84 +25,238 @@
     <section class="section dashboard">
       <div class="row">
 
-        <!-- Left side columns -->
         <div class="col">
           <div class="row">
-            <!-- Top Selling -->
+
             <div class="col-12">
               {% if borrowed_assets %}
-              <div class="card top-selling overflow-auto">
-                <div class="card-body pb-0">
-                  <h5 class="card-title">Borrowed items</h5>
 
-                  <table class="table table-borderless">
-                    <thead>
-                      <tr>
-                        <th scope="col">Image</th>
-                        <th scope="col">Location of use</th>
-                        <th scope="col">Picked by</th>
-                        <th scope="col">Picked on</th>
-                        <th scope="col">Returned</th>
-                        <th scope="col">Recieved by</th>
-                        <th scope="col">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                  {% for item in borrowed_assets %}
-
-                      <tr>
-                        <th scope="row">
-                          <a href="{% url 'asset details' LabUUID item.asset.pk %}">  
-                            <img style = "max-width:150px;" src="{{item.asset.pic.url}}" alt="asset image">
-                          </a>
-                        </th>
-                        <td>{{item.location_of_use}}</td>
-                        <td>{{item.person}}</td>
-                        <td>{{item.picked_on}}</td>
-                        <td class="fw-bold">{{item.returned}}</td>
-                        <td class="fw-bold">{{item.received_by}}</td>
-                        {% if not item.returned %}
-                        <td><a href = {% url 'return assets' LabUUID item.pk %}>Mark as Returned</a></td>
-                        {% endif %}
-                      </tr>
-                  {% endfor %}
-                    
-
-                    </tbody>
-                  </table>
-
-              
-                </div>
-
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">Pages</h5>
-                    <nav aria-label="...">
-                      <ul class="pagination">
-                        {% if borrowed_assets.has_previous %}          
-                        <li class="page-item">
-                          <a class="page-link" href="?page={{ borrowed_assets.previous_page_number }}" tabindex="-1" aria="true">Previous</a>
-                        </li>
-                        {% endif %}
-
+              <div class="card">
+                <div class="card-body" style="padding: 10px 20px 20px 20px;">
+    
+                  <!-- Bordered Tabs Justified -->
+                  <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
+                    <li class="nav-item flex-fill" role="presentation">
+                      <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-home" type="button" role="tab" aria-controls="home" aria-selected="true">Borrowed</button>
+                    </li>
+                    <li class="nav-item flex-fill" role="presentation">
+                      <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Pending Approval</button>
+                    </li>
+                    <li class="nav-item flex-fill" role="presentation">
+                      <button class="nav-link w-100" id="contact-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Returned</button>
+                    </li>
+                  </ul>
+                  <div class="tab-content pt-2" id="borderedTabJustifiedContent">
+                    <div class="tab-pane fade show active" id="bordered-justified-home" role="tabpanel" aria-labelledby="home-tab">
+                      This are assets that have need borrowed and are yet to be returned. Click on the Mark as Returned button to mark an asset as returned.
                         
-                        <li class="page-item active" aria-current="page">
-                          <a class="page-link" href="#">{{ borrowed_assets.number }}</a>
-                        </li>
+                        <div class="card-body pb-0">
+                          <h5 class="card-title">Borrowed items</h5>
+                          {% for item in borrowed_assets %}
+                            {% if item.asset_status == "Borrowed" %}
+                              <table class="table table-borderless">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">Image</th>
+                                    <th scope="col">Location of use</th>
+                                    <th scope="col">Picked by</th>
+                                    <th scope="col">Picked on</th>
+                                    <th scope="col">Returned</th>
+                                    <th scope="col">Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+              
+                                  <tr>
+                                    <th scope="row">
+                                      <div class = "col">
+                                      {% comment %} <a href="{% url 'admin asset details' item.asset.pk %}">   {% endcomment %}
+                                        <img style = "max-width:100px;" src="{{item.asset.pic.url}}" alt="asset image">
+                                        <p>{{item.asset.name}}</p>
+                                      {% comment %} </a> {% endcomment %}
+                                      </div>
+                                    </th>
+                                    <td>{{item.location_of_use}}</td>
+                                    <td>{{item.person}}</td>
+                                    <td>{{item.time_picked_on}}</td>
+                                    <td class="fw-bold">{{item.returned}}</td>
+                                    {% if not item.returned %}
+                                    <td><a href = {% url 'return assets' LabUUID item.pk %}>Mark as Returned</a></td>
+                                    {% endif %}
+                                  </tr>
+                                    
+                                </tbody>
+                              </table>
+                            {% endif %}
+                          {% endfor %}
+                        </div>
 
-                        {% if borrowed_assets.has_next %}
-                        <li class="page-item">
-                          <a class="page-link" href="?page={{ borrowed_assets.next_page_number }}">Next</a>
-                        </li>
-                        {% endif %}
-
-                      </ul>
-                    </nav><!-- End Disabled and active states -->
+                        <div class="card-body">
+                          <h5 class="card-title">Pages</h5>
+                          <nav aria-label="...">
+                            <ul class="pagination">
+                              {% if borrowed_assets.has_previous %}          
+                              <li class="page-item">
+                                <a class="page-link" href="?page={{ borrowed_assets.previous_page_number }}" tabindex="-1" aria="true">Previous</a>
+                              </li>
+                              {% endif %}
       
-                  </div>
+                              
+                              <li class="page-item active" aria-current="page">
+                                <a class="page-link" href="#">{{ borrowed_assets.number }}</a>
+                              </li>
+      
+                              {% if borrowed_assets.has_next %}
+                              <li class="page-item">
+                                <a class="page-link" href="?page={{ borrowed_assets.next_page_number }}">Next</a>
+                              </li>
+                              {% endif %}
+      
+                            </ul>
+                          </nav><!-- End Disabled and active states -->
+            
+                        </div>
+                        
+                      
+                    
+                    </div>
+                    <div class="tab-pane fade" id="bordered-justified-profile" role="tabpanel" aria-labelledby="profile-tab">
+                      This are assets that have been requested for borrowing and are yet to be approved. Click on the Approval link to mark an asset as issued.
+                      <div class="card-body pb-0">
+                        <h5 class="card-title">Items Pending Approval</h5>
+      
+                        {% for item in borrowed_assets %}
+                          {% if item.asset_status == "Pending Approval" %}
+                            <table class="table table-borderless">
+                              <thead>
+                                <tr>
+                                  <th scope="col">Image</th>
+                                  <th scope="col">Location of use</th>
+                                  <th scope="col">Requested by</th>
+                                  <th scope="col">To be picked on</th>
+                                  <th scope="col">Action</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <th scope="row">
+                                    <div class = "col">
+                                    {% comment %} <a href="{% url 'admin asset details' item.asset.pk %}">   {% endcomment %}
+                                      <img style = "max-width:100px;" src="{{item.asset.pic.url}}" alt="asset image">
+                                      <p>{{item.asset.name}}</p>
+                                    {% comment %} </a> {% endcomment %}
+                                    </div>
+                                  </th>
+                                  <td>{{item.location_of_use}}</td>
+                                  <td>{{item.person}} | {{item.student_id}}</td>
+                                  <td class="fw-bold">{{item.time_picked_on}}</td>
+                                  {% if item.asset.status == "Pending Approval" %}
+                                  <td><a href = {% url 'approve assets' LabUUID item.pk %}>Approved</a></td>
+                                  {% endif %}
+                                </tr> 
+                              </tbody>
+                            </table>
+                          {% endif %}
+                        {% endfor %}
+                      </div>
+      
+                      <div class="card-body">
+                        <h5 class="card-title">Pages</h5>
+                        <nav aria-label="...">
+                          <ul class="pagination">
+                            {% if borrowed_assets.has_previous %}          
+                            <li class="page-item">
+                              <a class="page-link" href="?page={{ borrowed_assets.previous_page_number }}" tabindex="-1" aria="true">Previous</a>
+                            </li>
+                            {% endif %}
+    
+                            
+                            <li class="page-item active" aria-current="page">
+                              <a class="page-link" href="#">{{ borrowed_assets.number }}</a>
+                            </li>
+    
+                            {% if borrowed_assets.has_next %}
+                            <li class="page-item">
+                              <a class="page-link" href="?page={{ borrowed_assets.next_page_number }}">Next</a>
+                            </li>
+                            {% endif %}
+    
+                          </ul>
+                        </nav><!-- End Disabled and active states -->
+          
+                      </div>
+
+                    </div>
+                    <div class="tab-pane fade" id="bordered-justified-contact" role="tabpanel" aria-labelledby="contact-tab">
+                      This are items that have been returned.
+                    
+                      <div class="card-body pb-0">
+                        <h5 class="card-title">Items returned</h5>
+      
+                        {% for item in borrowed_assets %}
+                          {% if item.asset_status == "Returned" %}
+                            <table class="table table-borderless">
+                              <thead>
+                                <tr>
+                                  <th scope="col">Image</th>
+                                  <th scope="col">Location</th>
+                                  <th scope="col">Picked by</th>
+                                  <th scope="col">Returned on</th>
+                                  <th scope="col">Recieved by</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <th scope="row">
+                                    <div class = "col">
+                                    {% comment %} <a href="{% url 'admin asset details' item.asset.pk %}">   {% endcomment %}
+                                      <img style = "max-width:100px;" src="{{item.asset.pic.url}}" alt="asset image">
+                                      <p>{{item.asset.name}}</p>
+                                    {% comment %} </a> {% endcomment %}
+                                    </div>
+                                  </th>
+                                  <td>{{item.location_of_use}}</td>
+                                  <td>{{item.person}} | {{item.student_id}}</td>
+                                  <td>{{item.returned_on}}</td>
+                                  <td>{{item.received_by}}</td>
+                                </tr> 
+                              </tbody>
+                            </table>
+                          {% endif %}
+                        {% endfor %}
+                      </div>
+      
+                      <div class="card-body">
+                        <h5 class="card-title">Pages</h5>
+                        <nav aria-label="...">
+                          <ul class="pagination">
+                            {% if borrowed_assets.has_previous %}          
+                            <li class="page-item">
+                              <a class="page-link" href="?page={{ borrowed_assets.previous_page_number }}" tabindex="-1" aria="true">Previous</a>
+                            </li>
+                            {% endif %}
+    
+                            
+                            <li class="page-item active" aria-current="page">
+                              <a class="page-link" href="#">{{ borrowed_assets.number }}</a>
+                            </li>
+    
+                            {% if borrowed_assets.has_next %}
+                            <li class="page-item">
+                              <a class="page-link" href="?page={{ borrowed_assets.next_page_number }}">Next</a>
+                            </li>
+                            {% endif %}
+    
+                          </ul>
+                        </nav><!-- End Disabled and active states -->
+          
+                      </div>
+                    
+                    </div>
+                  </div><!-- End Bordered Tabs Justified -->
+    
                 </div>
-                
-              </div>
+              {% comment %} </div> {% endcomment %}
               {% else %}
               <h3>No borrowed assets recorded</h3>
               {% endif %}
@@ -114,7 +268,6 @@
 
       </div>
     </section>
-
   </main><!-- End #main -->
 
 {% endblock content %}

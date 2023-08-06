@@ -72,6 +72,11 @@ urlpatterns = [
         name="return assets",
     ),
     path(
+        "approve_asset/<str:uuid>/<int:borrowedasset_id>/",
+        views.approve_asset,
+        name="approve assets",
+    ),
+    path(
         "assets_details/<str:uuid>/<str:item_pk>/",
         views.assetDetails,
         name="asset details",
